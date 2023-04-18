@@ -15,7 +15,7 @@ jobs:
 
       - name: Install dependencies and build assets
         run: |
-          cd C:/laragon/www/winternew
+          cd C:\laragon\www\winternew\
           composer install --no-interaction --no-dev --prefer-dist
           php artisan winter:util compile assets
 
