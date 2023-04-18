@@ -1,0 +1,36 @@
+name: Deploy WinterCMS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          cd winternew
+          composer install --no-interaction --no-dev --prefer-dist
+
+      - name: Build assets
+        run: |
+          cd winternew
+          php artisan winter:util compile assets
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/merokosi/public_html
+            git pull
+            php artisan winter:up
