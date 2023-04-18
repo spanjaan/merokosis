@@ -16,7 +16,8 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev --prefer-dist
       - name: Deploy code
-        run: sh deploy.sh
         env:
           SHARED_HOSTING_USERNAME: ${{ secrets.SHARED_HOSTING_USERNAME }}
           SHARED_HOSTING_PASSWORD: ${{ secrets.SHARED_HOSTING_PASSWORD }}
+        run: |
+          sshpass -p "${SHARED_HOSTING_PASSWORD}" scp -o StrictHostKeyChecking=no -r ./ ${SHARED_HOSTING_USERNAME}:/home/merokosi/public_html
