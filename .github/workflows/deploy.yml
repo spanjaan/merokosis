@@ -31,6 +31,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /path/to/winternew
+            cd /home/merokosi/public_html
             git pull
             php artisan winter:up
