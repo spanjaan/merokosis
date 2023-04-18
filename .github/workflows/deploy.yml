@@ -20,4 +20,4 @@ jobs:
           SHARED_HOSTING_USERNAME: ${{ secrets.SHARED_HOSTING_USERNAME }}
           SHARED_HOSTING_PASSWORD: ${{ secrets.SHARED_HOSTING_PASSWORD }}
         run: |
-          sshpass -p "${SHARED_HOSTING_PASSWORD}" scp -o StrictHostKeyChecking=no -r ./ ${SHARED_HOSTING_USERNAME}:/home/merokosi/public_html
+          sshpass -p "${SHARED_HOSTING_PASSWORD}" scp -o StrictHostKeyChecking=no -r -P 21 ./ ${SHARED_HOSTING_USERNAME}:/home/merokosi/public_html
