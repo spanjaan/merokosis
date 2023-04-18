@@ -15,12 +15,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd winternew/
+          cd C:\laragon\www\winternew\
           composer install --no-interaction --no-dev --prefer-dist
 
       - name: Build assets
         run: |
-          cd winternew/
+          cd C:\laragon\www\winternew\
           php artisan winter:util compile assets
 
       - name: Deploy to server
@@ -29,6 +29,6 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           server: ${{ secrets.SERVER }}
           username: ${{ secrets.USERNAME }}
-          local-path: winternew/
+          local-path: C:\laragon\www\winternew\
           remote-path: public_html/
           args: "-rltgoDzvO --delete"
