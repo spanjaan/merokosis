@@ -1,0 +1,22 @@
+name: Deploy WinterCMS
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist
+      - name: Deploy code
+        run: sh deploy.sh
+        env:
+          SHARED_HOSTING_USERNAME: ${{ secrets.SHARED_HOSTING_USERNAME }}
+          SHARED_HOSTING_PASSWORD: ${{ secrets.SHARED_HOSTING_PASSWORD }}
