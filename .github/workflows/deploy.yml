@@ -33,4 +33,4 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd /home/***/public_html
-            php artisan migrate --force
+            php artisan migrate
