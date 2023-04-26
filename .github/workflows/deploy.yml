@@ -27,6 +27,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /home/merokosi/public_html
+            cd /home/***/public_html
             git pull
             php artisan winter:up
