@@ -11,16 +11,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: |
-          composer install --no-dev
-          php artisan winter:env
-          sed -i "s/^DB_HOST=.*/DB_HOST=${{ secrets.DB_HOST }}/g" .env
-          sed -i "s/^DB_PORT=.*/DB_PORT=${{ secrets.DB_PORT }}/g" .env
-          sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
-          sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
-          sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
-          php artisan key:generate --force
       - name: Copy Files to Server
         uses: appleboy/scp-action@master
         with:
@@ -29,9 +19,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./*"
+          source: "."
           target: "/home/***/public_html"
-      - name: SSH into Server and Run Commands
+      - name: SSH into Server and Update Env File
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -41,4 +31,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd /home/***/public_html
+            sed -i "s/^DB_DATABASE=.*/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
+            sed -i "s/^DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
+            sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
             php artisan migrate
