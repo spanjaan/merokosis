@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./*"
+          source: "."
           target: "/home/***/public_html"
       - name: SSH into Server and Run Commands
         uses: appleboy/ssh-action@master
