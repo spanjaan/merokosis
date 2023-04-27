@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "./*"
-          target: "/home/merokosi/public_html"
+          target: "/home/***/public_html"
       - name: SSH into Server and Run Commands
         uses: appleboy/ssh-action@master
         with:
@@ -30,6 +30,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /home/merokosi/public_html
+            cd /home/***/public_html
             composer install --no-dev
             php artisan migrate
