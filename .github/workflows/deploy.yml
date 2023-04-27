@@ -12,10 +12,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Install Dependencies
-        run: |
-          composer install --no-dev
-          cp .env .env.backup
-          php artisan key:generate
+        run: composer install --no-dev
       - name: Copy Files to Server
         uses: appleboy/scp-action@master
         with:
