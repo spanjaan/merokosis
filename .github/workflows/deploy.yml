@@ -23,16 +23,6 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "./*"
           target: "/home/***/public_html"
-      - name: Copy .env file to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./*"
-          target: "/home/***/public_html"
       - name: SSH into Server and Run Commands
         uses: appleboy/ssh-action@master
         with:
