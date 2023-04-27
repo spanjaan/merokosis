@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: composer install --no-dev
       - name: Copy Files to Server
         uses: appleboy/scp-action@master
         with:
@@ -21,7 +19,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "."
+          source: "./*"
           target: "/home/***/public_html"
       - name: SSH into Server and Run Commands
         uses: appleboy/ssh-action@master
@@ -33,4 +31,5 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd /home/***/public_html
+            composer install
             php artisan migrate
