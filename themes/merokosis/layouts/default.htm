@@ -1,0 +1,18 @@
+description = "Default Layout"
+==
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ {% partial 'site/meta' %}
+</head>
+<body>
+ {% partial'site/pageloader' %}
+ <main class="page-wrapper">
+  {% partial'site/header' %}
+  {% page %}
+ </main>
+ {% partial'site/footer' %}
+ {% partial'site/backtotop' %}
+ {% partial'site/scripts' %}
+</body>
+</html>

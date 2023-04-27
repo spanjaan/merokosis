@@ -1,0 +1,33 @@
+title = "latest post"
+url = "/latest-post"
+layout = "blog"
+is_hidden = 0
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
+postPage = "blog/post"
+==
+{% set latestPost = blogPosts.posts.first() %}
+{% if latestPost %}
+    <!-- display the latest post -->
+    <div>
+        <h2>{{ latestPost.title }}</h2>
+        <p>{{ latestPost.summary }}</p>
+        <a href="{{ latestPost.url }}">Read more</a>
+    </div>
+{% endif %}
+
+{% set latestPosts = blogPosts.posts|slice(0, 6) %}
+{% if latestPosts %}
+  {% for post in latestPosts %}
+    <div>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.summary }}</p>
+      <a href="{{ post.url }}">Read more</a>
+    </div>
+  {% endfor %}
+{% endif %}

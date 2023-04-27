@@ -1,0 +1,413 @@
+title = "blog"
+url = "/blog/:page?"
+layout = "blog"
+meta_title = "Amazing Blog Collection"
+meta_description = "\"Amazing blog Collection\" is a great resource for readers who are looking for interesting and informative content in the form of blogs."
+is_hidden = 0
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+categoryFilter = "{{ :slug }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
+postPage = "blog/post"
+
+[blogCategories]
+slug = "{{ :slug }}"
+displayEmpty = 1
+categoryPage = "blog/category"
+
+[bloghubTags]
+tagPage = "blog"
+onlyPromoted = 0
+amount = 5
+==
+<section class="bg-secondary pt-1">
+       <div class="container pb-2 pb-md-0">
+        <div class="row justify-content-center pt-3 mt-3">
+         <div class="col-xl-6 col-lg-7 col-md-8 col-sm-10 text-center">
+          <h1 class="mb-1">{{ this.page.meta_title }}</h1>
+          <p class="fs-lg pb-1 mb-1">{{ this.page.meta_description }}</p>
+          <nav class="pt-lg-1 mb-3" aria-label="breadcrumb">
+           <ol class="breadcrumb mb-0 justify-content-center">
+            <li class="breadcrumb-item">
+             <a href="{{ 'home'|page }}"><i class="bx bxs-home fs-lg me-1"></i>Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Blog</li>
+           </ol>
+          </nav>
+          <div class="d-flex justify-content-center mb-4">
+           <a href="#" class="btn btn-icon btn-secondary btn-facebook rounded-circle mx-2">
+            <i class="bx bxl-facebook"></i>
+           </a>
+           <a href="#" class="btn btn-icon btn-secondary rounded-circle btn-youtube mx-2">
+            <i class="bx bxl-youtube"></i>
+          </a>
+          <a href="#" class="btn btn-icon btn-secondary rounded-circle btn-tiktok mx-2">
+           <i class="bx bxl-tiktok"></i>
+         </a>
+           <a href="#" class="btn btn-icon btn-secondary btn-instagram rounded-circle mx-2">
+            <i class="bx bxl-instagram"></i>
+           </a>
+           <a href="#" class="btn btn-icon btn-secondary btn-twitter rounded-circle mx-2">
+            <i class="bx bxl-twitter"></i>
+           </a>
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
+
+      <!-- Page content -->
+      <section class="container mt-4  mb-lg-5 pt-lg-2">
+       <!-- Blog grid + Sidebar -->
+       <div class="row">
+        <div class="col-xl-9 col-lg-8">
+         <div>
+          {% set posts = blogPosts.posts %}
+          <div class="masonry-grid row row-cols-sm-2 row-cols-1 g-4">
+           <!-- Item -->
+           {% for post in posts %}
+           <div class="masonry-grid-item col pb-2 pb-lg-3">
+            <article class="card border-dark bg-faded-dark card-hover-primary">
+             <div class="position-relative overflow-hidden rounded-3">
+              <a href="{{ post.url }}" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+              <a href="{{ post.url }}"
+               class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+               data-bs-toggle="tooltip" data-bs-placement="left" title="Read More">
+               <i class="bx bx-bookmark"></i>
+              </a>
+              {% if post.featured_images|length %}
+              <div style="height: 300px; overflow: hidden;">
+               <img src="{{ post.featured_images.0.path }}" alt="Image" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+              </div>
+              {% endif %}
+             </div>
+             <div class="card-body">
+           {% for category in post.categories %}
+              <a href="{{ category.url }}" class="badge fs-sm text-white bg-success shadow-info text-decoration-none mb-3">{{ category.name }}</a>
+            {% endfor %}
+              <h3 class="h4">
+               <a href="{{ post.url }}">{{ post.title }}</a>
+              </h3>
+              <p class="mb-4">{{ post.summary|slice(0, 150) ~ '...' }}</p>
+              <div class="d-flex align-items-center text-muted">
+               <div class="fs-sm border-end pe-3 me-3">{{ post.published_at.diffForHumans() }}</div>
+               <div class="d-flex align-items-center me-3">
+                <i class="bx bx-show fs-lg me-1"></i>
+                <span class="fs-sm">{{ post.bloghub.views }}</span>
+               </div>
+               <div class="d-flex align-items-center me-3">
+                <i class="bx bx-comment fs-lg me-1"></i>
+                <span class="fs-sm">{{ post.bloghub.comments_count }}</span>
+               </div>
+               <div class="d-flex align-items-center">
+                <i class="bx bx-share-alt fs-lg me-1"></i>
+                <span class="fs-sm">2</span>
+               </div>
+              </div>
+             </div>
+            </article>
+           </div>
+            {% endfor %}
+    <!-- Item End-->
+          </div>
+          <!-- Pagination: Basic example -->
+          <div class="align-items-center justify-content-center d-flex pt-2 pb-3">
+          <nav aria-label="Page navigation ">
+{% if posts.lastPage > 1 %}
+  <ul class="pagination">
+    {% if posts.currentPage > 1 %}
+    <li class="page-item">
+      <a class="page-link" href="{{ this.page.baseFileName | page({ (blogPosts.pageParam): (posts.currentPage-1) }) }}">
+        <i class="bx bx-chevron-left ms-n1 me-1"></i>
+        Prev
+      </a>
+    </li>
+    {% endif %}
+
+    {% if posts.lastPage == 2 %}
+      {% set startPage = 1 %}
+      {% set endPage = 2 %}
+    {% else %}
+      {% set startPage = 1 %}
+      {% set endPage = 3 %}
+      {% if posts.currentPage > 2 %}
+          {% set startPage = posts.currentPage - 1 %}
+          {% set endPage = posts.currentPage + 1 %}
+      {% endif %}
+      {% if endPage > posts.lastPage %}
+          {% set startPage = posts.lastPage - 2 %}
+          {% set endPage = posts.lastPage %}
+      {% endif %}
+    {% endif %}
+
+    {% if startPage > 1 %}
+      <li class="page-item disabled"><a class="page-link">...</a></li>
+    {% endif %}
+
+    {% for page in startPage..endPage %}
+      <li class="page-item {{ posts.currentPage == page ? 'active' : null }}">
+        <a href="{{ this.page.baseFileName | page({ (blogPosts.pageParam): page }) }}" class="page-link">{{ page }}</a>
+      </li>
+    {% endfor %}
+
+    {% if endPage < posts.lastPage %}
+      <li class="page-item disabled"><a class="page-link">...</a></li>
+    {% endif %}
+
+    {% if posts.lastPage > posts.currentPage %}
+    <li class="page-item">
+      <a class="page-link bg-gray" href="{{ this.page.baseFileName | page({ (blogPosts.pageParam): (posts.currentPage+1) }) }}">
+        Next
+        <i class="bx bx-chevron-right me-n1 ms-1"></i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+          </nav>
+          </div>
+         </div>
+        </div>
+    <!-- Blog grid End -->
+
+        <!-- Sidebar (Offcanvas below lg breakpoint) -->
+        <aside class="col-xl-3 col-lg-4">
+         <div class="offcanvas-lg offcanvas-end" id="blog-sidebar" tabindex="-1">
+
+          <!-- Header -->
+          <div class="offcanvas-header border-bottom">
+           <h3 class="offcanvas-title fs-lg">Blog Menu</h3>
+           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#blog-sidebar"></button>
+          </div>
+
+          <!-- Body -->
+          <div class="offcanvas-body">
+
+           <!-- Search form -->
+           <form class="input-group mb-4">
+            <input type="text" placeholder="Search the blog..." class="form-control rounded pe-5">
+            <i class='bx bx-search position-absolute top-50 end-0 translate-middle-y me-3 fs-lg zindex-5'></i>
+           </form>
+
+           <!-- Categories -->
+           <div class="card card-body mb-4">
+            <h3 class="h5">Categories</h3>
+            {% for category in categories %}
+            {% set postCount = category.post_count %}
+            <ul class="nav flex-column fs-sm">
+             <li  class="nav-item mb-1 ">
+              <a href="{{ category.url }}" class="nav-link py-1 px-0 {% if category.slug == currentCategorySlug %}active{% endif %}">{{ category.name }} 
+              {% if postCount %}
+              <span class="fw-normal opacity-60 ms-1">({{ postCount }})</span>{% endif %}</a>
+             </li>
+            </ul>
+            {% endfor %}
+           </div>
+
+           <!-- Popular posts -->
+           <div class="card card-body border-0 position-relative mb-4">
+            <span class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-primary opacity-10 rounded-3"></span>
+            <div class="position-relative zindex-2">
+             <h3 class="h5">Popular posts</h3>
+             <ul class="list-unstyled mb-0">
+              <li class="border-bottom pb-3 mb-3">
+               <h4 class="h6 mb-2">
+                <a href="#">5 Bad Landing Page Examples &amp; How We Would Fix Them</a>
+               </h4>
+               <div class="d-flex align-items-center text-muted pt-1">
+                <div class="fs-xs border-end pe-3 me-3">12 hours ago</div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-like fs-base me-1"></i>
+                 <span class="fs-xs">8</span>
+                </div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-comment fs-base me-1"></i>
+                 <span class="fs-xs">4</span>
+                </div>
+                <div class="d-flex align-items-center">
+                 <i class="bx bx-share-alt fs-base me-1"></i>
+                 <span class="fs-xs">2</span>
+                </div>
+               </div>
+              </li>
+              <li class="border-bottom pb-3 mb-3">
+               <h4 class="h6 mb-2">
+                <a href="#">How Agile is Your Forecasting Process?</a>
+               </h4>
+               <div class="d-flex align-items-center text-muted pt-1">
+                <div class="fs-xs border-end pe-3 me-3">Oct 9, 2021</div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-like fs-base me-1"></i>
+                 <span class="fs-xs">4</span>
+                </div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-comment fs-base me-1"></i>
+                 <span class="fs-xs">1</span>
+                </div>
+                <div class="d-flex align-items-center">
+                 <i class="bx bx-share-alt fs-base me-1"></i>
+                 <span class="fs-xs">0</span>
+                </div>
+               </div>
+              </li>
+              <li>
+               <h4 class="h6 mb-2">
+                <a href="#">Inclusive Marketing: Why and How Does it Work?</a>
+               </h4>
+               <div class="d-flex align-items-center text-muted pt-1">
+                <div class="fs-xs border-end pe-3 me-3">Sep 13, 2021</div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-like fs-base me-1"></i>
+                 <span class="fs-xs">5</span>
+                </div>
+                <div class="d-flex align-items-center me-3">
+                 <i class="bx bx-comment fs-base me-1"></i>
+                 <span class="fs-xs">2</span>
+                </div>
+                <div class="d-flex align-items-center">
+                 <i class="bx bx-share-alt fs-base me-1"></i>
+                 <span class="fs-xs">4</span>
+                </div>
+               </div>
+              </li>
+             </ul>
+            </div>
+           </div>
+
+           <!-- Tags -->
+           <div class="card card-body mb-4">
+            <h3 class="h5">Tags</h3>
+            {% if bloghubTags.tags|length > 0 %}
+            <div class="d-flex flex-wrap">
+            {% for tag in tags %}
+            {% set postCount = tag.post_count %}
+             <a href="{{ tag.url }}" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#{{ tag.title | default(tag.slug | title) }}
+              {% if postCount %}
+                    <span class="badge">{{ postCount }}</span>
+                {% endif %}
+             </a>
+            {% endfor %}
+            {% else %}
+             <p>No tags were found.</p>
+             {% endif %}
+            </div>
+           </div>
+
+           <!-- Follow Us -->
+           <div class="card mb-4">
+            <div class="card-body">
+             <h5 class="mb-4">Follow Us</h5>
+             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-linkedin me-2 mb-2">
+              <i class="bx bxl-linkedin"></i>
+             </a>
+             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-facebook me-2 mb-2">
+              <i class="bx bxl-facebook"></i>
+             </a>
+             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-twitter me-2 mb-2">
+              <i class="bx bxl-twitter"></i>
+             </a>
+             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-instagram me-2 mb-2">
+              <i class="bx bxl-instagram"></i>
+             </a>
+             
+            </div>
+           </div>
+
+           <!-- Advertising -->
+           <div class="card border-0 bg-faded-primary bg-repeat-0 bg-size-cover"
+            style="min-height: 25rem; background-image: url({{ 'assets/img/blog/banner.png' | theme }});">
+            <div class="card-body">
+             <h5 class="h3 mb-4 pb-2 text-center">Ad Banner</h5>
+            </div>
+           </div>
+          </div>
+         </div>
+        </aside>
+       </div>
+      </section>
+
+
+      <!-- Subscription CTA -->
+      <section class="py-5 bg-faded-primary">
+       <div class="container py-md-3 py-lg-5">
+        <div class="row justify-content-center">
+         <div class="col-xl-8 col-lg-9 col-md-11">
+          <h2 class="h1 d-md-inline-block position-relative mb-md-5 mb-sm-4 text-sm-start text-center">
+           Don't Want to Miss Anything?
+
+           <!-- Arrow shape -->
+           <svg class="d-md-block d-none position-absolute top-0 ms-4 ps-1" style="left: 100%;"
+            xmlns="http://www.w3.org/2000/svg" width="65" height="68" fill="#6366f1">
+            <path
+             d="M53.9527 51.0012c8.396-10.5668 2.0302-26.0134-11.7481-26.7511-.6899-.0646-1.4612.0015-2.1258.0431.1243 9.0462-4.1714 18.8896-11.5618 21.3814-6.6695 2.2133-10.3337-4.2224-7.5813-9.676 3.2966-6.4755 9.103-11.8504 16.1678-13.8189-.5654-5.6953-3.3436-10.7672-9.485-12.48517C17.2678 6.8204 6.49364 16.3681 4.98841 26.127c-.09276 1.0297-1.68569.9497-1.59293-.0801C3.98732 12.9139 19.7395 2.55212 31.9628 8.5787c4.7253 2.3813 7.2649 7.3963 7.9368 13.067 7.4237-.9311 14.5154 3.3683 18.3422 9.5422 4.3988 7.1623 2.3584 15.1401-2.6322 21.1108-.7826.9653-2.3331-.3572-1.6569-1.2975zM26.7754 32.1845c-1.9411 2.2411-4.076 5.0872-4.3542 8.1764-.3036 2.9829 3.7601 3.0525 5.4905 2.7645 2.1568-.3863 3.7221-2.3164 4.8863-4.0419 2.6228-3.6308 4.3657-9.0752 4.4844-14.2563-4.0808 1.279-7.6514 4.2327-10.507 7.3573zm24.6311 25.592c-.7061-2.9738-1.2243-6.1031-1.1591-9.143.0423-1.242 1.767-1.0805 1.8313.1372.1284 2.435.815 4.8532 1.4764 7.1651l4.1619-1.4098c1.0153-.4586 2.4373-1.5714 3.6544-1.1804.6087.1954.7347.7264.6475 1.3068-.2302 1.3976-2.4683 1.9147-3.5901 2.398-1.8429.7619-3.6293 1.2865-5.5477 1.7298-.6391.1476-1.3233-.3665-1.4746-1.0037z" />
+           </svg>
+          </h2>
+
+          <!-- Title + checkboxes -->
+          <div class="row gy-4 align-items-center mb-lg-5 mb-4 pb-3">
+           <div class="col-md-3">
+            <h3 class="h5 mb-0 text-sm-start text-center">Sign up for Newsletters</h3>
+           </div>
+           <div class="col-md-9">
+            <div class="row row-cols-sm-3 row-cols-2 gy-2">
+             <div class="col">
+              <div class="form-check mb-0">
+               <input type="checkbox" id="s-daily-newsletter" class="form-check-input">
+               <label for="s-daily-newsletter" class="form-check-label">Daily Newsletter</label>
+              </div>
+             </div>
+             <div class="col">
+              <div class="form-check mb-0">
+               <input type="checkbox" id="s-advertising-updates" class="form-check-input" checked>
+               <label for="s-advertising-updates" class="form-check-label">Advertising Updates</label>
+              </div>
+             </div>
+             <div class="col">
+              <div class="form-check mb-0">
+               <input type="checkbox" id="s-week-in-review" class="form-check-input">
+               <label for="s-week-in-review" class="form-check-label">Week in Review</label>
+              </div>
+             </div>
+             <div class="col">
+              <div class="form-check mb-0">
+               <input type="checkbox" id="s-event-updates" class="form-check-input">
+               <label for="s-event-updates" class="form-check-label">Event Updates</label>
+              </div>
+             </div>
+             <div class="col">
+              <div class="form-check mb-0">
+               <input type="checkbox" id="s-startups-weekly" class="form-check-input">
+               <label for="s-startups-weekly" class="form-check-label">Startups Weekly</label>
+              </div>
+             </div>
+             <div class="col">
+              <div class="form-check mb-0">
+               <input id="s-podcasts" type="checkbox" class="form-check-input">
+               <label for="s-podcasts" class="form-check-label">Podcasts</label>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+
+          <!-- Email field -->
+          <form class="d-flex flex-sm-row flex-column mb-3 needs-validation" novalidate>
+           <div class="input-group me-sm-3 mb-sm-0 mb-3">
+            <i class="bx bx-envelope position-absolute start-0 top-50 translate-middle-y ms-3 zindex-5 fs-5 text-muted"></i>
+            <input type="email" class="form-control form-control-lg rounded-3 ps-5" placeholder="Your email" required>
+            <div class="invalid-tooltip position-absolute start-0 top-0 mt-n4">Please provide a valid email address!</div>
+           </div>
+           <button class="btn btn-lg btn-primary">Subscribe *</button>
+          </form>
+          <div class="form-text fs-sm text-sm-start text-center">
+           * Yes, I agree to the <a href="#">terms</a> and <a href="#">privacy policy</a>.
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
