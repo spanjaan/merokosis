@@ -3,12 +3,14 @@
 namespace RatMD\BlogHub\Components;
 
 use Cms\Classes\ComponentBase;
+use BackendAuth;
+use Winter\Storm\Auth\Models\User as AuthUser;
 use RatMD\BlogHub\Classes\BlogHubBackendUser;
 
 class AuthorInfo extends ComponentBase
 {
     /**
-     * Gets the details for the component
+     * Returns information about the component
      */
     public function componentDetails()
     {
@@ -19,23 +21,35 @@ class AuthorInfo extends ComponentBase
     }
 
     /**
-     * Returns the properties provided by the component
+     * Defines the properties exposed by the component
      */
     public function defineProperties()
     {
         return [];
     }
 
-    public function onRun()
+    /**
+     * Executed when the component is run
+     */
+    public function onRun(AuthUser $user = null)
     {
         // Get the current post
         $post = $this->page['post'];
 
-        // Get the author information
-        $author = new BlogHubBackendUser($post->user);
+        // Check if a user is provided or use the current user
+        if ($user) {
+            $author = new BlogHubBackendUser($user);
+        } else {
+            // Check if the post exists and retrieve the current user
+            if ($post && BackendAuth::check()) {
+                $currentUser = BackendAuth::getUser();
+                $author = new BlogHubBackendUser($currentUser);
+            } else {
+                $author = null;
+            }
+        }
 
         // Pass the author information to the component's view
         $this->page['author'] = $author;
     }
-
 }
