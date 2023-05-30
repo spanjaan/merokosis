@@ -114,6 +114,7 @@ class ComposerStaticInitb58f9e5de7853a9de2b022d647fd4238
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\Local\\' => 23,
             'League\\Flysystem\\' => 17,
             'League\\Csv\\' => 11,
             'League\\Config\\' => 14,
@@ -369,6 +370,10 @@ class ComposerStaticInitb58f9e5de7853a9de2b022d647fd4238
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
+        ),
+        'League\\Flysystem\\Local\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-local',
         ),
         'League\\Flysystem\\' => 
         array (
