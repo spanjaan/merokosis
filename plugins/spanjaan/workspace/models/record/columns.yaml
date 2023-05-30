@@ -1,0 +1,51 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        type: text
+        searchable: true
+        sortable: true
+    c_name:
+        label: "FULL NAME"
+        type: text
+        searchable: true
+        sortable: true
+    c_address:
+        label: ADDRESS
+        type: text
+        searchable: true
+        sortable: true
+    c_mobile:
+        label: "MOBILE NO."
+        type: text
+        searchable: true
+        sortable: true
+    c_email:
+        label: E-MAIL
+        type: text
+        searchable: true
+        sortable: true
+    c_document:
+        label: DOCUMENT
+        type: c_image_preview
+        searchable: false
+        sortable: false
+    c_comment:
+        label: COMMENT
+        type: c_text_preview
+        searchable: true
+        sortable: true
+    created_at:
+        label: "CREATED AT"
+        type: timesince
+        searchable: true
+        sortable: true
+    updated_at:
+        label: "UPDATED AT"
+        type: timesince
+        searchable: true
+        invisible: true
+        sortable: true

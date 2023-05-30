@@ -1,0 +1,49 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+tabs:
+    fields:
+        c_comment:
+            span: full
+            size: small
+            type: textarea
+            comment: "Please enter your customer's important notice."
+            tab: Comment
+fields:
+    c_name:
+        label: "Full Name"
+        span: left
+        placeholder: "first name and surname"
+        type: text
+        comment: "Please enter your customer's full name."
+    c_address:
+        label: Address
+        span: right
+        placeholder: "full address"
+        type: text
+        comment: "Please enter your customer's address."
+    c_mobile:
+        label: "Mobile No"
+        span: left
+        placeholder: "9800000000"
+        type: text
+        comment: "Please enter your customer's mobile no."
+    c_email:
+        label: E-mail
+        span: right
+        placeholder: abc@abc.com
+        type: text
+        comment: "Please enter your customer's e-mail address."
+    c_document:
+        label: "Document Upload"
+        mode: image
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: full
+        imageWidth: "100"
+        imageHeight: "100"
+        type: fileupload
+        comment: "Please upload your customer's document."

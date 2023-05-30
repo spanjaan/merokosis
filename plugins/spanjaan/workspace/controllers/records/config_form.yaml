@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'spanjaan.workspace::lang.models.record.label'
+
+# Model Form Field configuration
+form: $/spanjaan/workspace/models/record/fields.yaml
+
+# Model Class name
+modelClass: Spanjaan\Workspace\Models\Record
+
+# Default redirect location
+defaultRedirect: spanjaan/workspace/records
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: spanjaan/workspace/records/update/:id
+    redirectClose: spanjaan/workspace/records
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: spanjaan/workspace/records
+    redirectClose: spanjaan/workspace/records
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
