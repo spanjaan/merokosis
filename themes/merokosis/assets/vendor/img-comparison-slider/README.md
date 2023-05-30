@@ -14,11 +14,11 @@ Usage examples: [https://img-comparison-slider.sneas.io/examples.html](https://i
 - Mobile friendly
 - Accessible
 - Responsive
-- Compact - less than 9 kB minified (Or less than 3 kB if gzipped)
-- Compatible with modern frameworks ([React](bindings/react/README.md),
+- Compact - less than 12 kB minified (Or less than 4 kB if gzipped)
+- Compatible with modern frameworks ([React](packages/react/README.md),
   [Angular](docs/installation/angular.md),
   [Vue2](docs/installation/vue.md),
-  [Vue3](bindings/vue/README.md))
+  [Vue3](packages/vue/README.md))
 - Distributed via CDN or NPM
 
 <!--
@@ -84,6 +84,7 @@ Besides the default `HTMLElement` attributes such as `class`, `tabindex`, `title
 | `direction` | Set slider direction.                                     | `horizontal` | `horizontal`, `vertical` |
 | `nonce`     | Define nonce which gets passed to inline style.           |              |                          |
 | `keyboard`  | Enable/disable slider position control with the keyboard. | `enabled`    | `enabled`, `disabled`    |
+| `handle`    | Enable/disable dragging by handle only.                   | `false`      | `true`, `false`          |
 
 ## Events
 
@@ -109,15 +110,16 @@ Example:
 
 ### Available Variables
 
-| Variable                   | Description                                                | Default value | Example value                    |
-| -------------------------- | ---------------------------------------------------------- | ------------- | -------------------------------- |
-| `--divider-width`          | Width of the vertical line separating both images          | `1px`         | `1em`                            |
-| `--divider-color`          | Color of the vertical line separating the two images       | `#fff`        | `rgba(0, 0, 0, 0.5)`             |
-| `--divider-shadow`         | Shadow cast by the vertical line separating the two images | `none`        | `0px 0px 5px rgba(0, 0, 0, 0.5)` |
-| `--default-handle-width`   | Width of the default handle                                | `50px`        |                                  |
-| `--default-handle-color`   | Color of the default handle                                | `#fff`        | `rgba(0, 0, 0, 0.5)`             |
-| `--default-handle-opacity` | Opacity of the default handle                              | `1`           | `0.3`                            |
-| `--default-handle-shadow`  | Shadow cast by the default handle                          | `none`        | `0px 0px 5px rgba(0, 0, 0, 1)`   |
+| Variable                   | Description                                                                              | Default value | Example value                    |
+| -------------------------- | ---------------------------------------------------------------------------------------- | ------------- | -------------------------------- |
+| `--divider-width`          | Width of the vertical line separating both images                                        | `1px`         | `1em`                            |
+| `--divider-color`          | Color of the vertical line separating the two images                                     | `#fff`        | `rgba(0, 0, 0, 0.5)`             |
+| `--divider-shadow`         | Shadow cast by the vertical line separating the two images                               | `none`        | `0px 0px 5px rgba(0, 0, 0, 0.5)` |
+| `--handle-position-start`  | Handle position on the divider axis. In case the handle must be displaced off the center | `50%`         |                                  |
+| `--default-handle-width`   | Width of the default handle                                                              | `50px`        |                                  |
+| `--default-handle-color`   | Color of the default handle                                                              | `#fff`        | `rgba(0, 0, 0, 0.5)`             |
+| `--default-handle-opacity` | Opacity of the default handle                                                            | `1`           | `0.3`                            |
+| `--default-handle-shadow`  | Shadow cast by the default handle                                                        | `none`        | `0px 0px 5px rgba(0, 0, 0, 1)`   |
 
 ### Handle
 

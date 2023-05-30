@@ -2,17 +2,23 @@ description = "Default Layout"
 ==
 <!DOCTYPE html>
 <html lang="en">
-<head>
- {% partial 'site/meta' %}
-</head>
-<body>
- {% partial'site/pageloader' %}
- <main class="page-wrapper">
-  {% partial'site/header' %}
-  {% page %}
- </main>
- {% partial'site/footer' %}
- {% partial'site/backtotop' %}
- {% partial'site/scripts' %}
-</body>
+
+  <head>
+    {% partial 'meta' %}
+    {% partial 'styles' %}
+    {% partial 'page-loading' %}
+  </head>
+  <body>
+    {% partial 'loading-spinner' %}
+    <main class="page-wrapper">
+      <header class="header navbar navbar-expand-lg bg-light navbar-sticky">
+        {% partial 'header' %}
+      </header>
+        {% page %}
+    </main>
+    {% partial 'footer' %}
+    {% partial 'back-to-top' %}
+    {% partial 'scripts' %}
+  </body>
+
 </html>

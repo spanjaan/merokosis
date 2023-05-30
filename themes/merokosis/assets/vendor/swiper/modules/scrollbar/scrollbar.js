@@ -2,13 +2,12 @@ import { getDocument } from 'ssr-window';
 import $ from '../../shared/dom.js';
 import { nextTick } from '../../shared/utils.js';
 import createElementIfNotDefined from '../../shared/create-element-if-not-defined.js';
-export default function Scrollbar(_ref) {
-  let {
-    swiper,
-    extendParams,
-    on,
-    emit
-  } = _ref;
+export default function Scrollbar({
+  swiper,
+  extendParams,
+  on,
+  emit
+}) {
   const document = getDocument();
   let isTouched = false;
   let timeout = null;
@@ -26,7 +25,9 @@ export default function Scrollbar(_ref) {
       snapOnRelease: true,
       lockClass: 'swiper-scrollbar-lock',
       dragClass: 'swiper-scrollbar-drag',
-      scrollbarDisabledClass: 'swiper-scrollbar-disabled'
+      scrollbarDisabledClass: 'swiper-scrollbar-disabled',
+      horizontalClass: `swiper-scrollbar-horizontal`,
+      verticalClass: `swiper-scrollbar-vertical`
     }
   });
   swiper.scrollbar = {
@@ -302,6 +303,7 @@ export default function Scrollbar(_ref) {
       $el = $swiperEl.find(params.el);
     }
 
+    $el.addClass(swiper.isHorizontal() ? params.horizontalClass : params.verticalClass);
     let $dragEl = $el.find(`.${swiper.params.scrollbar.dragClass}`);
 
     if ($dragEl.length === 0) {
@@ -326,6 +328,13 @@ export default function Scrollbar(_ref) {
   }
 
   function destroy() {
+    const params = swiper.params.scrollbar;
+    const $el = swiper.scrollbar.$el;
+
+    if ($el) {
+      $el.removeClass(swiper.isHorizontal() ? params.horizontalClass : params.verticalClass);
+    }
+
     disableDraggable();
   }
 

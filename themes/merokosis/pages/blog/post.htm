@@ -1,296 +1,647 @@
-title = "blog post"
-url = "/blog/post/:slug"
+title = "post"
+url = "/post/:slug"
 layout = "blog"
+description = "Blog Post Page (single post)"
 is_hidden = 0
+
+[popularPosts]
+amount = 3
+postPage = "blog/post"
+
+[bloghubTags]
+tagPage = "blog/tag"
+onlyPromoted = 0
+amount = 10
 
 [blogCategories]
 slug = "{{ :slug }}"
-displayEmpty = 1
+displayEmpty = 0
 categoryPage = "blog/category"
 
 [blogPost]
 slug = "{{ :slug }}"
 categoryPage = "blog/category"
+
+[authorInfo]
+
+[bloghubCommentSection]
+commentsPerPage = 10
+sortOrder = "created_at desc"
+commentHierarchy = 1
+commentsAnchor = "comments"
+pinFavorites = 0
+hideOnDislikes = 0
+formPosition = "above"
+disableForm = 0
 ==
-<section class="bg-secondary pt-1">
-       <div class="container pb-2 pb-md-0">
-        <div class="row justify-content-center pt-3 mt-3">
-         <div class="col-xl-6 col-lg-7 col-md-8 col-sm-10 text-center">
-          <h1 class="mb-1">Blog</h1>
-          <p class="fs-lg pb-1 mb-1">Have a project in mind? To request a quote contact us directly or fill out the form and
-           let us know how we can help.</p>
-          <nav class="pt-lg-1 mb-3" aria-label="breadcrumb">
-           <ol class="breadcrumb mb-0 justify-content-center">
-            <li class="breadcrumb-item">
-             <a href="index.html"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Blog</li>
-           </ol>
-          </nav>
-          <div class="d-flex justify-content-center mb-4">
-           <a href="#" class="btn btn-icon btn-secondary btn-facebook rounded-circle mx-2">
-            <i class="bx bxl-facebook"></i>
-           </a>
-           <a href="#" class="btn btn-icon btn-secondary rounded-circle btn-youtube mx-2">
-            <i class="bx bxl-youtube"></i>
-          </a>
-          <a href="#" class="btn btn-icon btn-secondary rounded-circle btn-tiktok mx-2">
-           <i class="bx bxl-tiktok"></i>
-         </a>
-           <a href="#" class="btn btn-icon btn-secondary btn-instagram rounded-circle mx-2">
-            <i class="bx bxl-instagram"></i>
-           </a>
-           <a href="#" class="btn btn-icon btn-secondary btn-twitter rounded-circle mx-2">
-            <i class="bx bxl-twitter"></i>
-           </a>
+<?php
+function onEnd(){
+    $this->page->activeNavLink = 'blog';
+ }
+?>
+==
+<!-- Page content -->
+<section class="container mt-5 mb-lg-5 pt-lg-2 pb-5">
+
+  <!-- Blog grid + Sidebar -->
+  <div class="row pt-5">
+    <div class="col-xl-9 col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <!-- Post and comment section start -->
+        <!-- feature image -->
+        {% if post.featured_images.count %}
+        {% for image in post.featured_images %}
+        <img data-src="{{ image.filename }}"src="{{ image.path }}"alt="{{ image.description }}" class="card-img-top"style="height: 400px; object-fit: cover; object-position: center;">
+        {% endfor %}
+        {% endif %}
+        <div class="p-3">
+          <!-- Post title + Meta  -->
+          <div>
+            <h1 class="pb-3" style="max-width: 970px;">{{ post.title }}</h1>
+            <div class="d-flex flex-md-row flex-column align-items-md-center justify-content-md-between mb-3">
+              <div class="d-flex align-items-center flex-wrap text-muted mb-md-0 mb-4">
+              {% for category in post.categories %}
+                <div class="fs-xs border-end pe-3 me-3 mb-2">
+                  <span class="badge bg-faded-primary text-primary fs-base">{{ category.name }}</span>
+                </div>
+                {% endfor %}
+                <div class="fs-sm border-end pe-3 me-3 mb-2">{{ post.published_at.diffForHumans() }}</div>
+                <div class="d-flex mb-2">
+                  <div class="d-flex align-items-center me-3">
+                    <i class="bx bx-show fs-base me-1"></i>
+                    <span class="fs-sm">{{ post.bloghub.views }}</span>
+                  </div>
+                  <div class="d-flex align-items-center me-3">
+                    <i class="bx bx-comment fs-base me-1"></i>
+                    <span class="fs-sm">{{ post.bloghub.comments_count }}</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bx bx-share-alt fs-base me-1"></i>
+                    <span class="fs-sm">2</span>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center position-relative ps-md-3 pe-lg-5 mb-2">
+                  <img src="{{ author.getAvatar() }}"alt="{{ author.getDisplayName() }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                 <div class="ps-3">
+                      <h6 class="mb-1">Author</h6>
+                      <a href="{{ author.getUrl() }}" class="fw-semibold stretched-link text-decoration-none">{{ author.getDisplayName() }}</a>
+                  </div>
+              </div>
+            </div>
           </div>
-         </div>
-        </div>
-       </div>
-      </section>
+          <!-- Content -->
+          <div>
+            <p class="mb-4 pb-2">{{ post.content_html | raw }}</p>
+            <!-- Video -->
+            <div class="gallery mb-4 pb-2" data-video="true">
+              <a href="https://www.youtube.com/watch?v=LDb-G8y88Sc" class="gallery-item video-item is-hovered rounded-3"
+                data-sub-html='<h6 class="fs-sm text-light">Video inside blog post</h6>'>
+                <img src="{{ 'assets/img/blog/single/video-cover.jpg' | theme }}" alt="Video preview">
+              </a>
+            </div>
+            <!-- Tags -->
+            <hr class="mb-4">
+            <div class="d-flex flex-sm-row flex-column pt-2">
+              <h6 class="mt-sm-1 mb-sm-2 mb-3 me-2 text-nowrap">Related Tags:</h6>
+              {% if post.ratmd_bloghub_tags|length > 0 %}
+              {% for tag in post.ratmd_bloghub_tags %}
+              {% set postCount = tag.post_count %}
+              <div>
+                <a href="{{ tag.url }}" class="btn btn-sm btn-outline-secondary me-2 mb-2">#{{ tag.title | default(tag.slug | title) }}
+                {% if postCount %}
+                <span class="badge bg-warning ms-2">{{ postCount }}</span>
+                {% endif %}
+                </a>
+              </div>
+              {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          <!-- Post comments -->
+          <div>
+            <h2 class="h1 text-center text-sm-start">4 comments</h2>
+            <!-- Comment -->
+            <div class="py-4">
+              <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+                <div class="d-flex align-items-center me-3">
+                  <img src="{{ 'assets/img/avatar/03.jpg' | theme }}" class="rounded-circle" width="48" alt="Avatar">
+                  <div class="ps-3">
+                    <h6 class="fw-semibold mb-0">Esther Howard</h6>
+                    <span class="fs-sm text-muted">4 mins ago</span>
+                  </div>
+                </div>
+                <a href="#" class="nav-link fs-sm px-0">
+                  <i class="bx bx-share fs-lg me-2"></i>
+                  Reply
+                </a>
+              </div>
+              <p class="mb-0">Nibh enim porta ut augue felis, donec sit luctus. Quis ullamcorper dolor sit
+                mauris. Hendrerit eu libero, eu tristique sodales ultrices etiam adipiscing. Donec viverra
+                sodales arcu gravida nibh at. Neque lobortis quis porta integer et placerat lectus
+                scelerisque. Velit eget malesuada morbi faucibus at sed euismod. Tortor, eu ut id tincidunt
+                leo placerat luctus.</p>
+            </div>
 
-      <!-- Page content -->
-      <section class="container mt-4  mb-lg-5 pt-lg-2">
-       <!-- Blog grid + Sidebar -->
-       <div class="row">
-        <div class="col-xl-9 col-lg-8">
-         <div class="pe-xl-5">
-          
+            <hr class="my-2">
 
-           {% component 'blogPost' %}
-        
-         </div>
-        </div>
-    <!-- Blog grid End -->
+            <!-- Comment -->
+            <div class="py-4">
+              <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+                <div class="d-flex align-items-center me-3">
+                  <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle" width="48" alt="Avatar">
+                  <div class="ps-3">
+                    <h6 class="fw-semibold mb-0">Ralph Edwards</h6>
+                    <span class="fs-sm text-muted">September 9 at 12:48</span>
+                  </div>
+                </div>
+                <a href="#" class="nav-link fs-sm px-0">
+                  <i class="bx bx-share fs-lg me-2"></i>
+                  Reply
+                </a>
+              </div>
+              <p class="mb-0 pb-2">Eget amet, ac scelerisque tellus sed. Sapien duis sit neque pulvinar. Est
+                sit aenean nisl etiam donec mattis ut diam. Luctus massa eu nunc aliquam viverra tempus, eu
+                amet, luctus. Ac faucibus vestibulum eu lacus. Ullamcorper sem ultrices tincidunt pharetra?
+              </p>
 
-        <!-- Sidebar (Offcanvas below lg breakpoint) -->
-        <aside class="col-xl-3 col-lg-4">
-         <div class="offcanvas-lg offcanvas-end" id="blog-sidebar" tabindex="-1">
+              <!-- Comment reply -->
+              <div class="position-relative ps-4 mt-4">
+                <span class="position-absolute top-0 start-0 w-1 h-100 bg-primary"></span>
+                <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+                  <div class="d-flex align-items-center me-3">
+                    <img src="{{ 'assets/img/avatar/05.jpg' | theme }}" class="rounded-circle" width="48" alt="Avatar">
+                    <div class="ps-3">
+                      <h6 class="fw-semibold mb-0">Albert Flores</h6>
+                      <span class="fs-sm text-muted">16 hours ago</span>
+                    </div>
+                  </div>
+                  <a href="#" class="nav-link fs-sm px-0">
+                    <i class="bx bx-share fs-lg me-2"></i>
+                    Reply
+                  </a>
+                </div>
+                <p class="ps-3 mb-0"><a href="#" class="fw-semibold text-decoration-none">@Ralph Edwards</a>
+                  Vulputate malesuada amet, consequat ullamcorper. Orci, cras maecenas in sit purus
+                  pellentesque. Ridiculus blandit pellentesque eget arcu morbi nisl. Morbi volutpat
+                  adipiscing sapien sed ut tempor.</p>
+              </div>
+            </div>
 
-          <!-- Header -->
-          <div class="offcanvas-header border-bottom">
-           <h3 class="offcanvas-title fs-lg">Blog Menu</h3>
-           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#blog-sidebar"></button>
+            <hr class="my-2">
+
+            <!-- Comment -->
+            <div class="py-4">
+              <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+                <div class="d-flex align-items-center me-3">
+                  <img src="{{ 'assets/img/avatar/07.jpg' | theme }}" class="rounded-circle" width="48" alt="Avatar">
+                  <div class="ps-3">
+                    <h6 class="fw-semibold mb-0">Cameron Williamson</h6>
+                    <span class="fs-sm text-muted">March 24 at 8:20</span>
+                  </div>
+                </div>
+                <a href="#" class="nav-link fs-sm px-0">
+                  <i class="bx bx-share fs-lg me-2"></i>
+                  Reply
+                </a>
+              </div>
+              <p class="mb-0">Mattis id ut sed arcu metus elit faucibus condimentum aliquam. Nam adipiscing
+                diam et suspendisse. Sagittis massa maecenas laoreet nulla amet nunc sagittis, pulvinar
+                neque. Duis imperdiet ipsum suspendisse massa lectus habitasse. Id ante volutpat hendrerit
+                augue parturient eget. Ac vitae posuere leo morbi vitae at hac lectus. Nibh neque quam quis
+                amet mattis sit. Faucibus risus at sit tempus ut.</p>
+            </div>
           </div>
 
-          <!-- Body -->
-          <div class="offcanvas-body">
+          <!-- Comment form -->
+          <div class="card p-md-5 p-4 border-0 bg-secondary">
+            <div class="card-body w-100 mx-auto px-0" style="max-width: 746px;">
+              <h2 class="mb-4 pb-3">Leave a Comment</h2>
+            <form class="row gy-4 needs-validation" novalidate>
+                <div class="col-sm-6 col-12">
+                  <label for="c-name" class="form-label fs-base">Name</label>
+                  <input id="c-name" type="text" class="form-control form-control-lg" required>
+                  <span class="invalid-tooltip">Please, enter your name.</span>
+                </div>
+                <div class="col-sm-6 col-12">
+                  <label for="c-email" class="form-label fs-base">Email</label>
+                  <input id="c-email" type="email" class="form-control form-control-lg" required>
+                  <span class="invalid-tooltip">Please, provide a valid email address.</span>
+                </div>
+                <div class="col-12">
+                  <label for="c-comment" class="form-label fs-base">Comment</label>
+                  <textarea id="c-comment" class="form-control form-control-lg" rows="3"
+                    placeholder="Type your comment here..." required></textarea>
+                  <span class="invalid-tooltip">Please, enter your comment.</span>
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    <input id="c-save" type="checkbox" class="form-check-input">
+                    <label for="c-save" class="form-check-label">Save my name and email in this browser
+                      for the next time I comment.</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-lg btn-primary w-sm-auto w-100 mt-2">Post
+                    comment</button>
+                </div>
+              </form> 
+            </div>
+          </div>
+          <!-- Post and comment section End-->
+        </div>
+      </div>
+    </div>
 
-           <!-- Search form -->
-           <form class="input-group mb-4">
+
+    <!-- Sidebar (Offcanvas below lg breakpoint) -->
+    <aside class="col-xl-3 col-lg-4">
+      <div class="offcanvas-lg offcanvas-end" id="blog-sidebar" tabindex="-1">
+
+        <!-- Header -->
+        <div class="offcanvas-header border-bottom">
+          <h3 class="offcanvas-title fs-lg">Blog Menu</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#blog-sidebar"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="offcanvas-body">
+
+          <!-- Search form -->
+          <form class="input-group mb-4">
             <input type="text" placeholder="Search the blog..." class="form-control rounded pe-5">
             <i class='bx bx-search position-absolute top-50 end-0 translate-middle-y me-3 fs-lg zindex-5'></i>
-           </form>
+          </form>
 
-           <!-- Categories -->
-           <div class="card card-body mb-4">
+          <!-- Categories -->
+          <div class="card card-body mb-4">
             <h3 class="h5">Categories</h3>
-            {% for category in categories %}
-            {% set postCount = category.post_count %}
+            {% if blogCategories.categories|length > 0 %}
+            {% for category in blogCategories.categories %}
+            {% set postCount = category.posts.count() %}
             <ul class="nav flex-column fs-sm">
-             <li {% if category.slug == currentCategorySlug %} class="nav-item mb-1 active"{% endif %}>
-              <a href="{{ category.url }}" class="nav-link py-1 px-0">{{ category.name }} 
-              {% if postCount %}
-              <span class="fw-normal opacity-60 ms-1">({{ postCount }})</span>{% endif %}</a>
-             </li>
+              <li class="nav-item mb-1">
+                <a href="{{ category.url }}"
+                  class="nav-link py-1 px-0 {% if category.slug == currentCategorySlug %}active{% endif %}">
+                  {{ category.name }}
+                  <span class="fw-normal badge bg-primary ms-auto">{{ postCount }}</span>
+                </a>
+              </li>
             </ul>
             {% endfor %}
-           </div>
+            {% else %}
+            <p>No categories were found.</p>
+            {% endif %}
+          </div>
 
-           <!-- Popular posts -->
-           <div class="card card-body border-0 position-relative mb-4">
+          <!-- Popular posts -->
+          <div class="card card-body border-0 position-relative mb-4">
             <span class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-primary opacity-10 rounded-3"></span>
             <div class="position-relative zindex-2">
-             <h3 class="h5">Popular posts</h3>
-             <ul class="list-unstyled mb-0">
-              <li class="border-bottom pb-3 mb-3">
-               <h4 class="h6 mb-2">
-                <a href="#">5 Bad Landing Page Examples &amp; How We Would Fix Them</a>
-               </h4>
-               <div class="d-flex align-items-center text-muted pt-1">
-                <div class="fs-xs border-end pe-3 me-3">12 hours ago</div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-like fs-base me-1"></i>
-                 <span class="fs-xs">8</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-comment fs-base me-1"></i>
-                 <span class="fs-xs">4</span>
-                </div>
-                <div class="d-flex align-items-center">
-                 <i class="bx bx-share-alt fs-base me-1"></i>
-                 <span class="fs-xs">2</span>
-                </div>
-               </div>
-              </li>
-              <li class="border-bottom pb-3 mb-3">
-               <h4 class="h6 mb-2">
-                <a href="#">How Agile is Your Forecasting Process?</a>
-               </h4>
-               <div class="d-flex align-items-center text-muted pt-1">
-                <div class="fs-xs border-end pe-3 me-3">Oct 9, 2021</div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-like fs-base me-1"></i>
-                 <span class="fs-xs">4</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-comment fs-base me-1"></i>
-                 <span class="fs-xs">1</span>
-                </div>
-                <div class="d-flex align-items-center">
-                 <i class="bx bx-share-alt fs-base me-1"></i>
-                 <span class="fs-xs">0</span>
-                </div>
-               </div>
-              </li>
-              <li>
-               <h4 class="h6 mb-2">
-                <a href="#">Inclusive Marketing: Why and How Does it Work?</a>
-               </h4>
-               <div class="d-flex align-items-center text-muted pt-1">
-                <div class="fs-xs border-end pe-3 me-3">Sep 13, 2021</div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-like fs-base me-1"></i>
-                 <span class="fs-xs">5</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                 <i class="bx bx-comment fs-base me-1"></i>
-                 <span class="fs-xs">2</span>
-                </div>
-                <div class="d-flex align-items-center">
-                 <i class="bx bx-share-alt fs-base me-1"></i>
-                 <span class="fs-xs">4</span>
-                </div>
-               </div>
-              </li>
-             </ul>
+              {% set posts = popularPosts.posts %}
+              <h3 class="h5">Popular posts</h3>
+              {% for post in posts %}
+              <ul class="list-unstyled mb-0">
+                <li class="{% if loop.last %} {% else %}pb-3 mb-3 border-bottom{% endif %}">
+                  <h4 class="h6 mb-2">
+                    <a href="{{ post.url }}">{{ post.title }}</a>
+                  </h4>
+                  <div class="d-flex align-items-center text-muted pt-1">
+                    <div class="fs-xs border-end pe-3 me-3">{{ post.published_at.diffForHumans() }}</div>
+                    <div class="d-flex align-items-center me-3">
+                      <i class="bx bx-show fs-base me-1"></i>
+                      <span class="fs-xs">{{ post.bloghub.views }}</span>
+                    </div>
+                    <div class="d-flex align-items-center me-3">
+                      <i class="bx bx-comment fs-base me-1"></i>
+                      <span class="fs-xs">{{ post.bloghub.comments_count }}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <i class="bx bx-share-alt fs-base me-1"></i>
+                      <span class="fs-xs">2</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              {% else %}
+              <p>No popular posts found.</p>
+              {% endfor %}
             </div>
-           </div>
-
-           <!-- Tags -->
-           <div class="card card-body mb-4">
+          </div>
+          <!-- Tags -->
+          <div class="card card-body mb-4">
             <h3 class="h5">Tags</h3>
+            {% if bloghubTags.tags|length > 0 %}
             <div class="d-flex flex-wrap">
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#lifestyle</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#ux</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#tech</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#user</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#software</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#it</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#network</a>
-             <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#engineering</a>
+              {% for tag in tags %}
+              {% set postCount = tag.post_count %}
+              <a href="{{ tag.url }}"
+                class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#{{ tag.title | default(tag.slug | title) }}
+                {% if postCount %}
+                <span class="badge bg-warning ms-2">{{ postCount }}</span>
+                {% endif %}
+              </a>
+              {% endfor %}
             </div>
-           </div>
+            {% else %}
+            <p>No tags were found.</p>
+            {% endif %}
+          </div>
 
-           <!-- Follow Us -->
-           <div class="card mb-4">
+          <!-- Follow Us -->
+          <div class="card mb-4">
             <div class="card-body">
-             <h5 class="mb-4">Follow Us</h5>
-             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-linkedin me-2 mb-2">
-              <i class="bx bxl-linkedin"></i>
-             </a>
-             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-facebook me-2 mb-2">
-              <i class="bx bxl-facebook"></i>
-             </a>
-             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-twitter me-2 mb-2">
-              <i class="bx bxl-twitter"></i>
-             </a>
-             <a href="#" class="btn btn-icon btn-sm btn-secondary btn-instagram me-2 mb-2">
-              <i class="bx bxl-instagram"></i>
-             </a>
+              <h5 class="mb-4">Follow Us</h5>
+              <a href="#" class="btn btn-icon btn-sm btn-secondary btn-linkedin me-2 mb-2">
+                <i class="bx bxl-linkedin"></i>
+              </a>
+              <a href="#" class="btn btn-icon btn-sm btn-secondary btn-facebook me-2 mb-2">
+                <i class="bx bxl-facebook"></i>
+              </a>
+              <a href="#" class="btn btn-icon btn-sm btn-secondary btn-twitter me-2 mb-2">
+                <i class="bx bxl-twitter"></i>
+              </a>
+              <a href="#" class="btn btn-icon btn-sm btn-secondary btn-instagram me-2 mb-2">
+                <i class="bx bxl-instagram"></i>
+              </a>
             </div>
-           </div>
+          </div>
 
-           <!-- Advertising -->
-           <div class="card border-0 bg-faded-primary bg-repeat-0 bg-size-cover"
+          <!-- Advertising -->
+          <div class="card border-0 bg-faded-primary bg-repeat-0 bg-size-cover"
             style="min-height: 25rem; background-image: url({{ 'assets/img/blog/banner.png' | theme }});">
             <div class="card-body">
-             <h5 class="h3 mb-4 pb-2 text-center">Ad Banner</h5>
+              <h5 class="h3 mb-4 pb-2 text-center">Ad Banner</h5>
             </div>
-           </div>
           </div>
-         </div>
-        </aside>
-       </div>
-      </section>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
 
+<!-- Related articles (Slider below lg breakpoint) -->
+<section class="container mb-5 pt-md-4">
+  <div class="d-flex flex-sm-row flex-column align-items-center justify-content-between mb-4 pb-1 pb-md-3">
+    <h2 class="h1 mb-sm-0">Related Articles</h2>
+    <a href="{{'blog' | page }}" class="btn btn-lg btn-outline-primary ms-4">
+      All posts
+      <i class="bx bx-right-arrow-alt ms-1 me-n1 lh-1 lead"></i>
+    </a>
+  </div>
 
-      <!-- Subscription CTA -->
-      <section class="py-5 bg-faded-primary">
-       <div class="container py-md-3 py-lg-5">
-        <div class="row justify-content-center">
-         <div class="col-xl-8 col-lg-9 col-md-11">
-          <h2 class="h1 d-md-inline-block position-relative mb-md-5 mb-sm-4 text-sm-start text-center">
-           Don't Want to Miss Anything?
+  <div class="swiper mx-n2" data-swiper-options='{
+       "slidesPerView": 1,
+       "spaceBetween": 8,
+       "pagination": {
+         "el": ".swiper-pagination",
+         "clickable": true
+       },
+       "breakpoints": {
+         "500": {
+           "slidesPerView": 2
+         },
+         "1000": {
+           "slidesPerView": 3
+         }
+       }
+     }'>
+    <div class="swiper-wrapper">
 
-           <!-- Arrow shape -->
-           <svg class="d-md-block d-none position-absolute top-0 ms-4 ps-1" style="left: 100%;"
+      <!-- Item -->
+      <div class="swiper-slide h-auto pb-3">
+        <article class="card border-0 shadow-sm h-100 mx-2">
+          <div class="position-relative">
+            <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            <a href="#"
+              class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
+              <i class="bx bx-bookmark"></i>
+            </a>
+            <img src="{{ 'assets/img/blog/01.jpg' | theme }}" class="card-img-top" alt="Image">
+          </div>
+          <div class="card-body pb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Business</a>
+              <span class="fs-sm text-muted">May 19, 2021</span>
+            </div>
+            <h3 class="h5 mb-0">
+              <a href="blog-single.html">5 Bad Landing Page Examples &amp; How We Would Fix Them</a>
+            </h3>
+          </div>
+          <div class="card-footer py-4">
+            <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+              <img src="{{ 'assets/img/avatar/01.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
+              Jerome Bell
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Item -->
+      <div class="swiper-slide h-auto pb-3">
+        <article class="card border-0 shadow-sm h-100 mx-2">
+          <div class="position-relative">
+            <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            <a href="#"
+              class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
+              <i class="bx bx-bookmark"></i>
+            </a>
+            <img src="{{ 'assets/img/blog/06.jpg' | theme }}" class="card-img-top" alt="Image">
+          </div>
+          <div class="card-body pb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Marketing</a>
+              <span class="fs-sm text-muted">Apr 2, 2021</span>
+            </div>
+            <h3 class="h5 mb-0">
+              <a href="blog-single.html">How Agile is Your Forecasting Process?</a>
+            </h3>
+          </div>
+          <div class="card-footer py-4">
+            <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+              <img src="{{ 'assets/img/avatar/05.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
+              Albert Flores
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Item -->
+      <div class="swiper-slide h-auto pb-3">
+        <article class="card border-0 shadow-sm h-100 mx-2">
+          <div class="position-relative">
+            <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            <a href="#"
+              class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
+              <i class="bx bx-bookmark"></i>
+            </a>
+            <img src="{{ 'assets/img/blog/03.jpg' | theme }}" class="card-img-top" alt="Image">
+          </div>
+          <div class="card-body pb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Business</a>
+              <span class="fs-sm text-muted">Sep 16, 2021</span>
+            </div>
+            <h3 class="h5 mb-0">
+              <a href="blog-single.html">This Week in Search: New Limits and Exciting Features</a>
+            </h3>
+          </div>
+          <div class="card-footer py-4">
+            <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+              <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
+              Ralph Edwards
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Item -->
+      <div class="swiper-slide h-auto pb-3">
+        <article class="card border-0 shadow-sm h-100 mx-2">
+          <div class="position-relative">
+            <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            <a href="#"
+              class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
+              <i class="bx bx-bookmark"></i>
+            </a>
+            <img src="{{ 'assets/img/blog/03.jpg' | theme }}" class="card-img-top" alt="Image">
+          </div>
+          <div class="card-body pb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Business</a>
+              <span class="fs-sm text-muted">Sep 16, 2021</span>
+            </div>
+            <h3 class="h5 mb-0">
+              <a href="blog-single.html">This Week in Search: New Limits and Exciting Features</a>
+            </h3>
+          </div>
+          <div class="card-footer py-4">
+            <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+              <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
+              Ralph Edwards
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Item -->
+      <div class="swiper-slide h-auto pb-3">
+        <article class="card border-0 shadow-sm h-100 mx-2">
+          <div class="position-relative">
+            <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            <a href="#"
+              class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
+              <i class="bx bx-bookmark"></i>
+            </a>
+            <img src="{{ 'assets/img/blog/03.jpg' | theme }}" class="card-img-top" alt="Image">
+          </div>
+          <div class="card-body pb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Business</a>
+              <span class="fs-sm text-muted">Sep 16, 2021</span>
+            </div>
+            <h3 class="h5 mb-0">
+              <a href="blog-single.html">This Week in Search: New Limits and Exciting Features</a>
+            </h3>
+          </div>
+          <div class="card-footer py-4">
+            <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+              <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
+              Ralph Edwards
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Pagination (bullets) -->
+    <div class="swiper-pagination position-relative pt-2 pt-sm-3 mt-4"></div>
+  </div>
+</section>
+<!-- Subscription CTA -->
+<section class="py-5 bg-secondary">
+  <div class="container py-md-3 py-lg-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-lg-9 col-md-11">
+        <h2 class="h1 d-md-inline-block position-relative mb-md-5 mb-sm-4 text-sm-start text-center">
+          Don't Want to Miss Anything?
+
+          <!-- Arrow shape -->
+          <svg class="d-md-block d-none position-absolute top-0 ms-4 ps-1" style="left: 100%;"
             xmlns="http://www.w3.org/2000/svg" width="65" height="68" fill="#6366f1">
             <path
-             d="M53.9527 51.0012c8.396-10.5668 2.0302-26.0134-11.7481-26.7511-.6899-.0646-1.4612.0015-2.1258.0431.1243 9.0462-4.1714 18.8896-11.5618 21.3814-6.6695 2.2133-10.3337-4.2224-7.5813-9.676 3.2966-6.4755 9.103-11.8504 16.1678-13.8189-.5654-5.6953-3.3436-10.7672-9.485-12.48517C17.2678 6.8204 6.49364 16.3681 4.98841 26.127c-.09276 1.0297-1.68569.9497-1.59293-.0801C3.98732 12.9139 19.7395 2.55212 31.9628 8.5787c4.7253 2.3813 7.2649 7.3963 7.9368 13.067 7.4237-.9311 14.5154 3.3683 18.3422 9.5422 4.3988 7.1623 2.3584 15.1401-2.6322 21.1108-.7826.9653-2.3331-.3572-1.6569-1.2975zM26.7754 32.1845c-1.9411 2.2411-4.076 5.0872-4.3542 8.1764-.3036 2.9829 3.7601 3.0525 5.4905 2.7645 2.1568-.3863 3.7221-2.3164 4.8863-4.0419 2.6228-3.6308 4.3657-9.0752 4.4844-14.2563-4.0808 1.279-7.6514 4.2327-10.507 7.3573zm24.6311 25.592c-.7061-2.9738-1.2243-6.1031-1.1591-9.143.0423-1.242 1.767-1.0805 1.8313.1372.1284 2.435.815 4.8532 1.4764 7.1651l4.1619-1.4098c1.0153-.4586 2.4373-1.5714 3.6544-1.1804.6087.1954.7347.7264.6475 1.3068-.2302 1.3976-2.4683 1.9147-3.5901 2.398-1.8429.7619-3.6293 1.2865-5.5477 1.7298-.6391.1476-1.3233-.3665-1.4746-1.0037z" />
-           </svg>
-          </h2>
+              d="M53.9527 51.0012c8.396-10.5668 2.0302-26.0134-11.7481-26.7511-.6899-.0646-1.4612.0015-2.1258.0431.1243 9.0462-4.1714 18.8896-11.5618 21.3814-6.6695 2.2133-10.3337-4.2224-7.5813-9.676 3.2966-6.4755 9.103-11.8504 16.1678-13.8189-.5654-5.6953-3.3436-10.7672-9.485-12.48517C17.2678 6.8204 6.49364 16.3681 4.98841 26.127c-.09276 1.0297-1.68569.9497-1.59293-.0801C3.98732 12.9139 19.7395 2.55212 31.9628 8.5787c4.7253 2.3813 7.2649 7.3963 7.9368 13.067 7.4237-.9311 14.5154 3.3683 18.3422 9.5422 4.3988 7.1623 2.3584 15.1401-2.6322 21.1108-.7826.9653-2.3331-.3572-1.6569-1.2975zM26.7754 32.1845c-1.9411 2.2411-4.076 5.0872-4.3542 8.1764-.3036 2.9829 3.7601 3.0525 5.4905 2.7645 2.1568-.3863 3.7221-2.3164 4.8863-4.0419 2.6228-3.6308 4.3657-9.0752 4.4844-14.2563-4.0808 1.279-7.6514 4.2327-10.507 7.3573zm24.6311 25.592c-.7061-2.9738-1.2243-6.1031-1.1591-9.143.0423-1.242 1.767-1.0805 1.8313.1372.1284 2.435.815 4.8532 1.4764 7.1651l4.1619-1.4098c1.0153-.4586 2.4373-1.5714 3.6544-1.1804.6087.1954.7347.7264.6475 1.3068-.2302 1.3976-2.4683 1.9147-3.5901 2.398-1.8429.7619-3.6293 1.2865-5.5477 1.7298-.6391.1476-1.3233-.3665-1.4746-1.0037z" />
+          </svg>
+        </h2>
 
-          <!-- Title + checkboxes -->
-          <div class="row gy-4 align-items-center mb-lg-5 mb-4 pb-3">
-           <div class="col-md-3">
+        <!-- Title + checkboxes -->
+        <div class="row gy-4 align-items-center mb-lg-5 mb-4 pb-3">
+          <div class="col-md-3">
             <h3 class="h5 mb-0 text-sm-start text-center">Sign up for Newsletters</h3>
-           </div>
-           <div class="col-md-9">
+          </div>
+          <div class="col-md-9">
             <div class="row row-cols-sm-3 row-cols-2 gy-2">
-             <div class="col">
-              <div class="form-check mb-0">
-               <input type="checkbox" id="s-daily-newsletter" class="form-check-input">
-               <label for="s-daily-newsletter" class="form-check-label">Daily Newsletter</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input type="checkbox" id="s-daily-newsletter" class="form-check-input">
+                  <label for="s-daily-newsletter" class="form-check-label">Daily Newsletter</label>
+                </div>
               </div>
-             </div>
-             <div class="col">
-              <div class="form-check mb-0">
-               <input type="checkbox" id="s-advertising-updates" class="form-check-input" checked>
-               <label for="s-advertising-updates" class="form-check-label">Advertising Updates</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input type="checkbox" id="s-advertising-updates" class="form-check-input" checked>
+                  <label for="s-advertising-updates" class="form-check-label">Advertising
+                    Updates</label>
+                </div>
               </div>
-             </div>
-             <div class="col">
-              <div class="form-check mb-0">
-               <input type="checkbox" id="s-week-in-review" class="form-check-input">
-               <label for="s-week-in-review" class="form-check-label">Week in Review</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input type="checkbox" id="s-week-in-review" class="form-check-input">
+                  <label for="s-week-in-review" class="form-check-label">Week in Review</label>
+                </div>
               </div>
-             </div>
-             <div class="col">
-              <div class="form-check mb-0">
-               <input type="checkbox" id="s-event-updates" class="form-check-input">
-               <label for="s-event-updates" class="form-check-label">Event Updates</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input type="checkbox" id="s-event-updates" class="form-check-input">
+                  <label for="s-event-updates" class="form-check-label">Event Updates</label>
+                </div>
               </div>
-             </div>
-             <div class="col">
-              <div class="form-check mb-0">
-               <input type="checkbox" id="s-startups-weekly" class="form-check-input">
-               <label for="s-startups-weekly" class="form-check-label">Startups Weekly</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input type="checkbox" id="s-startups-weekly" class="form-check-input">
+                  <label for="s-startups-weekly" class="form-check-label">Startups Weekly</label>
+                </div>
               </div>
-             </div>
-             <div class="col">
-              <div class="form-check mb-0">
-               <input id="s-podcasts" type="checkbox" class="form-check-input">
-               <label for="s-podcasts" class="form-check-label">Podcasts</label>
+              <div class="col">
+                <div class="form-check mb-0">
+                  <input id="s-podcasts" type="checkbox" class="form-check-input">
+                  <label for="s-podcasts" class="form-check-label">Podcasts</label>
+                </div>
               </div>
-             </div>
             </div>
-           </div>
           </div>
-
-          <!-- Email field -->
-          <form class="d-flex flex-sm-row flex-column mb-3 needs-validation" novalidate>
-           <div class="input-group me-sm-3 mb-sm-0 mb-3">
-            <i class="bx bx-envelope position-absolute start-0 top-50 translate-middle-y ms-3 zindex-5 fs-5 text-muted"></i>
-            <input type="email" class="form-control form-control-lg rounded-3 ps-5" placeholder="Your email" required>
-            <div class="invalid-tooltip position-absolute start-0 top-0 mt-n4">Please provide a valid email address!</div>
-           </div>
-           <button class="btn btn-lg btn-primary">Subscribe *</button>
-          </form>
-          <div class="form-text fs-sm text-sm-start text-center">
-           * Yes, I agree to the <a href="#">terms</a> and <a href="#">privacy policy</a>.
-          </div>
-         </div>
         </div>
-       </div>
-      </section>
+
+        <!-- Email field -->
+        <form class="d-flex flex-sm-row flex-column mb-3 needs-validation" novalidate>
+          <div class="input-group me-sm-3 mb-sm-0 mb-3">
+            <i
+              class="bx bx-envelope position-absolute start-0 top-50 translate-middle-y ms-3 zindex-5 fs-5 text-muted"></i>
+            <input type="email" class="form-control form-control-lg rounded-3 ps-5" placeholder="Your email" required>
+            <div class="invalid-tooltip position-absolute start-0 top-0 mt-n4">Please provide a valid email
+              address!</div>
+          </div>
+          <button class="btn btn-lg btn-primary">Subscribe *</button>
+        </form>
+        <div class="form-text fs-sm text-sm-start text-center">
+          * Yes, I agree to the <a href="#">terms</a> and <a href="#">privacy policy</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

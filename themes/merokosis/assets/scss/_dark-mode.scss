@@ -12,7 +12,6 @@
     --#{$prefix}body-bg: #{$body-dark-mode-bg};
     --#{$prefix}body-color: #{$body-dark-mode-color};
     --#{$prefix}secondary-bg: rgba(#{to-rgb($white)}, .04);
-    --#{$prefix}heading-color: #{$headings-dark-mode-color};
     --#{$prefix}heading-link-color: #{$nav-link-dark-mode-color};
     --#{$prefix}heading-link-hover-color: #{$nav-link-dark-mode-hover-color};
     --#{$prefix}nav-link-color: #{$nav-link-dark-mode-color};
@@ -71,13 +70,20 @@
     }
 
     // Restore to defaults when inside white background
-    .bg-white {
+    .bg-white,
+    .ignore-dark-mode {
       --#{$prefix}body-color: #{$body-color};
-      --#{$prefix}heading-color: #{$headings-color};
       --#{$prefix}nav-link-color: #{$nav-link-color};
       --#{$prefix}border-color: #{$border-color};
+      h1, .h1, h2, .h2, h3, .h3,
+      h4, .h4, h5, .h5, h6, .h6 {
+        color: $dark;
+      }
       p, ul, ol, span, dd {
         color: var(--#{$prefix}body-color);
+      }
+      .text-body {
+        color: var(--#{$prefix}body-color) !important;
       }
       .text-muted {
         color: $gray-600 !important;
@@ -104,7 +110,6 @@
     // Tables
 
     .table {
-      --#{$prefix}table-th-color: #{$headings-dark-mode-color};
       --#{$prefix}table-striped-bg: rgba(#{to-rgb($white)}, #{$table-striped-bg-factor});
       --#{$prefix}table-hover-bg: rgba(#{to-rgb($white)}, #{$table-hover-bg-factor});
       --#{$prefix}table-hover-color: #{$table-hover-color};

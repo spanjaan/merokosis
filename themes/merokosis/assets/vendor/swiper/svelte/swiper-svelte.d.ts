@@ -72,7 +72,15 @@ declare class Swiper extends SvelteComponentTyped<
   /**
    * Event will be fired on navigation show
    */
-  navigationShow: CustomEvent<[swiper: SwiperClass]>;/**
+  navigationShow: CustomEvent<[swiper: SwiperClass]>;
+  /**
+   * Event will be fired on navigation prev button click
+   */
+  navigationPrev: CustomEvent<[swiper: SwiperClass]>;
+  /**
+   * Event will be fired on navigation next button click
+   */
+  navigationNext: CustomEvent<[swiper: SwiperClass]>;/**
    * Event will be fired after pagination rendered
    */
   paginationRender: CustomEvent<[swiper: SwiperClass, paginationEl: HTMLElement]>;

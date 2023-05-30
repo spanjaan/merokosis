@@ -1,5 +1,9 @@
+/**
+ * Document ready callback.
+ * @param {Function} callback - callback will be fired once Document ready.
+ */
 function ready(callback) {
-  if ('complete' === document.readyState || 'interactive' === document.readyState) {
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
     // Already ready or interactive, execute callback
     callback();
   } else {

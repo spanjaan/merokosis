@@ -48,7 +48,7 @@ class Shuffle extends TinyEmitter {
     }
 
     this.element = el;
-    this.id = 'shuffle_' + id;
+    this.id = `shuffle_${id}`;
     id += 1;
 
     this._init();
@@ -306,7 +306,7 @@ class Shuffle extends TinyEmitter {
     const properties = positionProps.concat(cssProps).join();
 
     items.forEach((item) => {
-      item.element.style.transitionDuration = speed + 'ms';
+      item.element.style.transitionDuration = `${speed}ms`;
       item.element.style.transitionTimingFunction = easing;
       item.element.style.transitionProperty = properties;
     });
@@ -423,7 +423,7 @@ class Shuffle extends TinyEmitter {
    * Adjust the height of the grid
    */
   _setContainerSize() {
-    this.element.style.height = this._getContainerSize() + 'px';
+    this.element.style.height = `${this._getContainerSize()}px`;
   }
 
   /**
@@ -500,7 +500,7 @@ class Shuffle extends TinyEmitter {
       // Clone the object so that the `before` object isn't modified when the
       // transition delay is added.
       const styles = this.getStylesForTransition(item, ShuffleItem.Css.VISIBLE.before);
-      styles.transitionDelay = this._getStaggerAmount(count) + 'ms';
+      styles.transitionDelay = `${this._getStaggerAmount(count)}ms`;
 
       this._queue.push({
         item,
@@ -593,7 +593,7 @@ class Shuffle extends TinyEmitter {
       item.isHidden = true;
 
       const styles = this.getStylesForTransition(item, ShuffleItem.Css.HIDDEN.before);
-      styles.transitionDelay = this._getStaggerAmount(count) + 'ms';
+      styles.transitionDelay = `${this._getStaggerAmount(count)}ms`;
 
       this._queue.push({
         item,
@@ -649,11 +649,11 @@ class Shuffle extends TinyEmitter {
       styles.transform = `translate(${sign}${x}px, ${y}px) scale(${item.scale})`;
     } else {
       if (this.options.isRTL) {
-        styles.right = item.point.x + 'px';
+        styles.right = `${item.point.x}px`;
       } else {
-        styles.left = item.point.x + 'px';
+        styles.left = `${item.point.x}px`;
       }
-      styles.top = item.point.y + 'px';
+      styles.top = `${item.point.y}px`;
     }
 
     return styles;
@@ -1172,7 +1172,7 @@ Shuffle.options = {
   // jump between values.
   columnThreshold: 0.01,
 
-  // Shuffle can be isInitialized with a sort object. It is the same object
+  // Shuffle can be initialized with a sort object. It is the same object
   // given to the sort method.
   initialSort: null,
 

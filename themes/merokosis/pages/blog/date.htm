@@ -1,0 +1,12 @@
+title = "date"
+url = "/date/:year/:month?/:day?"
+layout = "blog"
+description = "Post view by date"
+is_hidden = 0
+==
+<?php
+function onEnd(){
+    $this->page->activeNavLink = 'blog';
+ }
+?>
+==

@@ -1,6 +1,6 @@
 {
   "name": "nouislider",
-  "version": "15.6.0",
+  "version": "15.6.1",
   "main": "dist/nouislider.js",
   "style": "dist/nouislider.min.css",
   "types": "dist/nouislider.d.ts",
@@ -16,9 +16,10 @@
     "build:styles": "npm run build:styles:write && npm run build:styles:compress",
     "build:styles:write": "lessc src/nouislider.less dist/nouislider.css",
     "build:styles:compress": "lessc src/nouislider.less dist/nouislider.min.css --clean-css",
+    "prepublishOnly": "npm run build",
     "format": "prettier src/nouislider.ts --write --config .prettierrc",
     "lint": "eslint src/nouislider.ts",
-    "docs": "cd ../ && php -S localhost:80 nouislider/documentation/_run/router.php"
+    "docs": "cd ../ && php -S localhost:8080 nouislider/documentation/_run/router.php"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10",

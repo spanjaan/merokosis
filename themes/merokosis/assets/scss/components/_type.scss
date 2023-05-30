@@ -35,7 +35,7 @@ dt {
 
 @if $enable-dark-mode {
   body .dark-mode {
-    p, ul, ol, span, dd {
+    p, ul, ol, span:not(.badge), dd {
       color: var(--#{$prefix}body-color);
     }
   }

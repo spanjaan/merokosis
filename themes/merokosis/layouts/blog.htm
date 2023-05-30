@@ -1,28 +1,29 @@
 description = "Blog Layout"
 
-[bloghubBase]
-archiveAuthor = "blog"
-archiveDate = "blog"
-archiveTag = "blog"
-authorUseSlugOnly = 0
-date404OnInvalid = 1
-date404OnEmpty = 1
-tagAllowMultiple = 1
 ==
 <!DOCTYPE html>
 <html lang="en">
-<head>
- {% partial 'site/meta' %}
-</head>
-<body>
- {% partial'site/pageloader' %}
- <main class="page-wrapper">
-  {% partial'site/header' %}
-  {% page %}
- </main>
- {% partial'site/footer' %}
- {% partial'site/blogsidebar' %}
- {% partial'site/backtotop' %}
- {% partial'site/scripts' %}
-</body>
+
+  <head>
+    {% partial 'meta' %}
+    {% partial 'styles' %}
+    {% partial 'page-loading' %}
+  </head>
+  <body>
+    {% partial 'loading-spinner' %}
+    <main class="page-wrapper">
+      <header class="header navbar navbar-expand-lg bg-light shadow-sm shadow-dark-mode-none fixed-top">
+        {% partial 'header' %}
+      </header>
+        {% page %}
+    </main>
+    {% partial 'footer' %}
+    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#blog-sidebar" aria-controls="blog-sidebar" class="btn btn-sm btn-primary fixed-bottom d-lg-none w-100 rounded-0">
+      <i class='bx bx-sidebar fs-xl me-2'></i>
+      Blog Menu
+    </button>
+    {% partial 'back-to-top' %}
+    {% partial 'scripts' %}
+  </body>
+
 </html>

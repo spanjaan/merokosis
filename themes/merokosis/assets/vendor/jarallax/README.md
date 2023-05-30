@@ -1,23 +1,40 @@
-## Jarallax
+# Jarallax <!-- omit in toc -->
 
 ![jarallax.min.js](https://img.badgesize.io/nk-o/jarallax/master/dist/jarallax.min.js?compression=gzip&label=core%20gzip%20size) ![jarallax-video.min.js](https://img.badgesize.io/nk-o/jarallax/master/dist/jarallax-video.min.js?compression=gzip&label=video%20ext%20gzip%20size)
 
 Parallax scrolling for modern browsers. Supported &lt;img&gt; tags, background images, YouTube, Vimeo and Self-Hosted Videos.
 
-## [Online Demo](https://jarallax.nkdev.info/)
+## [Online Demo](https://jarallax.nkdev.info/) <!-- omit in toc -->
 
-## Table of contents
+## Table of Contents <!-- omit in toc -->
 
 - [WordPress Plugin](#wordpress-plugin)
 - [Quick Start](#quick-start)
 - [Import Jarallax](#import-jarallax)
+  - [ESM](#esm)
+  - [ESM CDN](#esm-cdn)
+  - [UMD](#umd)
+  - [UMD CDN](#umd-cdn)
+  - [CJS (Bundlers like Webpack)](#cjs-bundlers-like-webpack)
 - [Add styles](#add-styles)
 - [Prepare HTML](#prepare-html)
 - [Run Jarallax](#run-jarallax)
+  - [A. JavaScript way](#a-javascript-way)
+  - [B. Data attribute way](#b-data-attribute-way)
+  - [C. jQuery way](#c-jquery-way)
 - [Background Video Usage Examples](#background-video-usage-examples)
+  - [A. JavaScript way](#a-javascript-way-1)
+  - [B. Data attribute way](#b-data-attribute-way-1)
 - [Options](#options)
+  - [Disable on mobile devices](#disable-on-mobile-devices)
+  - [Additional options for video extension](#additional-options-for-video-extension)
 - [Events](#events)
+  - [Additional events for video extension](#additional-events-for-video-extension)
+  - [onScroll event](#onscroll-event)
 - [Methods](#methods)
+  - [Call methods example](#call-methods-example)
+    - [A. JavaScript way](#a-javascript-way-2)
+    - [B. jQuery way](#b-jquery-way)
 - [For Developers](#for-developers)
 - [Real Usage Examples](#real-usage-examples)
 - [Credits](#credits)
@@ -60,11 +77,11 @@ We provide a version of Jarallax built as ESM (jarallax.esm.js and jarallax.esm.
 </script>
 ```
 
-### ESM + [Skypack](https://www.skypack.dev/)
+### ESM CDN
 
 ```html
 <script type="module">
-  import { jarallax, jarallaxVideo } from "https://cdn.skypack.dev/jarallax@2.0?min";
+  import { jarallax, jarallaxVideo } from "https://cdn.jsdelivr.net/npm/jarallax@2/+esm";
 
   // Optional video extension
   jarallaxVideo();
@@ -82,13 +99,13 @@ Jarallax may be also used in a traditional way by including script in HTML and u
 <script src="jarallax-video.min.js"></script>
 ```
 
-### UMD + [UNPKG](https://unpkg.com/)
+### UMD CDN
 
 ```html
-<script src="https://unpkg.com/jarallax@2.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/jarallax@2/dist/jarallax.min.js"></script>
 
 <!-- Optional video extension -->
-<script src="https://unpkg.com/jarallax@2.0/dist/jarallax-video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jarallax@2/dist/jarallax-video.min.js"></script>
 ```
 
 ### CJS (Bundlers like Webpack)
@@ -185,7 +202,7 @@ $('.jarallax').jarallax({
 });
 ```
 
-#### No conflict (only if you use jQuery)
+#### No conflict (only if you use jQuery) <!-- omit in toc -->
 
 Sometimes to prevent existing namespace collisions you may call `.noConflict` on the script to revert the value of.
 
@@ -241,6 +258,7 @@ Name | Type | Default | Description
 :--- | :--- | :------ | :----------
 type | string | `scroll` | scroll, scale, opacity, scroll-opacity, scale-opacity.
 speed | float | `0.5` | Parallax effect speed. Provide numbers from -1.0 to 2.0.
+containerClass | string | `jarallax-container` | Container block class attribute.
 imgSrc | path | `null` | Image url. By default used image from background.
 imgElement | dom / selector | `.jarallax-img` | Image tag that will be used as background.
 imgSize | string | `cover` | Image size. If you use `<img>` tag for background, you should add `object-fit` values, else use `background-size` values.
@@ -250,7 +268,6 @@ keepImg | boolean | `false` | Keep `<img>` tag in it's default place after Jaral
 elementInViewport | dom | `null` | Use custom DOM / jQuery element to check if parallax block in viewport. More info here - [Issue 13](https://github.com/nk-o/jarallax/issues/13).
 zIndex | number | `-100` | z-index of parallax container.
 disableParallax | RegExp / function | - | Disable parallax on specific user agents (using regular expression) or with function return value. The image will be set on the background.
-disableVideo | RegExp / function | - | Disable video load on specific user agents (using regular expression) or with function return value. The image will be set on the background.
 
 ### Disable on mobile devices
 
@@ -284,12 +301,14 @@ Required `jarallax/jarallax-video.js` file.
 
 Name | Type | Default | Description
 :--- | :--- | :------ | :----------
+videoClass | string | `jarallax-video` | Video frame class attribute. Will also contain the type of the video, for example `jarallax-video jarallax-video-youtube`
 videoSrc | string | `null` | You can use Youtube, Vimeo or Self-Hosted videos. Also you can use data attribute `data-jarallax-video`.
 videoStartTime | float | `0` | Start time in seconds when video will be started (this value will be applied also after loop).
 videoEndTime | float | `0` | End time in seconds when video will be ended.
 videoLoop | boolean | `true` | Loop video to play infinitely.
 videoPlayOnlyVisible | boolean | `true` | Play video only when it is visible on the screen.
 videoLazyLoading | boolean | `true` | Preload videos only when it is visible on the screen.
+disableVideo | RegExp / function | - | Disable video load on specific user agents (using regular expression) or with function return value. The image will be set on the background.
 
 ## Events
 
@@ -372,21 +391,21 @@ $('.jarallax').jarallax('destroy');
 
 ## For Developers
 
-### Installation
+### Installation <!-- omit in toc -->
 
 * Run `npm install` in the command line
 
-### Building
+### Building <!-- omit in toc -->
 
 * `npm run dev` to run build and start local server with files watcher
 * `npm run build` to run build
 
-### Linting
+### Linting <!-- omit in toc -->
 
 * `npm run js-lint` to show eslint errors
 * `npm run js-lint-fix` to automatically fix some of the eslint errors
 
-### Test
+### Test <!-- omit in toc -->
 
 * `npm run test` to run unit tests
 

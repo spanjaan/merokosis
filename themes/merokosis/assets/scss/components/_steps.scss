@@ -54,13 +54,12 @@
 
 .step-number {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: var(--#{$prefix}steps-number-size);
   height: var(--#{$prefix}steps-number-size);
   flex-shrink: 0;
-  padding: {
-    top: calc((var(--#{$prefix}steps-number-size) - var(--#{$prefix}steps-number-inner-size)) * .5);
-    left: calc((var(--#{$prefix}steps-number-size) - var(--#{$prefix}steps-number-inner-size)) * .5);
-  }
   @include border-radius(var(--#{$prefix}steps-number-border-radius));
   background-color: var(--#{$prefix}steps-number-bg);
   color: var(--#{$prefix}steps-number-color);
@@ -98,10 +97,6 @@
   .step-number {
     width: var(--#{$prefix}steps-number-size-sm);
     height: var(--#{$prefix}steps-number-size-sm);
-    padding: {
-      top: ($steps-number-size-sm - $steps-number-inner-size-sm) * .5;
-      left: ($steps-number-size-sm - $steps-number-inner-size-sm) * .5;
-    }  
     font-size: var(--#{$prefix}steps-number-font-size-sm);
 
     .step-number-inner {
@@ -219,8 +214,7 @@
 // Reduce steps number size on smaller screens
 
 @include media-breakpoint-down(sm) {
-  .steps-sm .step,
-  .step {
+  .steps:not(.steps-sm) .step {
     padding: calc(var(--#{$prefix}steps-padding-y) * .625) 0;
 
     &::before, &::after {
@@ -228,15 +222,13 @@
     }
   }
 
-  .steps-sm .step-number,
   .step-number {
+    font-size: calc(var(--#{$prefix}steps-number-font-size) * .625) !important;
+  }
+
+  .steps:not(.steps-sm) .step-number {
     width: calc(var(--#{$prefix}steps-number-size) * .625);
     height: calc(var(--#{$prefix}steps-number-size) * .625);
-    padding: {
-      top: calc((var(--#{$prefix}steps-number-size) * .625 - var(--#{$prefix}steps-number-inner-size) * .625) * .5);
-      left: calc((var(--#{$prefix}steps-number-size) * .625 - var(--#{$prefix}steps-number-inner-size) * .625) * .5);
-    }
-    font-size: calc(var(--#{$prefix}steps-number-font-size) * .625);
 
     .step-number-inner {
       width: calc(var(--#{$prefix}steps-number-inner-size) * .625);

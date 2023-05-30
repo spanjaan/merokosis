@@ -1,32 +1,28 @@
 var tinyEmitter = {exports: {}};
 
-function E () {
-  // Keep this empty so it's easier to inherit from
+function E() {// Keep this empty so it's easier to inherit from
   // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
 }
 
 E.prototype = {
   on: function (name, callback, ctx) {
     var e = this.e || (this.e = {});
-
     (e[name] || (e[name] = [])).push({
       fn: callback,
       ctx: ctx
     });
-
     return this;
   },
-
   once: function (name, callback, ctx) {
     var self = this;
-    function listener () {
+
+    function listener() {
       self.off(name, listener);
       callback.apply(ctx, arguments);
     }
     listener._ = callback;
     return this.on(name, listener, ctx);
   },
-
   emit: function (name) {
     var data = [].slice.call(arguments, 1);
     var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
@@ -39,7 +35,6 @@ E.prototype = {
 
     return this;
   },
-
   off: function (name, callback) {
     var e = this.e || (this.e = {});
     var evts = e[name];
@@ -47,27 +42,19 @@ E.prototype = {
 
     if (evts && callback) {
       for (var i = 0, len = evts.length; i < len; i++) {
-        if (evts[i].fn !== callback && evts[i].fn._ !== callback)
-          liveEvents.push(evts[i]);
+        if (evts[i].fn !== callback && evts[i].fn._ !== callback) liveEvents.push(evts[i]);
       }
-    }
-
-    // Remove event from queue to prevent memory leak
+    } // Remove event from queue to prevent memory leak
     // Suggested by https://github.com/lazd
     // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
 
-    (liveEvents.length)
-      ? e[name] = liveEvents
-      : delete e[name];
 
+    liveEvents.length ? e[name] = liveEvents : delete e[name];
     return this;
   }
 };
-
 tinyEmitter.exports = E;
 tinyEmitter.exports.TinyEmitter = E;
-
-var TinyEmitter = tinyEmitter.exports;
 
 var arrayParallel = function parallel(fns, context, callback) {
   if (!callback) {
@@ -81,10 +68,8 @@ var arrayParallel = function parallel(fns, context, callback) {
 
   var pending = fns && fns.length;
   if (!pending) return callback(null, []);
-
   var finished = false;
   var results = new Array(pending);
-
   fns.forEach(context ? function (fn, i) {
     fn.call(context, maybeDone(i));
   } : function (fn, i) {
@@ -98,13 +83,12 @@ var arrayParallel = function parallel(fns, context, callback) {
       if (err) {
         callback(err, results);
         finished = true;
-        return
+        return;
       }
 
       results[i] = result;
-
-      if (!--pending) callback(null, results);
-    }
+      if (! --pending) callback(null, results);
+    };
   }
 };
 
@@ -713,7 +697,7 @@ function arrayUnique(x) {
 
 let id = 0;
 
-class Shuffle extends TinyEmitter {
+class Shuffle extends tinyEmitter.exports {
   /**
    * Categorize, sort, and filter a responsive grid of items.
    *
@@ -744,7 +728,7 @@ class Shuffle extends TinyEmitter {
     }
 
     this.element = el;
-    this.id = 'shuffle_' + id;
+    this.id = `shuffle_${id}`;
     id += 1;
 
     this._init();
@@ -1014,7 +998,7 @@ class Shuffle extends TinyEmitter {
     const cssProps = Object.keys(ShuffleItem.Css.HIDDEN.before).map(k => hyphenate(k));
     const properties = positionProps.concat(cssProps).join();
     items.forEach(item => {
-      item.element.style.transitionDuration = speed + 'ms';
+      item.element.style.transitionDuration = `${speed}ms`;
       item.element.style.transitionTimingFunction = easing;
       item.element.style.transitionProperty = properties;
     });
@@ -1130,7 +1114,7 @@ class Shuffle extends TinyEmitter {
 
 
   _setContainerSize() {
-    this.element.style.height = this._getContainerSize() + 'px';
+    this.element.style.height = `${this._getContainerSize()}px`;
   }
   /**
    * Based on the column heights, it returns the biggest one.
@@ -1214,7 +1198,7 @@ class Shuffle extends TinyEmitter {
       // transition delay is added.
 
       const styles = this.getStylesForTransition(item, ShuffleItem.Css.VISIBLE.before);
-      styles.transitionDelay = this._getStaggerAmount(count) + 'ms';
+      styles.transitionDelay = `${this._getStaggerAmount(count)}ms`;
 
       this._queue.push({
         item,
@@ -1312,7 +1296,7 @@ class Shuffle extends TinyEmitter {
       item.scale = ShuffleItem.Scale.HIDDEN;
       item.isHidden = true;
       const styles = this.getStylesForTransition(item, ShuffleItem.Css.HIDDEN.before);
-      styles.transitionDelay = this._getStaggerAmount(count) + 'ms';
+      styles.transitionDelay = `${this._getStaggerAmount(count)}ms`;
 
       this._queue.push({
         item,
@@ -1371,12 +1355,12 @@ class Shuffle extends TinyEmitter {
       styles.transform = `translate(${sign}${x}px, ${y}px) scale(${item.scale})`;
     } else {
       if (this.options.isRTL) {
-        styles.right = item.point.x + 'px';
+        styles.right = `${item.point.x}px`;
       } else {
-        styles.left = item.point.x + 'px';
+        styles.left = `${item.point.x}px`;
       }
 
-      styles.top = item.point.y + 'px';
+      styles.top = `${item.point.y}px`;
     }
 
     return styles;
@@ -1905,7 +1889,7 @@ Shuffle.options = {
   // Reading the width of elements isn't precise enough and can cause columns to
   // jump between values.
   columnThreshold: 0.01,
-  // Shuffle can be isInitialized with a sort object. It is the same object
+  // Shuffle can be initialized with a sort object. It is the same object
   // given to the sort method.
   initialSort: null,
   // Transition delay offset for each item in milliseconds.

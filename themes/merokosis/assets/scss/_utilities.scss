@@ -38,7 +38,8 @@ $utilities: map-merge(
           (
             'secondary': $gray-100,
             'dark':      $gray-900,
-            'black':     $black
+            'black':     $black,
+            'none':      transparent
           )
         )
       )
