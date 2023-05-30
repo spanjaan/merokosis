@@ -9,6 +9,7 @@ amount = 3
 postPage = "blog/post"
 
 [bloghubTags]
+slug = "{{ :slug }}"
 tagPage = "blog/tag"
 onlyPromoted = 0
 amount = 10
@@ -23,16 +24,6 @@ slug = "{{ :slug }}"
 categoryPage = "blog/category"
 
 [authorInfo]
-
-[bloghubCommentSection]
-commentsPerPage = 10
-sortOrder = "created_at desc"
-commentHierarchy = 1
-commentsAnchor = "comments"
-pinFavorites = 0
-hideOnDislikes = 0
-formPosition = "above"
-disableForm = 0
 ==
 <?php
 function onEnd(){
@@ -217,6 +208,8 @@ function onEnd(){
           <div class="card p-md-5 p-4 border-0 bg-secondary">
             <div class="card-body w-100 mx-auto px-0" style="max-width: 746px;">
               <h2 class="mb-4 pb-3">Leave a Comment</h2>
+              
+              
             <form class="row gy-4 needs-validation" novalidate>
                 <div class="col-sm-6 col-12">
                   <label for="c-name" class="form-label fs-base">Name</label>
