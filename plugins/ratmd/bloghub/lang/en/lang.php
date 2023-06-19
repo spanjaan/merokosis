@@ -5,35 +5,19 @@ declare(strict_types=1);
 return [
     'plugin' => [
         'name' => 'BlogHub by rat.md',
-        'description' => 'Extends RainLab.Blog with Comments, Tags, Custom Meta Fields, Archives, Statistics, Views and more.',
+        'description' => 'Extends Winter.Blog with Comments, Tags, Archives, Statistics, Views and more.',
     ],
 
     'components' => [
         'bloghub_group' => 'BlogHub Settings',
 
-        'base' => [
-            'label' => 'Base Configuration',
-            'comment' => 'The Base BlogHub configuration, should be included on the base CMS layouts.',
-            'archive_author' => 'Author CMS Page',
-            'archive_author_comment' => 'Name of the CMS Page used for the author archive.',
-            'archive_date' => 'Date CMS Page',
-            'archive_date_comment' => 'Name of the CMS Page used for the date archive.',
-            'archive_tag' => 'Tag CMS Page',
-            'archive_tag_comment' => 'Name of the CMS Page used for the tag archive.',
-            'author_slug' => 'Use Author Slug only',
-            'author_slug_comment' => 'Uses the author_slug backend column field only.',
-            'date_invalid' => '404 on invalid dates',
-            'date_invalid_comment' => 'Shows the 404 error message on invalid dates.',
-            'date_empty' => '404 on empty dates',
-            'date_empty_comment' => 'Shows the 404 error message on empty date archives.',
-            'tag_multiple' => 'Allow multiple tags',
-            'tag_multiple_comment' => 'Allows multiple tag queries using + or , on the tag archive pages.',
-        ],
         'author' => [
             'label' => 'Posts by Author',
             'comment' => 'Displays a list of posts by author.',
             'filter' => 'Author filter',
             'filter_comment' => 'Enter a author login name or URL parameter to filter the posts by.',
+            'author_slug_only' => 'Use Author Slug Only',
+            'author_slug_only_comment' => 'If you use author slug only, you must be filled dispay name and  author slug in backend user section',
         ],
         'comment_count' => [
             'label' => 'Posts by Comments',
@@ -81,6 +65,10 @@ return [
             'comment' => 'Displays a list of posts by date.',
             'filter' => 'Date filter',
             'filter_comment' => 'Enter a specific date or URL parameter to filter the posts by.',
+            '404_on_invalid' => 'Run 404 invalid date',
+            '404_on_invalid_comment' => 'Run 404 when given date is invalid. Date format (2023-01-01)',
+            '404_on_empty' => 'Run 404 empty date',
+            '404_on_empty_comment' => 'Run 404 when given date is empty.',
         ],
         'post' => [
             'date_range' => 'Default date range',
@@ -124,14 +112,6 @@ return [
             'amount_validation' => 'Invalid format of the the amount value.',
             'view' => 'Tag View',
             'view_comment' => 'Change the View of the Tag list'
-        ],
-        'deprecated' => [
-            'authors_label' => '[OLD] Posts by Author',
-            'authors_comment' => '[DEPRECATED] - Please use "Posts By Author" above.',
-            'dates_label' => '[OLD] Posts by Date',
-            'dates_comment' => '[DEPRECATED] - Please use "Posts By Date" above.',
-            'tags_label' => '[OLD] Posts by Tag',
-            'tags_comment' => '[DEPRECATED] - Please use "Posts by Tags" above.',
         ],
     ],
 
@@ -400,62 +380,5 @@ return [
                 'comment' => 'Select the desired page to link to, or leave empty to show the plain label only.'
             ]
         ],
-
-        'meta' => [
-            'defaultTab' => 'Meta Data',
-            'label' => 'Custom Meta Fields',
-            'description' => 'Manage the global custom meta fields for your posts.',
-            'prompt' => 'Add a new Meta Field',
-
-            'hint' => [
-                'label' => 'Make sure your Field Names are unique',
-                'comment' => 'The custom meta fields configured here will be overriden by the meta fields configured in the theme.yaml template file. Thus, keep your keys unique!'
-            ],
-            'name' => [
-                'label' => 'Custom Meta Name',
-                'comment' => 'The custom meta name as available on the frontend.'
-            ],
-            'type' => [
-                'label' => 'Custom Meta Type',
-                'comment' => 'The custom meta field type as available on the backend.'
-            ],
-            'config' => [
-                'label' => 'Custom Meta Configuration',
-                'comment' => 'Pass your field definition configuration here, as documented on the <a href="https://docs.octobercms.com/3.x/element/form/widget-taglist.html" target="_blank">OctoberCMS Docs</a>.'
-            ],
-            'types' => [
-                'text' => 'Text Field',
-                'number' => 'Number Field',
-                'password' => 'Password Field',
-                'email' => 'E-Mail Field',
-                'textarea' => 'Textarea Field',
-                'dropdown' => 'Dropdown Selector',
-                'radio' => 'Radio Field',
-                'balloon' => 'Balloon Selector',
-                'checkbox' => 'Checkbox Field',
-                'checkboxlist' => 'Checkbox List',
-                'switch' => 'Switch Button',
-                'codeeditor' => 'Code Editor',
-                'colorpicker' => 'Color Picker',
-                'datepicker' => 'Date/Time Picker',
-                'fileupload' => 'File Upload Field',
-                'markdown' => 'Markdown Editor',
-                'mediafinder' => 'Media Finder',
-                'richeditor' => 'Rich WYSIWYG Editor',
-                'taglist' => 'Tag List',
-            ]
-        ]
     ],
-
-    'widgets' => [
-        'comments_list' => [
-            'label' => 'BlogHub - Comments List'
-        ],
-        'posts_list' => [
-            'label' => 'BlogHub - Posts List'
-        ],
-        'posts_statistics' => [
-            'label' => 'BlogHub - Posts Statistics'
-        ]
-    ]
 ];

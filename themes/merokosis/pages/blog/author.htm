@@ -3,16 +3,16 @@ url = "/author/:slug/:page?"
 layout = "blog"
 description = "Post view by author."
 is_hidden = 0
-meta_nofollow = 0
 
 [bloghubPostsByAuthor]
 pageNumber = "{{ :page }}"
-postsPerPage = 6
+postsPerPage = 10
 noPostsMessage = "No posts found"
 sortOrder = "published_at desc"
 categoryPage = "blog/category"
 postPage = "blog/post"
 authorFilter = "{{ :slug }}"
+authorUseSlugOnly = 0
 ==
 <?php
 function onEnd(){
