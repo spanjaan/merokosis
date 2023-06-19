@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf5a985001cad0c48b09c688e0532c45",
+    "content-hash": "b7acb9d3249efef696eaed247cee8321",
     "packages": [
         {
             "name": "assetic/framework",
@@ -6507,6 +6507,135 @@
             "time": "2023-05-29T22:52:44+00:00"
         },
         {
+            "name": "winter/wn-blocks-plugin",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wintercms/wn-blocks-plugin.git",
+                "reference": "9aabefaa1e3cff6b6d4323d73b1cc348edd1644e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wintercms/wn-blocks-plugin/zipball/9aabefaa1e3cff6b6d4323d73b1cc348edd1644e",
+                "reference": "9aabefaa1e3cff6b6d4323d73b1cc348edd1644e",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "winter-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luke Towers",
+                    "email": "wintercms@luketowers.ca"
+                },
+                {
+                    "name": "Winter CMS Maintainers",
+                    "homepage": "https://wintercms.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Block based content management plugin for Winter CMS.",
+            "homepage": "https://github.com/wintercms/wn-blocks-plugin",
+            "keywords": [
+                "block",
+                "blocks",
+                "builder",
+                "laravel",
+                "winter",
+                "wintercms"
+            ],
+            "support": {
+                "discord": "https://discord.gg/D5MFSPH6Ux",
+                "issues": "https://github.com/wintercms/wn-blocks-plugin/issues",
+                "source": "https://github.com/wintercms/wn-blocks-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/wintercms",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/wintercms",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-06-12T05:18:51+00:00"
+        },
+        {
+            "name": "winter/wn-blog-plugin",
+            "version": "v2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wintercms/wn-blog-plugin.git",
+                "reference": "dea050c31277499ed8b44f4bf890c9d189d90c5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wintercms/wn-blog-plugin/zipball/dea050c31277499ed8b44f4bf890c9d189d90c5b",
+                "reference": "dea050c31277499ed8b44f4bf890c9d189d90c5b",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0",
+                "php": ">=7.0"
+            },
+            "replace": {
+                "rainlab/blog-plugin": "~1.3"
+            },
+            "type": "winter-plugin",
+            "extra": {
+                "installer-name": "blog"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Bobkov",
+                    "email": "aleksey.bobkov@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Samuel Georges",
+                    "email": "daftspunky@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Winter CMS Maintainers",
+                    "homepage": "https://wintercms.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Blog plugin for Winter CMS",
+            "homepage": "https://github.com/wintercms/wn-blog-plugin",
+            "keywords": [
+                "blog",
+                "plugin",
+                "winter",
+                "winter cms"
+            ],
+            "support": {
+                "discord": "https://discord.gg/D5MFSPH6Ux",
+                "issues": "https://github.com/wintercms/wn-blog-plugin/issues",
+                "source": "https://github.com/wintercms/wn-blog-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/wintercms",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/wintercms",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-04-15T03:12:35+00:00"
+        },
+        {
             "name": "winter/wn-cms-module",
             "version": "v1.2.2",
             "source": {
@@ -6576,6 +6705,87 @@
                 }
             ],
             "time": "2023-05-30T23:59:58+00:00"
+        },
+        {
+            "name": "winter/wn-pages-plugin",
+            "version": "v2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wintercms/wn-pages-plugin.git",
+                "reference": "13f0cd497a3de1000d125d14866d5b2e1256c825"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wintercms/wn-pages-plugin/zipball/13f0cd497a3de1000d125d14866d5b2e1256c825",
+                "reference": "13f0cd497a3de1000d125d14866d5b2e1256c825",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0",
+                "php": ">=7.2"
+            },
+            "replace": {
+                "rainlab/pages-plugin": "~1.3"
+            },
+            "type": "winter-plugin",
+            "extra": {
+                "installer-name": "pages",
+                "winter": {
+                    "name": "Pages",
+                    "icon": "https://raw.githubusercontent.com/wintercms/wn-pages-plugin/main/.github/icon.png",
+                    "categories": [
+                        "Content",
+                        "Navigation"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Bobkov",
+                    "email": "aleksey.bobkov@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Samuel Georges",
+                    "email": "daftspunky@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Winter CMS Maintainers",
+                    "homepage": "https://wintercms.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Pages plugin for Winter CMS",
+            "homepage": "https://github.com/wintercms/wn-pages-plugin",
+            "keywords": [
+                "cms",
+                "pages",
+                "plugin",
+                "static",
+                "winter",
+                "winter cms"
+            ],
+            "support": {
+                "discord": "https://discord.gg/D5MFSPH6Ux",
+                "issues": "https://github.com/wintercms/wn-pages-plugin/issues",
+                "source": "https://github.com/wintercms/wn-pages-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/wintercms",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/wintercms",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-04-20T17:34:17+00:00"
         },
         {
             "name": "winter/wn-system-module",
@@ -6648,6 +6858,78 @@
                 }
             ],
             "time": "2023-04-27T17:00:16+00:00"
+        },
+        {
+            "name": "winter/wn-user-plugin",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wintercms/wn-user-plugin.git",
+                "reference": "90a64952f10dcea9f4544efa7210781182ba8bc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wintercms/wn-user-plugin/zipball/90a64952f10dcea9f4544efa7210781182ba8bc1",
+                "reference": "90a64952f10dcea9f4544efa7210781182ba8bc1",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0",
+                "php": ">=7.2"
+            },
+            "replace": {
+                "rainlab/user-plugin": "~1.5"
+            },
+            "type": "winter-plugin",
+            "extra": {
+                "installer-name": "user"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Bobkov",
+                    "email": "aleksey.bobkov@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Samuel Georges",
+                    "email": "daftspunky@gmail.com",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Winter CMS Maintainers",
+                    "homepage": "https://wintercms.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "User plugin for Winter CMS",
+            "homepage": "https://github.com/wintercms/wn-user-plugin",
+            "keywords": [
+                "Authentication",
+                "plugin",
+                "user",
+                "winter",
+                "winter cms"
+            ],
+            "support": {
+                "discord": "https://discord.gg/D5MFSPH6Ux",
+                "issues": "https://github.com/wintercms/wn-user-plugin/issues",
+                "source": "https://github.com/wintercms/wn-user-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/wintercms",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/wintercms",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-06-17T02:08:22+00:00"
         }
     ],
     "packages-dev": [
