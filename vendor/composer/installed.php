@@ -3,7 +3,7 @@
         'name' => 'wintercms/winter',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '2d7ba24b5cc24234e7a8dd0bd8b981e7c0ff1bb6',
+        'reference' => '414a6b8a6183db5a5dd536704e7737f2b6d465ed',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -618,6 +618,15 @@
             'replaced' => array(
                 0 => '1.1.*',
             ),
+        ),
+        'offline/oc-site-search-plugin' => array(
+            'pretty_version' => 'v1.7.14',
+            'version' => '1.7.14.0',
+            'reference' => 'fc05e99bfc215cde2b979f4a9ea7b65310fbc48d',
+            'type' => 'october-plugin',
+            'install_path' => __DIR__ . '/../../plugins/offline/sitesearch',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'pear/net_url2' => array(
             'pretty_version' => 'v2.2.2',
@@ -1444,7 +1453,7 @@
         'wintercms/winter' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2d7ba24b5cc24234e7a8dd0bd8b981e7c0ff1bb6',
+            'reference' => '414a6b8a6183db5a5dd536704e7737f2b6d465ed',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

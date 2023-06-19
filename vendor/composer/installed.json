@@ -3200,6 +3200,41 @@
             "install-path": "../nunomaduro/termwind"
         },
         {
+            "name": "offline/oc-site-search-plugin",
+            "version": "v1.7.14",
+            "version_normalized": "1.7.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OFFLINE-GmbH/oc-site-search-plugin.git",
+                "reference": "fc05e99bfc215cde2b979f4a9ea7b65310fbc48d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OFFLINE-GmbH/oc-site-search-plugin/zipball/fc05e99bfc215cde2b979f4a9ea7b65310fbc48d",
+                "reference": "fc05e99bfc215cde2b979f4a9ea7b65310fbc48d",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "time": "2023-06-05T06:45:08+00:00",
+            "type": "october-plugin",
+            "extra": {
+                "installer-name": "sitesearch"
+            },
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This plugin adds global search capabiliies to OctoberCMS.",
+            "support": {
+                "issues": "https://github.com/OFFLINE-GmbH/oc-site-search-plugin/issues",
+                "source": "https://github.com/OFFLINE-GmbH/oc-site-search-plugin/tree/v1.7.14"
+            },
+            "install-path": "../../plugins/offline/sitesearch"
+        },
+        {
             "name": "pear/net_url2",
             "version": "v2.2.2",
             "version_normalized": "2.2.2.0",
