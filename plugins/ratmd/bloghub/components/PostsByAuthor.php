@@ -45,6 +45,13 @@ class PostsByAuthor extends Posts
             'default'       => '{{ :slug }}',
             'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
+        $properties['authorUseSlugOnly'] = [
+            'title'         => 'ratmd.bloghub::lang.components.author.author_slug_only',
+            'description'   => 'ratmd.bloghub::lang.components.author.author_slug_only_comment',
+            'type'          => 'checkbox',
+            'default'       => false,
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
+        ];
         return $properties;
     }
 
@@ -124,8 +131,10 @@ class PostsByAuthor extends Posts
             return null;
         }
 
+        $authorUseSlugOnly = $this->property('authorUseSlugOnly');
+
         if (($user = BackendUser::where('ratmd_bloghub_author_slug', $slug)->first()) === null) {
-            if ($this->getBlogHubConfig()['authorUseSlugOnly'] === '0') {
+            if ($authorUseSlugOnly === false) {
                 if (($user = BackendUser::where('login', $slug)->first()) === null) {
                     return null;
                 }
@@ -140,4 +149,5 @@ class PostsByAuthor extends Posts
 
         return $user;
     }
+
 }
