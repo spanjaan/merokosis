@@ -144,10 +144,10 @@ class BlogHubBackendUser
 
 
     /**
-                     * Return author post count.
-                     *
-                     * @return int
-                     */
+    * Return author post count.
+    *
+    * @return int
+    */
     public function getCount(): int
     {
         return Post::where('user_id', $this->model->id)->count();
