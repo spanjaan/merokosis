@@ -6,10 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'ParsedownExtra' => array($vendorDir . '/erusev/parsedown-extra'),
-    'Parsedown' => array($vendorDir . '/erusev/parsedown'),
-    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
     'Assetic' => array($vendorDir . '/assetic/framework/src'),
 );
