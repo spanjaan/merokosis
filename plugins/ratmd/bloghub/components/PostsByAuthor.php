@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RatMD\BlogHub\Components;
 
 use Backend\Models\User as BackendUser;
-use Winter\Blog\Components\Posts;
-use Winter\Blog\Models\Post;
+use RainLab\Blog\Components\Posts;
+use RainLab\Blog\Models\Post;
 
 class PostsByAuthor extends Posts
 {
@@ -31,55 +31,34 @@ class PostsByAuthor extends Posts
     }
 
     /**
-    * Component Properties
-    *
-    * @return void
-    */
+     * Component Properties
+     *
+     * @return void
+     */
     public function defineProperties()
     {
+        $properties = parent::defineProperties();
         $properties['authorFilter'] = [
             'title'         => 'ratmd.bloghub::lang.components.author.filter',
             'description'   => 'ratmd.bloghub::lang.components.author.filter_comment',
             'type'          => 'string',
             'default'       => '{{ :slug }}',
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
-        $properties['archiveAuthor'] = [
-            'title'         => 'ratmd.bloghub::lang.components.archive_author.title',
-            'description'   => 'ratmd.bloghub::lang.components.archive_author.description',
-            'type'          => 'string',
-            'default'       => 'blog/author',
-        ];
-        $properties['authorUseSlugOnly'] = [
-            'title'         => 'ratmd.bloghub::lang.components.author_use_slug_only.title',
-            'description'   => 'ratmd.bloghub::lang.components.author_use_slug_only.description',
-            'type'          => 'checkbox',
-            'default'       => 1,
-        ];
-        $parentProperties = parent::defineProperties();
-
-        return array_merge($properties, $parentProperties);
+        return $properties;
     }
 
     /**
-     * Get available CMS Pages for Author Archive
+     * Run Component
      *
-     * @return void
+     * @return mixed
      */
-    public function getArchiveAuthorOptions()
-    {
-        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
-    }
-
-    /**
-    * Run Component
-    *
-    * @return mixed
-    */
     public function onRun()
     {
         $this->author = $this->page['author'] = $this->loadAuthor();
 
-        if (!$this->author) {
+        if (empty($this->author)) {
+            $this->setStatusCode(404);
             return $this->controller->run('404');
         }
 
@@ -87,10 +66,10 @@ class PostsByAuthor extends Posts
     }
 
     /**
-         * List Posts
-         *
-         * @return mixed
-         */
+     * List Posts
+     *
+     * @return mixed
+     */
     protected function listPosts()
     {
         $author = $this->author->id;
@@ -135,24 +114,28 @@ class PostsByAuthor extends Posts
     }
 
     /**
-    * Load Author.
-    *
-    * @return BackendUser|null
-    */
+     * Load Author.
+     *
+     * @return BackendUser|null
+     */
     protected function loadAuthor()
     {
         if (!$slug = $this->property('authorFilter')) {
             return null;
         }
 
-        $user = BackendUser::where('ratmd_bloghub_author_slug', $slug)->first();
+        if (($user = BackendUser::where('ratmd_bloghub_author_slug', $slug)->first()) === null) {
+            if ($this->getBlogHubConfig()['authorUseSlugOnly'] === '0') {
+                if (($user = BackendUser::where('login', $slug)->first()) === null) {
+                    return null;
+                }
 
-        if (!$user) {
-            return null;
-        }
-
-        if ($this->property('authorUseSlugOnly') == false && $user->login != $slug) {
-            return null;
+                if (!empty($user->ratmd_bloghub_author_slug)) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
         }
 
         return $user;

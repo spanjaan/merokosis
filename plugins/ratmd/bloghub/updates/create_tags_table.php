@@ -32,7 +32,6 @@ class CreateTagsTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('promote')->default(false);
             $table->string('color', 32)->default('primary');
-            $table->integer('posts_count')->default(0);
             $table->timestamps();
         });
 

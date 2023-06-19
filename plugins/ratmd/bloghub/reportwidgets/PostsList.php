@@ -32,8 +32,8 @@ class PostsList extends ReportWidgetBase
     {
         return [
             'postPage' => [
-                'title'         => 'winter.blog::lang.settings.posts_post',
-                'description'   => 'winter.blog::lang.settings.posts_post_description',
+                'title'         => 'Winter.blog::lang.settings.posts_post',
+                'description'   => 'Winter.blog::lang.settings.posts_post_description',
                 'type'          => 'dropdown',
                 'default'       => 'blog/post',
             ],

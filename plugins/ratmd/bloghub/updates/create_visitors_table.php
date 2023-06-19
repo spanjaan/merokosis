@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RatMD\BlogHub\Updates;
 
 use Schema;
-use Winter\Storm\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint;
 use Winter\Storm\Database\Updates\Migration;
 use System\Classes\PluginManager;
 
@@ -28,7 +28,7 @@ class CreateVisitorsTable extends Migration
 
             $table->increments('id');
             $table->string('user', 64);
-            $table->json('posts')->nullable();
+            $table->text('posts')->nullable();
             $table->text('likes')->nullable();
             $table->text('dislikes')->nullable();
 

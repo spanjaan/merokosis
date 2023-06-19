@@ -1,11 +1,11 @@
-;(function (factory) {
+; (function (factory) {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', factory);
     } else {
         factory();
     }
 }(function () {
-    const oc = {
+    const wn = {
         ajax: $(this).request
     };
 
@@ -112,21 +112,21 @@
         }
 
         /**
-         * Call October AJAX handler
+         * Call Winter AJAX handler
          * @param {string} method The desired ajax method to call.
          * @param {object} data The data to send.
-         * @param {object} config Additional configuration for the oc.ajax method,
+         * @param {object} config Additional configuration for the wn.ajax method,
          * @returns Promise
          */
-        callOctober(method, data, config) {
+        callWinter(method, data, config) {
             return new Promise((resolve, reject) => {
-                oc.ajax(method, Object.assign({
+                wn.ajax(method, Object.assign({
                     data,
                     success: function (data, responseCode, xhr) {
-                        resolve({ data, responseCode, xhr, oc: this });
+                        resolve({ data, responseCode, xhr, wn: this });
                     },
                     error: function (data, responseCode, xhr) {
-                        reject({ data, responseCode, xhr, oc: this });
+                        reject({ data, responseCode, xhr, wn: this });
                     }
                 }, typeof config === 'object' ? config : {}));
             });
@@ -146,16 +146,16 @@
             if (parent) {
                 this.showLoading(parent.querySelectorAll('[data-bloghub-handler="onChangeStatus"]'));
             }
-            
+
             // Call AJAX backend
-            this.callOctober('onChangeStatus', { 
+            this.callWinter('onChangeStatus', {
                 status: el.dataset.bloghubStatus,
                 comment_id: el.dataset.bloghubId
             }).then(
-                ({ data, responseCode, xhr, oc }) => {
+                ({ data, responseCode, xhr, wn }) => {
                     if (parent) {
                         this.hideLoading(parent.querySelectorAll('[data-bloghub-handler="onChangeStatus"]'));
-                        
+
                         if (data.comment) {
                             parent.replaceWith(this.stringToElement(data.comment));
                         } else {
@@ -163,11 +163,11 @@
                         }
                     }
                 },
-                ({ data, responseCode, xhr, oc }) => {
+                ({ data, responseCode, xhr, wn }) => {
                     if (parent) {
                         this.hideLoading(parent.querySelectorAll('[data-bloghub-handler="onChangeStatus"]'));
                     }
-                    alert(typeof data === 'object'? data.result: data);
+                    alert(typeof data === 'object' ? data.result : data);
                 }
             );
         }
@@ -186,16 +186,16 @@
             if (parent) {
                 this.showLoading(parent.querySelectorAll('[data-bloghub-handler="onVote"]'));
             }
-            
+
             // Call AJAX backend
-            this.callOctober('onVote', {
+            this.callWinter('onVote', {
                 vote: el.dataset.bloghubVote,
                 comment_id: el.dataset.bloghubId
             }).then(
-                ({ data, responseCode, xhr, oc }) => {
+                ({ data, responseCode, xhr, wn }) => {
                     if (parent) {
                         this.hideLoading(parent.querySelectorAll('[data-bloghub-handler="onVote"]'));
-                        
+
                         if (data.comment) {
                             parent.replaceWith(this.stringToElement(data.comment));
                         } else {
@@ -203,11 +203,11 @@
                         }
                     }
                 },
-                ({ data, responseCode, xhr, oc }) => {
+                ({ data, responseCode, xhr, wn }) => {
                     if (parent) {
                         this.hideLoading(parent.querySelectorAll('[data-bloghub-handler="onVote"]'));
                     }
-                    alert(typeof data === 'object'? data.result: data);
+                    alert(typeof data === 'object' ? data.result : data);
                 }
             );
         }
@@ -220,7 +220,7 @@
             if (!el.dataset.bloghubId) {
                 return false;
             }
-            
+
             // Get Form
             let form = this.parent.querySelector('form');
             if (!form) {
@@ -232,9 +232,9 @@
             if (parent) {
                 this.showLoading(parent.querySelectorAll('[data-bloghub-handler]'));
             }
-            
+
             // Call AJAX backend
-            this.callOctober('onCreateReply', {
+            this.callWinter('onCreateReply', {
                 comment_id: el.dataset.bloghubId
             }).then(
                 ({ data, responseCode, xhr }) => {
@@ -256,7 +256,7 @@
                     if (parent) {
                         this.hideLoading(parent.querySelectorAll('[data-bloghub-handler]'));
                     }
-                    alert(typeof data === 'object'? data.result: data);
+                    alert(typeof data === 'object' ? data.result : data);
                 }
             );
         }
@@ -273,14 +273,14 @@
 
             // Show Loading Indicator
             this.showLoading(form.querySelectorAll('button'));
-    
+
             // Call AJAX backend
-            this.callOctober('onCancelReply', {}).then(
+            this.callWinter('onCancelReply', {}).then(
                 ({ data, responseCode, xhr }) => {
                     this.hideLoading(form.querySelectorAll('button'));
                     form.querySelector('button[type="submit"]').innerText = data.submitText;
                     form.querySelector('button[data-bloghub-handler="onCancelReply"]').style.display = 'none';
-                    
+
                     let replyTo = form.querySelector('.comment-form-reply-to');
                     if (replyTo) {
                         replyTo.remove();
@@ -293,7 +293,7 @@
                 },
                 ({ data, responseCode, xhr }) => {
                     this.hideLoading(form.querySelectorAll('button'));
-                    alert(typeof data === 'object'? data.result: data);
+                    alert(typeof data === 'object' ? data.result : data);
                 }
             );
         }
@@ -310,9 +310,9 @@
 
             // Show Loading Indicator
             this.showLoading(form.querySelectorAll('button'));
-            
+
             // Call AJAX backend
-            this.callOctober('onReloadCaptcha', {}).then(
+            this.callWinter('onReloadCaptcha', {}).then(
                 ({ data, responseCode, xhr }) => {
                     this.hideLoading(form.querySelectorAll('button'));
 
@@ -323,7 +323,7 @@
                 },
                 ({ data, responseCode, xhr }) => {
                     this.hideLoading(form.querySelectorAll('button'));
-                    alert(typeof data === 'object'? data.result: data);
+                    alert(typeof data === 'object' ? data.result : data);
                 }
             );
         }
@@ -342,7 +342,7 @@
             this.showLoading(form.querySelectorAll('button'));
 
             // Call AJAX backend
-            this.callOctober('onComment', Object.fromEntries([...(new FormData(form)).entries()])).then(
+            this.callWinter('onComment', Object.fromEntries([...(new FormData(form)).entries()])).then(
                 ({ data, responseCode, xhr }) => {
                     this.hideLoading(form.querySelectorAll('button'));
 
@@ -353,7 +353,7 @@
                     this.hideLoading(form.querySelectorAll('button'));
 
                     if (typeof data === 'object') {
-                        let alert = this.createAlert('danger', data.message || data.X_OCTOBER_ERROR_MESSAGE);
+                        let alert = this.createAlert('danger', data.message || data.X_WINTER_ERROR_MESSAGE);
 
                         let formAlert = form.querySelector('.alert');
                         if (formAlert) {
@@ -367,7 +367,7 @@
                             image.src = data.captchaImage;
                         }
                     } else {
-                        alert(typeof data === 'object'? data.result: data);
+                        alert(typeof data === 'object' ? data.result : data);
                     }
 
                 }

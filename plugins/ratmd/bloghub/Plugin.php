@@ -89,7 +89,7 @@ class Plugin extends PluginBase
 
                 'ratmd_bloghub_comments' => [
                     'label'         => 'ratmd.bloghub::lang.model.comments.label',
-                    'icon'          => 'icon-comments-o',
+                    'icon'          => 'icon-commenting',
                     'code'          => 'ratmd-bloghub-comments',
                     'owner'         => 'RatMD.BlogHub',
                     'url'           => Backend::url('ratmd/bloghub/comments'),
@@ -101,8 +101,8 @@ class Plugin extends PluginBase
             ]);
         });
 
+        // Extend Richeditor in blog content Field.
         Event::listen('backend.form.extendFieldsBefore', function ($widget) {
-            // Extend only the Blog\Posts controller & Extend only Blog\Post model
             if (!($widget->getController() instanceof \Winter\Blog\Controllers\Posts
                 && $widget->model instanceof \Winter\Blog\Models\Post)
             ) {
@@ -161,7 +161,6 @@ class Plugin extends PluginBase
         });
 
 
-
         // Extend Form Fields on Posts Controller
         Posts::extendFormFields(function ($form, $model, $context) {
             if (!$model instanceof Post) {
@@ -194,6 +193,8 @@ class Plugin extends PluginBase
                     'permissions'   => ['ratmd.bloghub.comments.access_comments_settings']
                 ],
             ]);
+
+
             // Add Tags Field
             $form->addTabFields([
                 'ratmd_bloghub_tags' => [
@@ -282,8 +283,6 @@ class Plugin extends PluginBase
             \RatMD\BlogHub\Components\CommentList::class => 'bloghubCommentList',
             \RatMD\BlogHub\Components\CommentSection::class => 'bloghubCommentSection',
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
-            \RatMD\BlogHub\Components\PopularPosts::class => 'popularPosts',
-            \RatMD\BlogHub\Components\AuthorInfo::class => 'authorInfo',
         ];
     }
 
@@ -349,7 +348,7 @@ class Plugin extends PluginBase
                 'icon'          => 'icon-pencil-square-o',
                 'class'         => 'RatMD\BlogHub\Models\BlogHubSettings',
                 'order'         => 500,
-                'keywords'      => 'blog post meta data',
+                'keywords'      => 'blog post tag comments',
                 'permissions'   => ['winter.blog.manage_settings'],
                 'size'          => 'adaptive'
             ]

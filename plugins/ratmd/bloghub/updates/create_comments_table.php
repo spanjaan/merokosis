@@ -23,6 +23,7 @@ class CreateCommentsTable extends Migration
 
         Schema::create('ratmd_bloghub_comments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('post_id')->unsigned();
             $table->string('status', 32)->default('pending');

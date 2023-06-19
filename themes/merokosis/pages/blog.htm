@@ -2,9 +2,10 @@ title = "blog"
 url = "/blog/:page?"
 layout = "blog"
 description = "Blog page including sidebar."
+is_hidden = 0
 meta_title = "Amazing blog collections"
 meta_description = "Discover the best of the blogosphere with Amazing Blog Collections. We scour the internet to bring you the most engaging and thought-provoking content from bloggers all over the world. Whether you're looking for inspiration, entertainment, or education, you're sure to find something here that catches your eye."
-is_hidden = 0
+meta_nofollow = 0
 
 [blogPosts]
 pageNumber = "{{ :page }}"
@@ -16,18 +17,20 @@ categoryPage = "blog/category"
 postPage = "blog/post"
 
 [blogCategories]
-slug = "{{ :slug }}"
+slug = ":slug"
 displayEmpty = 1
 categoryPage = "blog/category"
 
-[popularPosts]
-amount = 3
-postPage = "blog/post"
-
 [bloghubTags]
-slug = "{{ :slug }}"
+tagPage = "blog/tag"
 onlyPromoted = 0
 amount = 10
+
+[searchInput]
+useAutoComplete = 1
+autoCompleteResultCount = 5
+showProviderBadge = 1
+searchPage = "blog/search.htm"
 ==
 <?php
 function onEnd(){
@@ -208,10 +211,40 @@ function onEnd(){
         <div class="offcanvas-body">
 
           <!-- Search form -->
-          <form class="input-group mb-4">
-            <input type="text" placeholder="Search the blog..." class="form-control rounded pe-5">
+          {# <form action="{{ searchInput.searchPage | page }}?q={{ query | url_encode(true) }}" method="get">
+    <div class="ss-search-form">
+        <div class="ss-search-form__input">
+            <input name="q" type="text" placeholder="What are you looking for?" 
+                   value="{{ searchInput.query }}"
+                   autocomplete="off"
+                   autofocus
+                    {% if searchInput.useAutoComplete %}
+                        data-track-input
+                        data-request="{{ searchInput }}::onType"
+                        data-request-before-update="document.getElementById('autocomplete-results').classList.add('ss-search-form__results--visible')"
+                        data-request-update="'{{ searchInput }}::autocomplete': '#autocomplete-results'"
+                    {% endif %}
+            >
+            <button class="ss-search-form__submit" type="submit">Search</button>
+        </div>
+        <div class="ss-search-form__results" id="autocomplete-results"></div>
+    </div>
+</form> #}
+
+          <form class="input-group mb-4" action="{{ searchInput.searchPage | page }}?q={{ query | url_encode(true) }}" method="get">
+            <input name="q" type="text" placeholder="Search the blog..." class="form-control rounded pe-5" value="{{ searchInput.query }}"
+                   autocomplete="off"
+                   autofocus
+                    {% if searchInput.useAutoComplete %}
+                        data-track-input
+                        data-request="{{ searchInput }}::onType"
+                        data-request-before-update="document.getElementById('autocomplete-results').classList.add('ss-search-form__results--visible')"
+                        data-request-update="'{{ searchInput }}::autocomplete': '#autocomplete-results'"
+                    {% endif %}>
             <i class='bx bx-search position-absolute top-50 end-0 translate-middle-y me-3 fs-lg zindex-5'></i>
           </form>
+          <div class="mb-4 ss-search-form__results" id="autocomplete-results">
+          </div>
 
           <div class="card card-body mb-4">
             <h3 class="h5">Categories</h3>

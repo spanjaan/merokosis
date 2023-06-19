@@ -9,25 +9,19 @@ tagPage = "blog/tag"
 onlyPromoted = 0
 amount = 10
 
-[bloghubPostsByTag]
-tagFilter = "{{ :slug }}"
-archiveTag = "blog/tag"
-pageNumber = "{{ :page }}"
-categoryFilter = "{{ :slug }}"
-postsPerPage = 2
-noPostsMessage = "No posts found"
-sortOrder = "published_at desc"
-categoryPage = "blog/category"
-postPage = "blog/post"
-
-[popularPosts]
-amount = 3
-postPage = "blog/post"
-
 [blogCategories]
 slug = "{{ :slug }}"
 displayEmpty = 0
 categoryPage = "blog/category"
+
+[bloghubPostsByTag]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
+postPage = "blog/post"
+tagFilter = "{{ :slug }}"
 ==
 <?php
 function onEnd(){

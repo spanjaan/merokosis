@@ -1,0 +1,14 @@
+title = "comment list"
+url = "/commentlist"
+layout = "blog"
+is_hidden = 0
+meta_nofollow = 0
+
+[bloghubCommentList]
+postPage = "blog/post"
+amount = 5
+sortOrder = "created_at DESC"
+onlyFavorites = 0
+hideOnDislikes = 0
+==
+{% component 'bloghubCommentList' %}

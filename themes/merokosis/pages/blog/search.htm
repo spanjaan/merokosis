@@ -3,6 +3,19 @@ url = "/search/:page?"
 layout = "blog"
 description = "Blog post search page"
 is_hidden = 0
+meta_nofollow = 0
+
+[searchInput]
+useAutoComplete = 1
+autoCompleteResultCount = 5
+showProviderBadge = 1
+searchPage = "blog/post.htm"
+
+[searchResults]
+resultsPerPage = 10
+showProviderBadge = 1
+noResultsMessage = "Your search returned no results."
+visitPageMessage = "Visit page"
 ==
 <?php
 function onEnd(){
@@ -10,3 +23,8 @@ function onEnd(){
  }
 ?>
 ==
+<div class="container pt-5 mt-5">
+{% component 'searchInput' %}
+{% component 'searchResults' %}
+
+</div>

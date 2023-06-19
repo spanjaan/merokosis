@@ -8,8 +8,8 @@ use Lang;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use Winter\Storm\Database\Model;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Yaml;
+use Winter\Pages\Classes\Page as WinterPage;
+use Winter\Pages\Classes\PageList as WinterPageList;
 use System\Classes\PluginManager;
 
 class BlogHubSettings extends Model
@@ -99,29 +99,23 @@ class BlogHubSettings extends Model
      */
     public function getFormTosStaticPageOptions()
     {
-        $pagesFile = Theme::getActiveTheme()->getPath() . '/pages.yaml';
-        if (!File::exists($pagesFile)) {
-            return [];
-        }
+        if (class_exists('WinterPageList')) {
+            $activeTheme = Theme::getActiveTheme();
 
-        $pages = Yaml::parse(File::get($pagesFile));
-        $options = [];
-
-        foreach ($pages as $page) {
-            if (isset($page['fileName'])) {
-                $options[$page['fileName']] = $page['title'] ?? $page['fileName'];
+            if ($activeTheme) {
+                $pages = new WinterPageList($activeTheme);
+                return $pages->listPages()->sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
             }
         }
 
-        asort($options);
-        return $options;
+        return [];
     }
 
     /**
-         * Buils up the Terms of Service Label
-         *
-         * @return string
-         */
+     * Buils up the Terms of Service Label
+     *
+     * @return string
+     */
     public function getTermsOfServiceLabel()
     {
         $label = $this->get('form_tos_label') ?? self::defaultValue('form_tos_label');

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="WinterCMS Plugin">
+    <description>WinterCMS Plugin Coding Standards</description>
+    <file>./plugins/ratmd/bloghub</file>
+    <arg value="nps"/>
+    <arg value="s"/>
+    <arg value="p"/>
+    <rule ref="PSR1"/>
+    <rule ref="PSR2"/>
+    <rule ref="PSR4"/>
+</ruleset>

@@ -21,20 +21,17 @@ fields:
         label: ratmd.bloghub::lang.model.tags.slug
         comment: ratmd.bloghub::lang.model.tags.slugComment
         span: right
-        preset:
-            field: title
-            type: slug
-
+    
     description:
         type: markdown
         label: ratmd.bloghub::lang.model.tags.description
         comment: ratmd.bloghub::lang.model.tags.descriptionComment
-
+    
     color:
         type: colorpicker
         label: ratmd.bloghub::lang.model.tags.color
         commentAbove: ratmd.bloghub::lang.model.tags.colorComment
-
+    
     posts:
         type: relation
         label: ratmd.bloghub::lang.model.tags.posts

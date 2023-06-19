@@ -1,0 +1,18 @@
+title = "contact"
+url = "/contact"
+layout = "default"
+is_hidden = 0
+
+[contactForm]
+==
+<?php
+function onEnd(){
+    $this->page->activeNavLink = 'contact';
+ }
+?>
+==
+<div class="container px-5">
+<div class="card p-5 my-5 bg-secondary">
+{% component 'contactForm' %}
+</div>
+</div>

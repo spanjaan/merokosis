@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RatMD\BlogHub\Components;
 
 use Redirect;
-use Winter\Blog\Components\Posts;
-use Winter\Blog\Models\Post;
+use RainLab\Blog\Components\Posts;
+use RainLab\Blog\Models\Post;
 
 class PostsByDate extends Posts
 {
@@ -45,63 +45,52 @@ class PostsByDate extends Posts
     }
 
     /**
-    * Component Properties
-    *
-    * @return void
-    */
+     * Component Properties
+     *
+     * @return void
+     */
     public function defineProperties()
     {
+        $properties = parent::defineProperties();
         $properties['dateFilter'] = [
             'title'         => 'ratmd.bloghub::lang.components.date.filter',
             'description'   => 'ratmd.bloghub::lang.components.date.filter_comment',
             'type'          => 'string',
             'default'       => '{{ :date }}',
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
-        $properties['archiveDate'] = [
-            'title'         => 'ratmd.bloghub::lang.components.archive_date.title',
-            'description'   => 'ratmd.bloghub::lang.components.archive_date.description',
-            'type'          => 'string',
-            'default'       => 'blog/date',
-        ];
+
         $properties['date404OnInvalid'] = [
-            'title'         => 'ratmd.bloghub::lang.components.date_404_on_invalid.title',
-            'description'   => 'ratmd.bloghub::lang.components.date_404_on_invalid.description',
+            'title'         => 'ratmd.bloghub::lang.components.date.404_on_invalid',
+            'description'   => 'ratmd.bloghub::lang.components.date.404_on_invalid_comment',
             'type'          => 'checkbox',
-            'default'       => 1,
+            'default'       => true,
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
+
         $properties['date404OnEmpty'] = [
-            'title'         => 'ratmd.bloghub::lang.components.date_404_on_empty.title',
-            'description'   => 'ratmd.bloghub::lang.components.date_404_on_empty.description',
+            'title'         => 'ratmd.bloghub::lang.components.date.404_on_empty',
+            'description'   => 'ratmd.bloghub::lang.components.date.404_on_empty_comment',
             'type'          => 'checkbox',
-            'default'       => 1,
+            'default'       => true,
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
-        $parentProperties = parent::defineProperties();
 
-        return array_merge($properties, $parentProperties);
+        return $properties;
     }
 
     /**
-     * Get available CMS Pages for Date Archive
+     * Run Component
      *
-     * @return void
+     * @return mixed
      */
-    public function getArchiveDateOptions()
-    {
-        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
-    }
-
-    /**
-    * Run Component
-    *
-    * @return mixed
-    */
     public function onRun()
     {
         $this->prepareVars();
 
         [$date, $type] = $this->loadDate();
         if (empty($date)) {
-            if ($this->property('date404OnInvalid') === '1') {
+            if ($this->property('date404OnInvalid', true)) {
                 $this->setStatusCode(404);
                 return $this->controller->run('404');
             }
@@ -120,7 +109,7 @@ class PostsByDate extends Posts
 
         // Return 404 on empty date archives
         if ($this->posts->count() === 0) {
-            if ($this->property('date404OnEmpty') === '1') {
+            if ($this->property('date404OnEmpty', true)) {
                 $this->setStatusCode(404);
                 return $this->controller->run('404');
             }
@@ -136,11 +125,12 @@ class PostsByDate extends Posts
         }
     }
 
+
     /**
-         * List Posts
-         *
-         * @return mixed
-         */
+     * List Posts
+     *
+     * @return mixed
+     */
     protected function listPosts()
     {
         $date = $this->date;

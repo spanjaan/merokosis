@@ -25,6 +25,21 @@ class BlogHubBackendUserModel extends ExtensionBase
     protected ?BlogHubBackendUser $bloghubSet;
 
     /**
+     * Constructor
+     *
+     * @param User $model
+     */
+    public function __construct(User $model)
+    {
+        $this->model = $model;
+
+        // Deprecated Methods
+        $model->addDynamicMethod('bloghub_display', fn () => $this->getBloghubAttribute()->display());
+        $model->addDynamicMethod('bloghub_slug', fn () => $this->getBloghubAttribute()->slug());
+        $model->addDynamicMethod('bloghub_about', fn () => $this->getBloghubAttribute()->about());
+    }
+
+    /**
      * Get main BlogHub Space
      *
      * @return BlogHubBackendUser

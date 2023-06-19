@@ -24,3 +24,4 @@ scopes:
             after: created_at >= ':value'
             between: created_at >= ':after' AND created_at <= ':before'
             before: created_at <= ':before'
+

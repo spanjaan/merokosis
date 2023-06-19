@@ -2,7 +2,7 @@
     <a
         href="<?= Backend::url('ratmd/bloghub/tags/create') ?>"
         class="btn btn-primary oc-icon-plus">
-        <?= e(trans('ratmd.bloghub::lang.model.common.create')) ?>
+        <?= e(trans('ratmd.bloghub::lang.model.tags.tag_create')) ?>
     </a>
 
     <button

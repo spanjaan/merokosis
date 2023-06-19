@@ -16,7 +16,7 @@ description = "Header"
                   <a href="#" class="nav-link">About Us</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">Contact</a>
+                  <a href="{{ 'contact'|page }}" class="nav-link {% if this.page.activeNavLink == 'contact' %}active{% endif %}">Contact</a>
                 </li>
                 <li class="nav-item">
                   <a href="{{ 'blog'|page }}" class="nav-link {% if this.page.activeNavLink == 'blog' %}active{% endif %}">Blog</a>

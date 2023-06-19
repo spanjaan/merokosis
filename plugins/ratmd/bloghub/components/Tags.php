@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RatMD\BlogHub\Components;
 
@@ -23,11 +21,6 @@ class Tags extends ComponentBase
     public $tagPage;
 
     /**
-     * @var string Slug of the currently selected tag, if any.
-     */
-    public $currentTagSlug;
-
-    /**
      * Component Details
      *
      * @return void
@@ -48,12 +41,6 @@ class Tags extends ComponentBase
     public function defineProperties()
     {
         return [
-            'slug' => [
-                'title'       => 'winter.blog::lang.settings.post_slug',
-                'description' => 'winter.blog::lang.settings.post_slug_description',
-                'default'     => '{{ :slug }}',
-                'type'        => 'string',
-            ],
             'tagPage' => [
                 'title'             => 'ratmd.bloghub::lang.components.tags.tags_page',
                 'description'       => 'ratmd.bloghub::lang.components.tags.tags_page_comment',
@@ -73,13 +60,13 @@ class Tags extends ComponentBase
                 'type'              => 'string',
                 'validationPattern' => '^[0-9]+$',
                 'validationMessage' => 'ratmd.bloghub::lang.components.tags.amount_validation',
-                'default'           => '10',
+                'default'           => '5',
             ]
         ];
     }
 
     /**
-     * Get available CMS Pages for Tag Archive
+     * Get Tag Page Option
      *
      * @return void
      */
@@ -87,6 +74,7 @@ class Tags extends ComponentBase
     {
         return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
+
     /**
      * Run
      *
@@ -94,31 +82,27 @@ class Tags extends ComponentBase
      */
     public function onRun()
     {
-        $this->currentTagSlug = $this->page['currentTagSlug'] = $this->property('slug');
         $this->tagPage = $this->page['tagPage'] = $this->property('tagPage');
         $this->tags = $this->page['tags'] = $this->listTags();
     }
 
-
     /**
-    * Load popular tags
-    *
-    * @return mixed
-    */
+     * Load popular tags
+     *
+     * @return mixed
+     */
     protected function listTags()
     {
-        $query = TagModel::withCount('posts')
-            ->whereHas('posts', function ($query) {
-                $query->where('published', true);
-            })
-            ->orderBy('posts_count', 'desc');
+        $query = TagModel::withCount(['posts_count'])
+            ->having('posts_count_count', '>', 0)
+            ->orderBy('posts_count_count', 'desc');
 
         if ($this->property('onlyPromoted') === '1') {
             $query->where('promote', '1');
         }
 
         $amount = intval($this->property('amount'));
-        $query->limit($amount);
+        $query->limit(5);
 
         return $query->get()->each(fn ($tag) => $tag->setUrl($this->tagPage, $this->controller));
     }

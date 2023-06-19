@@ -3,17 +3,16 @@ url = "/author/:slug/:page?"
 layout = "blog"
 description = "Post view by author."
 is_hidden = 0
+meta_nofollow = 0
 
 [bloghubPostsByAuthor]
-authorFilter = "{{ :slug }}"
-archiveAuthor = "blog/author"
-authorUseSlugOnly = 1
 pageNumber = "{{ :page }}"
 postsPerPage = 6
 noPostsMessage = "No posts found"
 sortOrder = "published_at desc"
 categoryPage = "blog/category"
 postPage = "blog/post"
+authorFilter = "{{ :slug }}"
 ==
 <?php
 function onEnd(){
@@ -25,8 +24,8 @@ function onEnd(){
   <div class="container pb-2 pb-md-0">
     <div class="row justify-content-center pt-3 mt-3">
       <div class="col-xl-6 col-lg-7 col-md-8 col-sm-10 text-center">
-        <h1 class="mb-1">Author Name</h1>
-        <p class="fs-lg pb-1 mb-1">Author Description</p>
+        <h1 class="mb-1">{{ author.bloghub_display() }}</h1>
+        <p class="fs-lg pb-1 mb-1">{{ author.bloghub_about() }}</p>
         <nav class="pt-lg-1 mb-3" aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 justify-content-center">
             <li class="breadcrumb-item">

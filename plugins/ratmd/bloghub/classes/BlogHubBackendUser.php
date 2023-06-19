@@ -7,12 +7,9 @@ namespace RatMD\BlogHub\Classes;
 use Backend\Models\User;
 use Cms\Classes\Controller;
 use Winter\Blog\Models\Post;
-use Winter\Storm\Support\Traits\Singleton;
 
 class BlogHubBackendUser
 {
-    use Singleton;
-
     /**
      * User Model
      *
@@ -31,25 +28,25 @@ class BlogHubBackendUser
     }
 
     /**
-     * Call dynamic property method.
+     * Call Dynamic Property Method
      *
      * @param string $method
-     * @param array|null $arguments
-     * @return mixed
+     * @param ?array $arguments
+     * @return void
      */
-    public function __call(string $method, ?array $arguments = [])
+    public function __call($method, $arguments = [])
     {
-        $methodName = 'get' . ucwords(str_replace('_', '', $method));
+        $methodName = str_replace('_', '', 'get' . ucwords($method, '_'));
 
         if (method_exists($this, $methodName)) {
             return $this->{$methodName}(...$arguments);
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     /**
-     * Get current CMS controller.
+     * Get current CMS Controller
      *
      * @return Controller|null
      */
@@ -59,96 +56,94 @@ class BlogHubBackendUser
     }
 
     /**
-     * Return author archive page URL.
+     * Return Author Archive Page URL
      *
      * @return string|null
      */
-    public function getUrl(): ?string
+    public function getUrl()
     {
-        $controller = $this->getController();
-        if ($controller instanceof Controller && !empty($controller->getLayout())) {
-            return url('author/' . $this->getSlug());
+        $ctrl = $this->getController();
+        if ($ctrl instanceof Controller && !empty($ctrl->getLayout())) {
+            return $ctrl->pageUrl($viewBag['bloghubAuthorPage'] ?? 'blog/author', [
+                'id'   => $this->model->id,
+                'slug' => $this->getSlug(),
+            ]);
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     /**
-     * Return author slug.
+     * Return Author Slug
      *
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug()
     {
-        return $this->model->ratmd_bloghub_author_slug ?: $this->model->login;
+        if (empty($this->model->ratmd_bloghub_author_slug)) {
+            return $this->model->login;
+        } else {
+            return $this->model->ratmd_bloghub_author_slug;
+        }
     }
 
     /**
-     * Return author display name.
+     * Return Author Display Name
      *
      * @return string
      */
-    public function getDisplayName(): string
+    public function getDisplayName()
     {
         if (!empty($this->model->ratmd_bloghub_display_name)) {
             return $this->model->ratmd_bloghub_display_name;
         }
 
-        $name = trim($this->model->first_name . ' ' . $this->model->last_name);
-        return $name ?: ucfirst($this->model->login);
+        $name = '';
+        if ($this->model->first_name) {
+            $name = $this->model->first_name;
+        }
+        if ($this->model->last_name) {
+            $name = ($this->model->last_name ? ' ' : '') . $this->model->first_name;
+        }
+        return empty($name) ? ucfirst($this->model->login) : $name;
     }
 
     /**
-     * Return author display name (alias).
+     * Return Author Display Name (alias)
      *
      * @return string
      */
-    public function getDisplay(): string
+    public function getDisplay()
     {
         return $this->getDisplayName();
     }
 
     /**
-     * Return author about me text.
+     * Return Author About Me Text
      *
-     * @return string|null
+     * @return string
      */
-    public function getAboutMe(): ?string
+    public function getAboutMe()
     {
         return $this->model->ratmd_bloghub_about_me;
     }
 
     /**
-     * Return author about me text (alias).
+     * Return Author About Me Text (alias)
      *
-     * @return string|null
+     * @return string
      */
-    public function getAbout(): ?string
+    public function getAbout()
     {
         return $this->getAboutMe();
     }
 
     /**
-    * Return author avatar image URL.
-    *
-    * @return string|null
-    */
-    public function getAvatar(): ?string
-    {
-        if (!empty($this->model->avatar)) {
-            return $this->model->avatar->getPath();
-        }
-
-        return null;
-    }
-
-
-    /**
-    * Return author post count.
-    *
-    * @return int
-    */
-    public function getCount(): int
+     * Return Author Post Count
+     *
+     * @return string
+     */
+    public function getCount()
     {
         return Post::where('user_id', $this->model->id)->count();
     }

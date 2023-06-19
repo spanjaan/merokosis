@@ -48,15 +48,6 @@ class Tag extends Model
     ];
 
     /**
-    * Default values for model fields
-    *
-    * @var array
-    */
-    public $attributes = [
-        'color' => '#007bff'
-    ];
-
-    /**
      * Model Validation Rules
      *
      * @var array
@@ -90,40 +81,19 @@ class Tag extends Model
             'Winter\Blog\Models\Post',
             'table' => 'ratmd_bloghub_tags_posts',
             'scope' => 'isPublished',
-            'count' => false // change count to false
+            'count' => true
         ]
     ];
 
     /**
-     * Hook - Before Model is created
+     * Hook - Before Model is createds
      *
      * @return void
      */
     public function beforeCreate()
     {
         $this->title = empty($this->title) ? $this->slug : $this->title;
-        $this->slug = Str::slug($this->slug . '-tag');
-    }
-
-    /**
-     * Hook - Before Model is updated
-     *
-     * @return void
-     */
-    public function beforeUpdate()
-    {
-        $this->slug = Str::slug($this->slug . '-tag');
-    }
-    /**
-     * Hook - Before Model is saved
-     *
-     * @return void
-     */
-    public function beforeSave()
-    {
-        if ($this->isDirty('title')) {
-            $this->slug = Str::slug($this->title);
-        }
+        $this->slug = Str::slug($this->slug);
     }
 
     /**
@@ -151,6 +121,6 @@ class Tag extends Model
      */
     public function getPostCountAttribute()
     {
-        return $this->posts_count()->count();
+        return optional($this->posts_count->first())->count ?? 0;
     }
 }

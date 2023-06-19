@@ -34,8 +34,8 @@ class CommentsList extends ReportWidgetBase
     {
         return [
             'postPage' => [
-                'title'         => 'winter.blog::lang.settings.posts_post',
-                'description'   => 'winter.blog::lang.settings.posts_post_description',
+                'title'         => 'Winter.blog::lang.settings.posts_post',
+                'description'   => 'Winter.blog::lang.settings.posts_post_description',
                 'type'          => 'dropdown',
                 'default'       => 'blog/post',
             ],
@@ -71,7 +71,7 @@ class CommentsList extends ReportWidgetBase
      */
     protected function loadAssets()
     {
-        $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-commentslist.css');
+        // $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-commentslist.css');
         $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-octoberv2.css');
     }
 

@@ -6,13 +6,11 @@ namespace RatMD\BlogHub\Classes;
 
 use Cms\Classes\Controller;
 use Illuminate\Support\Collection;
-use Winter\Storm\Support\Traits\Singleton;
 use Winter\Blog\Models\Post;
 use RatMD\BlogHub\Models\Visitor;
 
 class BlogHubPost
 {
-    use Singleton;
     /**
      * Post Model
      *
@@ -35,10 +33,10 @@ class BlogHubPost
     protected ?Collection $promotedTagCollection;
 
     /**
-    * Create a new BlogPost
-    *
-    * @param Post $model
-    */
+     * Create a new BlogPost
+     *
+     * @param Post $model
+     */
     public function __construct(Post $model)
     {
         $this->model = $model;
@@ -51,26 +49,23 @@ class BlogHubPost
                 $model->categories->each(fn ($cat) => $cat->setUrl($props['categoryPage'], $ctrl));
             }
 
-            // Retrieve properties from layout or viewBag directly
-            $viewBag = $layout->getViewBag()->getProperties();
             $props = [
-                'archiveAuthor' => $viewBag['bloghubAuthorPage'] ?? 'blog/author',
-                'archiveDate' => $viewBag['bloghubDatePage'] ?? 'blog/date',
-                'archiveTag' => $viewBag['bloghubTagPage'] ?? 'blog/tag',
+                'archiveAuthor' => 'blog/author',
+                'archiveDate' => 'blog/date',
+                'archiveTag' => 'blog/tag',
             ];
-
             $model->ratmd_bloghub_tags->each(fn ($tag) => $tag->setUrl($props['archiveTag'], $ctrl));
         }
     }
 
 
-        /**
-         * Call Dynamic Property Method
-         *
-         * @param string $method
-         * @param ?array $arguments
-         * @return void
-         */
+    /**
+     * Call Dynamic Property Method
+     *
+     * @param string $method
+     * @param ?array $arguments
+     * @return void
+     */
     public function __call($method, $arguments = [])
     {
         $methodName = str_replace('_', '', 'get' . ucwords($method, '_'));
@@ -82,21 +77,21 @@ class BlogHubPost
         }
     }
 
-        /**
-         * Get current CMS Controller
-         *
-         * @return Controller|null
-         */
+    /**
+     * Get current CMS Controller
+     *
+     * @return Controller|null
+     */
     protected function getController(): ?Controller
     {
         return Controller::getController();
     }
 
-        /**
-         * Get Estimated ReadTime
-         *
-         * @return array|string
-         */
+    /**
+     * Get Estimated ReadTime
+     *
+     * @return array|string
+     */
     public function getDetailReadTime($string = true)
     {
         $content = strip_tags($this->model->content_html);
@@ -125,41 +120,41 @@ class BlogHubPost
         }
     }
 
-        /**
-         * Get Published Ago Date/Time
-         *
-         * @return string
-         */
+    /**
+     * Get Published Ago Date/Time
+     *
+     * @return string
+     */
     public function getDetailPublishedAgo($long = false, $until = null): string
     {
         return $this->model->published_at->diffForHumans();
     }
 
-        /**
-         * Get Post Comments
-         *
-         * @return mixed
-         */
+    /**
+     * Get Post Comments
+     *
+     * @return mixed
+     */
     public function getComments()
     {
         return $this->model->ratmd_bloghub_comments;
     }
 
-        /**
-         * Get Post Comments Count
-         *
-         * @return integer
-         */
+    /**
+     * Get Post Comments Count
+     *
+     * @return integer
+     */
     public function getCommentsCount()
     {
         return $this->model->ratmd_bloghub_comments->count();
     }
 
-        /**
-         * Get Post Tags
-         *
-         * @return mixed
-         */
+    /**
+     * Get Post Tags
+     *
+     * @return mixed
+     */
     public function getTags()
     {
         if (empty($this->tagCollection)) {
@@ -177,11 +172,11 @@ class BlogHubPost
         return $this->tagCollection;
     }
 
-        /**
-         * Get Promoted Post Tags
-         *
-         * @return mixed
-         */
+    /**
+     * Get Promoted Post Tags
+     *
+     * @return mixed
+     */
     public function getPromotedTags()
     {
         if (empty($this->promotedTagCollection)) {
@@ -199,11 +194,11 @@ class BlogHubPost
         return $this->promotedTagCollection;
     }
 
-        /**
-         * Get View Counter
-         *
-         * @return integer
-         */
+    /**
+     * Get View Counter
+     *
+     * @return integer
+     */
     public function getViews()
     {
         if (!empty($this->model->ratmd_bloghub_views)) {
@@ -213,11 +208,11 @@ class BlogHubPost
         }
     }
 
-        /**
-         * Get Unique View Counter
-         *
-         * @return integer
-         */
+    /**
+     * Get Unique View Counter
+     *
+     * @return integer
+     */
     public function getUniqueViews()
     {
         if (!empty($this->model->ratmd_bloghub_unique_views)) {
@@ -227,43 +222,43 @@ class BlogHubPost
         }
     }
 
-        /**
-         * Get Visitors
-         *
-         * @return void
-         */
+    /**
+     * Get Visitors
+     *
+     * @return void
+     */
     public function getVisitors()
     {
     }
 
-        /**
-         * Check if current Visitor has seen the page already.
-         *
-         * @return boolean
-         */
+    /**
+     * Check if current Visitor has seen the page already.
+     *
+     * @return boolean
+     */
     public function getHasSeen()
     {
         $visitor = Visitor::currentUser();
         return $visitor->hasSeen($this->model);
     }
 
-        /**
-         * Get Author
-         *
-         * @return boolean
-         */
+    /**
+     * Get Author
+     *
+     * @return boolean
+     */
     public function getAuthor()
     {
         return $this->model->user;
     }
 
-        /**
-         * Get Next Blog Posts
-         *
-         * @param integer $limit
-         * @param boolean $sameCategories
-         * @return mixed
-         */
+    /**
+     * Get Next Blog Posts
+     *
+     * @param integer $limit
+     * @param boolean $sameCategories
+     * @return mixed
+     */
     public function getNext($limit = 1, $sameCategories = false)
     {
         $query = $this->model->applySibling()
@@ -284,13 +279,13 @@ class BlogHubPost
         return $limit > 1 ? $query->get() : $query->first();
     }
 
-        /**
-         * Get Previous Blog Posts
-         *
-         * @param integer $limit
-         * @param boolean $sameCategories
-         * @return mixed
-         */
+    /**
+     * Get Previous Blog Posts
+     *
+     * @param integer $limit
+     * @param boolean $sameCategories
+     * @return mixed
+     */
     public function getPrevious($limit = 1, $sameCategories = false)
     {
         $query = $this->model->applySibling(-1)
@@ -311,25 +306,25 @@ class BlogHubPost
         return $limit > 1 ? $query->get() : $query->first();
     }
 
-        /**
-         * Get Previous Blog Posts (Alias)
-         *
-         * @param integer $limit
-         * @param boolean $sameCategories
-         * @return mixed
-         */
+    /**
+     * Get Previous Blog Posts (Alias)
+     *
+     * @param integer $limit
+     * @param boolean $sameCategories
+     * @return mixed
+     */
     public function getPrev($limit = 1, $sameCategories = false)
     {
         return $this->getPrevious($limit, $sameCategories);
     }
 
-        /**
-         * Get Similar Blog Posts
-         *
-         * @param integer $limit
-         * @param array $exclude
-         * @return mixed
-         */
+    /**
+     * Get Similar Blog Posts
+     *
+     * @param integer $limit
+     * @param array $exclude
+     * @return mixed
+     */
     public function getRelated($limit = 5, $exclude = [])
     {
         $tags = $this->model->ratmd_bloghub_tags->map(fn ($item) => $item->id)->all();
@@ -358,13 +353,13 @@ class BlogHubPost
         return $result;
     }
 
-        /**
-         * Get Random Blog Posts
-         *
-         * @param integer $limit
-         * @param array $exclude
-         * @return mixed
-         */
+    /**
+     * Get Random Blog Posts
+     *
+     * @param integer $limit
+     * @param array $exclude
+     * @return mixed
+     */
     public function getRandom($limit = 5, $exclude = [])
     {
         // Exclude

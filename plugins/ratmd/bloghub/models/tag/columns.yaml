@@ -6,20 +6,20 @@ columns:
     slug:
         label: ratmd.bloghub::lang.model.tags.slug
         searchable: true
-
+    
     title:
         label: ratmd.bloghub::lang.model.tags.title
         searchable: true
-
+    
     promote:
         label: ratmd.bloghub::lang.model.tags.promote
         type: switch
         default: false
-
+    
     color:
         label: ratmd.bloghub::lang.model.tags.color
         type: colorpicker
-
+    
     posts:
         label: ratmd.bloghub::lang.model.tags.postsNumber
         type: number
@@ -32,9 +32,9 @@ columns:
             )
 
     created_at:
-        label: winter.blog::lang.post.created
+        label: rainlab.blog::lang.post.created
         invisible: true
 
     updated_at:
-        label: winter.blog::lang.post.updated
+        label: rainlab.blog::lang.post.updated
         invisible: true

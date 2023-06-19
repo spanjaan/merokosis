@@ -4,7 +4,7 @@
 
 columns:
     status:
-        type: selectable
+        type: text
         label: ratmd.bloghub::lang.model.comments.statusColumn
         options:
             pending:
@@ -23,7 +23,7 @@ columns:
         width: 200px
 
     comment:
-        type: summary
+        type: text
         label: ratmd.bloghub::lang.model.comments.title
         select: concat(title, ' ', content)
         sortable: true
@@ -48,6 +48,6 @@ columns:
 
     created_at:
         type: datetime
-        label: winter.blog::lang.post.created
+        label: rainlab.blog::lang.post.created
         sortable: true
         invisible: true

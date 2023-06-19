@@ -1,8 +1,20 @@
 title = "date"
-url = "/date/:year/:month?/:day?"
+url = "/date/:date?/:page?"
 layout = "blog"
 description = "Post view by date"
 is_hidden = 0
+meta_nofollow = 0
+
+[bloghubPostsByDate]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
+postPage = "blog/post"
+dateFilter = "{{ :date }}"
+date404OnInvalid = 1
+date404OnEmpty = 1
 ==
 <?php
 function onEnd(){
@@ -10,3 +22,32 @@ function onEnd(){
  }
 ?>
 ==
+{% set posts = bloghubPostsByDate.posts %}
+
+<ul class="post-list list-unstyled">
+    {% for post in posts %}
+        <li class="d-flex flex-column">
+            <h3>
+                <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+            </h3>
+
+            <p class="info m-0 p-0 text-muted">
+                Posted
+                {% if post.categories | length %} in {% endif %}
+                {% for category in post.categories %}
+                    <a href="{{ category.url }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                on 
+                <time datetime="{{ post.published_at }}">{{ post.published_at | date('M d, Y') }}</time>
+            </p>
+
+            <p class="excerpt">{{ post.summary|raw }}</p>
+        </li>
+    {% else %}
+        <li class="no-data">{{ bloghubPostsByDate.noPostsMessage }}</li>
+    {% endfor %}
+</ul>
+
+{% if posts.lastPage > 1 %}
+    {% partial '@pagination' pagination=posts %}
+{% endif %}

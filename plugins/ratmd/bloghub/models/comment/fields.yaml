@@ -3,12 +3,13 @@
 # ===================================
 
 fields:
+    
     favorite:
         type: switch
         label: ratmd.bloghub::lang.model.comments.favorite
         comment: ratmd.bloghub::lang.model.comments.favoriteComment
-
-    title:
+    
+    title: 
         type: text
         label: ratmd.bloghub::lang.model.comments.title
         comment: ratmd.bloghub::lang.model.comments.titleComment
@@ -30,15 +31,16 @@ fields:
         type: textarea
         label: ratmd.bloghub::lang.model.comments.content
         comment: ratmd.bloghub::lang.model.comments.contentComment
-
+    
     author:
         type: text
         label: ratmd.bloghub::lang.model.comments.author
         comment: ratmd.bloghub::lang.model.comments.authorComment
         span: left
-
+    
     author_email:
         type: text
         label: ratmd.bloghub::lang.model.comments.authorEmail
         comment: ratmd.bloghub::lang.model.comments.authorEmailComment
         span: right
+    

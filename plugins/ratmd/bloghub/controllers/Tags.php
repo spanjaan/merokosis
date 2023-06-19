@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RatMD\BlogHub\Controllers;
 
@@ -9,6 +7,7 @@ use Backend\Classes\Controller;
 
 class Tags extends Controller
 {
+
     /**
      * Implemented Interfaces
      *
@@ -39,6 +38,6 @@ class Tags extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('Winter.Blog', 'blog', 'ratmd_bloghub_tags');
+        BackendMenu::setContext('RainLab.Blog', 'blog', 'ratmd_bloghub_tags');
     }
 }
