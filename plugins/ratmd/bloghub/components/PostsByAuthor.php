@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RatMD\BlogHub\Components;
 
 use Backend\Models\User as BackendUser;
-use RainLab\Blog\Components\Posts;
-use RainLab\Blog\Models\Post;
+use Winter\Blog\Components\Posts;
+use Winter\Blog\Models\Post;
 
 class PostsByAuthor extends Posts
 {

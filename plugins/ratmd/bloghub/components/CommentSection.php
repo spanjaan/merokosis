@@ -13,7 +13,7 @@ use Session;
 use Backend\Facades\BackendAuth;
 use Cms\Classes\ComponentBase;
 use Illuminate\Pagination\LengthAwarePaginator;
-use RainLab\Blog\Models\Post;
+use Winter\Blog\Models\Post;
 use RatMD\BlogHub\Models\BlogHubSettings;
 use RatMD\BlogHub\Models\Comment;
 use RatMD\BlogHub\Models\Visitor;
@@ -67,12 +67,12 @@ class CommentSection extends ComponentBase
                 'title'             => 'ratmd.bloghub::lang.components.comments_section.comments_per_page',
                 'type'              => 'string',
                 'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'rainlab.blog::lang.settings.posts_per_page_validation',
+                'validationMessage' => 'winter.blog::lang.settings.posts_per_page_validation',
                 'default'           => '10',
             ],
             'pageNumber' => [
-                'title'             => 'rainlab.blog::lang.settings.posts_pagination',
-                'description'       => 'rainlab.blog::lang.settings.posts_pagination_description',
+                'title'             => 'winter.blog::lang.settings.posts_pagination',
+                'description'       => 'winter.blog::lang.settings.posts_pagination_description',
                 'type'              => 'string',
                 'default'           => '',
             ],
@@ -268,7 +268,7 @@ class CommentSection extends ComponentBase
     /**
      * Get Current User
      *
-     * @return RainLab\User\Models\User|Backend\Models\User|null
+     * @return Winter\User\Models\User|Backend\Models\User|null
      */
     protected function getCurrentUser()
     {
@@ -282,17 +282,17 @@ class CommentSection extends ComponentBase
     }
 
     /**
-     * Get Frontend User (when RainLab.User is installed)
+     * Get Frontend User (when Winter.User is installed)
      *
-     * @return ?RainLab\User\Models\User
+     * @return ?Winter\User\Models\User
      */
     protected function getFrontendUser()
     {
-        if (PluginManager::instance()->hasPlugin('RainLab.User')) {
-            $rainLabAuth = \RainLab\User\Classes\AuthManager::instance();
+        if (PluginManager::instance()->hasPlugin('Winter.User')) {
+            $winterAuth = \Winter\User\Classes\AuthManager::instance();
 
-            if ($rainLabAuth->check()) {
-                return $rainLabAuth->getUser();
+            if ($winterAuth->check()) {
+                return $winterAuth->getUser();
             } else {
                 return null;
             }

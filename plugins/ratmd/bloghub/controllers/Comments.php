@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace RatMD\BlogHub\Controllers;
 
@@ -7,7 +9,6 @@ use Backend\Classes\Controller;
 
 class Comments extends Controller
 {
-
     /**
      * Implemented Interfaces
      *
@@ -38,6 +39,6 @@ class Comments extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('RainLab.Blog', 'blog', 'ratmd_bloghub_comments');
+        BackendMenu::setContext('Winter.Blog', 'blog', 'ratmd_bloghub_comments');
     }
 }

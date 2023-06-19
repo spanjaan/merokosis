@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace RatMD\BlogHub\Components;
 
@@ -46,7 +48,7 @@ class Tags extends ComponentBase
                 'description'       => 'ratmd.bloghub::lang.components.tags.tags_page_comment',
                 'type'              => 'dropdown',
                 'default'           => 'blog/tag',
-                'group'             => 'rainlab.blog::lang.settings.group_links',
+                'group'             => 'winter.blog::lang.settings.group_links',
             ],
             'onlyPromoted' => [
                 'title'             => 'ratmd.bloghub::lang.components.tags.only_promoted',

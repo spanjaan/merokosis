@@ -7,7 +7,7 @@ namespace RatMD\BlogHub\Components;
 use Lang;
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Page;
-use RainLab\Blog\Models\Post;
+use Winter\Blog\Models\Post;
 use RatMD\BlogHub\Models\Comment;
 
 class CommentList extends ComponentBase
@@ -41,11 +41,11 @@ class CommentList extends ComponentBase
     {
         return [
             'postPage' => [
-                'title'             => 'rainlab.blog::lang.settings.posts_post',
-                'description'       => 'rainlab.blog::lang.settings.posts_post_description',
+                'title'             => 'winter.blog::lang.settings.posts_post',
+                'description'       => 'winter.blog::lang.settings.posts_post_description',
                 'type'              => 'dropdown',
                 'default'           => '',
-                'group'             => 'rainlab.blog::lang.settings.group_links',
+                'group'             => 'winter.blog::lang.settings.group_links',
             ],
             'excludePosts' => [
                 'title'             => 'ratmd.bloghub::lang.components.comments_list.exclude_posts',
@@ -62,8 +62,8 @@ class CommentList extends ComponentBase
                 'default'           => '5',
             ],
             'sortOrder' => [
-                'title'             => 'rainlab.blog::lang.settings.posts_order',
-                'description'       => 'rainlab.blog::lang.settings.posts_order_description',
+                'title'             => 'winter.blog::lang.settings.posts_order',
+                'description'       => 'winter.blog::lang.settings.posts_order_description',
                 'type'              => 'dropdown',
                 'default'           => 'published_at desc',
             ],

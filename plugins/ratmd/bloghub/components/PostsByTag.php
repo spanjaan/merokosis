@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RatMD\BlogHub\Components;
 
-use RainLab\Blog\Components\Posts;
-use RainLab\Blog\Models\Post;
+use Winter\Blog\Components\Posts;
+use Winter\Blog\Models\Post;
 use RatMD\BlogHub\Models\Tag;
 
 class PostsByTag extends Posts
@@ -50,6 +50,13 @@ class PostsByTag extends Posts
             'description'   => 'ratmd.bloghub::lang.components.tag.filter_comment',
             'type'          => 'string',
             'default'       => '{{ :slug }}',
+            'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
+        ];
+        $properties['tagAllowMultiple'] = [
+            'title'         => 'ratmd.bloghub::lang.components.tag.tag_multiple',
+            'description'   => 'ratmd.bloghub::lang.components.tag.tag_multiple_comment',
+            'type'          => 'checkbox',
+            'default'       => '0',
             'group'         => 'ratmd.bloghub::lang.components.bloghub_group',
         ];
         return $properties;
@@ -100,9 +107,9 @@ class PostsByTag extends Posts
         if ($tagsMode === 'and') {
             $ids = array_map(fn ($item) => $item->id, $tags);
 
-            $query->join('ratmd_bloghub_tags_posts', 'rainlab_blog_posts.id', '=', 'ratmd_bloghub_tags_posts.post_id')
+            $query->join('ratmd_bloghub_tags_posts', 'winter_blog_posts.id', '=', 'ratmd_bloghub_tags_posts.post_id')
                 ->whereIn('ratmd_bloghub_tags_posts.tag_id', array_map(fn ($item) => $item->id, $tags))
-                ->groupBy('rainlab_blog_posts.id')
+                ->groupBy('winter_blog_posts.id')
                 ->havingRaw('count(DISTINCT "ratmd_bloghub_tags_posts"."tag_id") = ?', [count($ids)]);
         } else {
             $query->whereHas('ratmd_bloghub_tags', function ($query) use ($tags) {
@@ -154,10 +161,28 @@ class PostsByTag extends Posts
         if (!$slug = $this->property('tagFilter')) {
             return null;
         }
+
+        // Multiple Tag Archive
+        if ($this->property('tagAllowMultiple') === '1') {
+            //$tagsList = preg_split('/(\+|\,)/', $slug, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+            if (strpos($slug, '+') !== false) {
+                $this->tagsMode = 'and';
+                $tagsList = explode('+', $slug);
+            } elseif(strpos($slug, ',') !== false) {
+                $this->tagsMode = 'or';
+                $tagsList = explode(',', $slug);
+            }
+
+            if (isset($tagsList) && count($tagsList) > 1) {
+                return Tag::whereIn('slug', $tagsList)->get()->all();
+            }
+        }
+
         // Single Tag Archive
         $tag = new Tag();
 
-        $tag = $tag->isClassExtendedWith('RainLab.Translate.Behaviors.TranslatableModel')
+        $tag = $tag->isClassExtendedWith('Winter.Translate.Behaviors.TranslatableModel')
             ? $tag->transWhere('slug', $slug)
             : $tag->where('slug', $slug);
 

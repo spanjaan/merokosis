@@ -48,6 +48,6 @@ columns:
 
     created_at:
         type: datetime
-        label: rainlab.blog::lang.post.created
+        label: winter.blog::lang.post.created
         sortable: true
         invisible: true

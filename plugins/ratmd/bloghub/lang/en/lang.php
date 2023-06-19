@@ -99,6 +99,8 @@ return [
             'comment' => 'Displays a list of posts by tag.',
             'filter' => 'Tag filter',
             'filter_comment' => 'Enter a tag slug or URL parameter to filter the posts by.',
+            'tag_multiple' => 'Allow multiple tags',
+            'tag_multiple_comment' => 'Allows multiple tag queries using + or , on the tag archive pages.',
         ],
         'tags' => [
             'label' => 'Tags List',
