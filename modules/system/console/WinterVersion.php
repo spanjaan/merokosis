@@ -59,7 +59,7 @@ class WinterVersion extends \Illuminate\Console\Command
 
         if (!$build['confident']) {
             $this->warn('*** We could not accurately determine your Winter CMS build due to the number of modifications. The closest detected build is Winter CMS build ' . $build['build'] . '.');
-        } else if ($build['modified']) {
+        } elseif ($build['modified']) {
             $this->info('*** Detected a modified version of Winter CMS build ' . $build['build'] . '.');
         } else {
             $this->info('*** Detected Winter CMS build ' . $build['build'] . '.');

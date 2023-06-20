@@ -169,7 +169,7 @@ class PostsByTag extends Posts
             if (strpos($slug, '+') !== false) {
                 $this->tagsMode = 'and';
                 $tagsList = explode('+', $slug);
-            } elseif(strpos($slug, ',') !== false) {
+            } elseif (strpos($slug, ',') !== false) {
                 $this->tagsMode = 'or';
                 $tagsList = explode(',', $slug);
             }
