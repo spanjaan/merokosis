@@ -33,7 +33,11 @@ showProviderBadge = 1
 searchPage = "blog/search.htm"
 
 [popularPosts]
-amount = 3
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = "blog/category"
 postPage = "blog/post"
 ==
 <?php

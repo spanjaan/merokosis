@@ -61,30 +61,35 @@ class PopularPosts extends ComponentBase
                 'description'       => 'ratmd.bloghub::lang.components.popularPosts.post_page_comment',
                 'type'              => 'dropdown',
                 'default'           => 'blog/post',
-                'options'           => [$this, 'getPageOptions'],
             ],
             'categoryPage' => [
                 'title'             => 'ratmd.bloghub::lang.components.popularPosts.category_page',
                 'description'       => 'ratmd.bloghub::lang.components.popularPosts.category_page_comment',
                 'type'              => 'dropdown',
                 'default'           => 'blog/category',
-                'options'           => [$this, 'getPageOptions'],
             ]
         ];
     }
 
     /**
-     * Get Page Options for Posts and Categories
+     * Get Post Page Option
      *
      * @return array
      */
-    public function getPageOptions(): array
+    public function getPostPageOptions(): array
     {
-        $pages = Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
-
-        return $pages;
+        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
+    /**
+     * Get Category Page Option
+     *
+     * @return array
+     */
+    public function getCategoryPageOptions(): array
+    {
+        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
+    }
 
     /**
      * Run

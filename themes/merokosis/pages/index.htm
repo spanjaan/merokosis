@@ -19,9 +19,12 @@ displayEmpty = 0
 categoryPage = "blog/category"
 
 [popularPosts]
-amount = 10
-postPage = "blog/post"
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
 categoryPage = "blog/category"
+postPage = "blog/post"
 ==
 <!-- Hero -->
 <section class="dark-mode position-relative jarallax pb-xl-3" data-jarallax data-speed="0.4">
