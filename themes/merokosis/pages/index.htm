@@ -17,6 +17,11 @@ postPage = "blog/post"
 slug = ":slug"
 displayEmpty = 0
 categoryPage = "blog/category"
+
+[popularPosts]
+amount = 10
+postPage = "blog/post"
+categoryPage = "blog/category"
 ==
 <!-- Hero -->
 <section class="dark-mode position-relative jarallax pb-xl-3" data-jarallax data-speed="0.4">
@@ -180,27 +185,34 @@ categoryPage = "blog/category"
         }
       }
     }'>
+    
+    {% set posts = popularPosts.posts %}
       <div class="swiper-wrapper">
 
         <!-- Item -->
+        {% for post in posts %}
         <div class="swiper-slide h-auto px-2">
           <article class="card border-0 h-100 mx-1">
             <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
+              <a href="{{ post.url }}" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+              <a href="{{ post.url }}"
                 class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
                 data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
                 <i class="bx bx-bookmark"></i>
               </a>
-              <img src="{{ 'assets/img/blog/01.jpg' | theme }}" class="card-img-top" alt="Image">
+                {% if post.featured_images|length %}
+                  <img src="{{ post.featured_images.0.path }}" alt="Image" class="card-img-top" style="height: 230px; width:100%; object-fit: cover; object-position: center;">
+                {% endif %}
             </div>
             <div class="card-body pb-4">
               <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Web design</a>
+              {% for category in post.categories %}
+                <a href="{{ category.url }}" class="badge fs-sm text-nav bg-secondary text-decoration-none">{{ category.name }}</a>
+                {% endfor %}
                 <span class="fs-sm text-muted">May 19, 2021</span>
               </div>
               <h3 class="h5 mb-0">
-                <a href="blog-single.html">5 Bad Landing Page Examples & How We Would Fix Them</a>
+                <a href="blog-single.html">{{ post.title }}</a>
               </h3>
             </div>
             <div class="card-footer py-4">
@@ -211,188 +223,7 @@ categoryPage = "blog/category"
             </div>
           </article>
         </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/02.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
-                <span class="fs-sm text-muted">Sep 28, 2021</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">Why UX Design Matters and How it Affects Ranking</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/01.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Jerome Bell
-              </a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/03.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Business</a>
-                <span class="fs-sm text-muted">Sep 16, 2021</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">This Week in Search: New Limits and Exciting Features</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Ralph Edwards
-              </a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/04.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Processes &amp;
-                  Tools</a>
-                <span class="fs-sm text-muted">12 hours ago</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">Five Effective Lead Generation Techniques For Your Business</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/03.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Esther Howard
-              </a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/05.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
-                <span class="fs-sm text-muted">Oct 9, 2021</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">Inclusive Marketing: Why and How Does it Work?</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/04.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Jane Cooper
-              </a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/06.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Marketing</a>
-                <span class="fs-sm text-muted">Apr 2, 2021</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">How Agile is Your Forecasting Process?</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/05.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Albert Flores
-              </a>
-            </div>
-          </article>
-        </div>
-
-        <!-- Item -->
-        <div class="swiper-slide h-auto px-2">
-          <article class="card border-0 h-100 mx-1">
-            <div class="position-relative">
-              <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-              <a href="#"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/blog/07.jpg' | theme }}" class="card-img-top" alt="Image">
-            </div>
-            <div class="card-body pb-4">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Processes &amp;
-                  Tools</a>
-                <span class="fs-sm text-muted">Sep 3, 2021</span>
-              </div>
-              <h3 class="h5 mb-0">
-                <a href="blog-single.html">Your Guide to Optimising A JavaScript-enabled Website</a>
-              </h3>
-            </div>
-            <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Ralph Edwards
-              </a>
-            </div>
-          </article>
-        </div>
+        {% endfor %}
       </div>
 
       <!-- Pagination (bullets) -->

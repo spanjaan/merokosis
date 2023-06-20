@@ -23,6 +23,11 @@ class PopularPosts extends ComponentBase
     public $postPage;
 
     /**
+     * @var string Reference to the page name for linking to categories.
+     */
+    public $categoryPage;
+
+    /**
      * Component Details
      *
      * @return array
@@ -56,19 +61,30 @@ class PopularPosts extends ComponentBase
                 'description'       => 'ratmd.bloghub::lang.components.popularPosts.post_page_comment',
                 'type'              => 'dropdown',
                 'default'           => 'blog/post',
+                'options'           => [$this, 'getPageOptions'],
+            ],
+            'categoryPage' => [
+                'title'             => 'ratmd.bloghub::lang.components.popularPosts.category_page',
+                'description'       => 'ratmd.bloghub::lang.components.popularPosts.category_page_comment',
+                'type'              => 'dropdown',
+                'default'           => 'blog/category',
+                'options'           => [$this, 'getPageOptions'],
             ]
         ];
     }
 
     /**
-     * Get Post Page Option
+     * Get Page Options for Posts and Categories
      *
      * @return array
      */
-    public function getPostPageOptions(): array
+    public function getPageOptions(): array
     {
-        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
+        $pages = Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
+
+        return $pages;
     }
+
 
     /**
      * Run
@@ -78,6 +94,7 @@ class PopularPosts extends ComponentBase
     public function onRun(): void
     {
         $this->postPage = $this->page['postPage'] = $this->property('postPage');
+        $this->categoryPage = $this->page['categoryPage'] = $this->property('categoryPage');
         $this->posts = $this->page['posts'] = $this->listPopularPosts();
     }
 
@@ -89,12 +106,24 @@ class PopularPosts extends ComponentBase
      */
     protected function listPopularPosts()
     {
-        $query = PostModel::where('published', true)
+        $query = PostModel::with('categories')
+            ->where('published', true)
             ->orderBy('ratmd_bloghub_views', 'desc');
 
         $amount = intval($this->property('amount'));
         $query->limit($amount);
 
-        return $query->get()->each(fn ($post) => $post->setUrl($this->postPage, $this->controller));
+        $posts = $query->get();
+
+        $posts->each(function ($post) {
+            $post->setUrl($this->postPage, $this->controller);
+            $post->categories->each(function ($category) {
+                $category->setUrl($this->categoryPage, $this->controller);
+            });
+        });
+
+        return $posts;
     }
+
+
 }
