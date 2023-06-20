@@ -102,6 +102,15 @@ return [
             'tag_multiple' => 'Allow multiple tags',
             'tag_multiple_comment' => 'Allows multiple tag queries using + or , on the tag archive pages.',
         ],
+        'popularPosts' => [
+            'label' => 'Popular Posts',
+            'description' => 'Display Popular Post by Views.',
+            'amount' => 'Post Per Page',
+            'amount_comment' => 'Enter a posts amount display in Page.',
+            'amount_validation' => 'Enter only numaric value.',
+            'post_page' => 'Post Page',
+            'post_page_comment' => 'Choose a single post display page from dropdown.',
+        ],
         'tags' => [
             'label' => 'Tags List',
             'comment' => 'Displays a list of (promoted) blog tags.',

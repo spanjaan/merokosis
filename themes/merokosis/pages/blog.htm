@@ -2,10 +2,9 @@ title = "blog"
 url = "/blog/:page?"
 layout = "blog"
 description = "Blog page including sidebar."
-is_hidden = 0
 meta_title = "Amazing blog collections"
 meta_description = "Discover the best of the blogosphere with Amazing Blog Collections. We scour the internet to bring you the most engaging and thought-provoking content from bloggers all over the world. Whether you're looking for inspiration, entertainment, or education, you're sure to find something here that catches your eye."
-meta_nofollow = 0
+is_hidden = 0
 
 [blogPosts]
 pageNumber = "{{ :page }}"
@@ -22,6 +21,7 @@ displayEmpty = 1
 categoryPage = "blog/category"
 
 [bloghubTags]
+slug = "{{ :slug }}"
 tagPage = "blog/tag"
 onlyPromoted = 0
 amount = 10
@@ -31,6 +31,10 @@ useAutoComplete = 1
 autoCompleteResultCount = 5
 showProviderBadge = 1
 searchPage = "blog/search.htm"
+
+[popularPosts]
+amount = 3
+postPage = "blog/post"
 ==
 <?php
 function onEnd(){

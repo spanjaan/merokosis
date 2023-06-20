@@ -23,6 +23,11 @@ class Tags extends ComponentBase
     public $tagPage;
 
     /**
+     * @var string Slug of the currently selected tag, if any.
+     */
+    public $currentTagSlug;
+
+    /**
      * Component Details
      *
      * @return void
@@ -43,6 +48,12 @@ class Tags extends ComponentBase
     public function defineProperties()
     {
         return [
+            'slug' => [
+                'title'             => 'winter.blog::lang.settings.post_slug',
+                'description'       => 'winter.blog::lang.settings.post_slug_description',
+                'default'           => '{{ :slug }}',
+                'type'              => 'string',
+            ],
             'tagPage' => [
                 'title'             => 'ratmd.bloghub::lang.components.tags.tags_page',
                 'description'       => 'ratmd.bloghub::lang.components.tags.tags_page_comment',
@@ -84,6 +95,7 @@ class Tags extends ComponentBase
      */
     public function onRun()
     {
+        $this->currentTagSlug = $this->page['currentTagSlug'] = $this->property('slug');
         $this->tagPage = $this->page['tagPage'] = $this->property('tagPage');
         $this->tags = $this->page['tags'] = $this->listTags();
     }
@@ -104,7 +116,7 @@ class Tags extends ComponentBase
         }
 
         $amount = intval($this->property('amount'));
-        $query->limit(5);
+        $query->limit($amount);
 
         return $query->get()->each(fn ($tag) => $tag->setUrl($this->tagPage, $this->controller));
     }

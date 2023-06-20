@@ -283,6 +283,7 @@ class Plugin extends PluginBase
             \RatMD\BlogHub\Components\CommentList::class => 'bloghubCommentList',
             \RatMD\BlogHub\Components\CommentSection::class => 'bloghubCommentSection',
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
+            \RatMD\BlogHub\Components\PopularPosts::class => 'popularPosts',
         ];
     }
 
