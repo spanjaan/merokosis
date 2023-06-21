@@ -40,6 +40,7 @@ class PopularPosts extends Posts
 
         return parent::onRun();
     }
+
     /**
      * List Posts
      *
