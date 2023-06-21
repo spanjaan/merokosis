@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace RatMD\BlogHub\Components;
 
-use Cms\Classes\Page;
-use Cms\Classes\ComponentBase;
-use Winter\Blog\Models\Post as PostModel;
+use Winter\Blog\Components\Posts;
+use Winter\Blog\Models\Post;
 
-class PopularPosts extends ComponentBase
+class PopularPosts extends Posts
 {
     /**
      * A collection of popular posts to display
      *
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
-    public $posts;
-
-    /**
-     * @var string Reference to the page name for linking to posts.
-     */
-    public $postPage;
-
-    /**
-     * @var string Reference to the page name for linking to categories.
-     */
-    public $categoryPage;
+    public $popularPosts;
 
     /**
      * Component Details
@@ -41,87 +30,53 @@ class PopularPosts extends ComponentBase
     }
 
     /**
-     * Component Properties
-     *
-     * @return array
-     */
-    public function defineProperties(): array
-    {
-        return [
-            'amount' => [
-                'title'             => 'ratmd.bloghub::lang.components.popularPosts.amount',
-                'description'       => 'ratmd.bloghub::lang.components.popularPosts.amount_comment',
-                'type'              => 'string',
-                'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'ratmd.bloghub::lang.components.popularPosts.amount_validation',
-                'default'           => '3',
-            ],
-            'postPage' => [
-                'title'             => 'ratmd.bloghub::lang.components.popularPosts.post_page',
-                'description'       => 'ratmd.bloghub::lang.components.popularPosts.post_page_comment',
-                'type'              => 'dropdown',
-                'default'           => 'blog/post',
-            ],
-            'categoryPage' => [
-                'title'             => 'ratmd.bloghub::lang.components.popularPosts.category_page',
-                'description'       => 'ratmd.bloghub::lang.components.popularPosts.category_page_comment',
-                'type'              => 'dropdown',
-                'default'           => 'blog/category',
-            ]
-        ];
-    }
-
-    /**
-     * Get Post Page Option
-     *
-     * @return array
-     */
-    public function getPostPageOptions(): array
-    {
-        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
-    }
-
-    /**
-     * Get Category Page Option
-     *
-     * @return array
-     */
-    public function getCategoryPageOptions(): array
-    {
-        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
-    }
-
-    /**
-     * Run
-     *
-     * @return void
-     */
-    public function onRun(): void
-    {
-        $this->postPage = $this->page['postPage'] = $this->property('postPage');
-        $this->categoryPage = $this->page['categoryPage'] = $this->property('categoryPage');
-        $this->posts = $this->page['posts'] = $this->listPopularPosts();
-    }
-
-
-    /**
-     * Load popular posts
+     * Run Component
      *
      * @return mixed
      */
-    protected function listPopularPosts()
+    public function onRun()
     {
-        $query = PostModel::with('categories')
-            ->where('published', true)
-            ->orderBy('ratmd_bloghub_views', 'desc');
+        $this->popularPosts = $this->loadPopularPosts();
 
-        $amount = intval($this->property('amount'));
-        $query->limit($amount);
+        return parent::onRun();
+    }
+    /**
+     * List Posts
+     *
+     * @return mixed
+     */
+    protected function listPosts()
+    {
+        $category = $this->category ? $this->category->id : null;
+        $categorySlug = $this->category ? $this->category->slug : null;
 
-        $posts = $query->get();
+        /*
+         * List all the posts, eager load their categories
+         */
+        $isPublished = !parent::checkEditor();
 
-        $posts->each(function ($post) {
-            $post->setUrl($this->postPage, $this->controller);
+        $posts = Post::with(['categories', 'featured_images', 'ratmd_bloghub_tags'])
+            ->listFrontEnd([
+                'page'             => $this->property('pageNumber'),
+                'sort'             => $this->property('sortOrder'),
+                'perPage'          => $this->property('postsPerPage'),
+                'search'           => trim(input('search') ?? ''),
+                'category'         => $category,
+                'published'        => $isPublished,
+                'exceptPost'       => is_array($this->property('exceptPost'))
+                    ? $this->property('exceptPost')
+                    : preg_split('/,\s*/', $this->property('exceptPost'), -1, PREG_SPLIT_NO_EMPTY),
+                'exceptCategories' => is_array($this->property('exceptCategories'))
+                    ? $this->property('exceptCategories')
+                    : preg_split('/,\s*/', $this->property('exceptCategories'), -1, PREG_SPLIT_NO_EMPTY),
+            ]);
+
+        /*
+         * Add a "url" helper attribute for linking to each post and category
+         */
+        $posts->each(function ($post) use ($categorySlug) {
+            $post->setUrl($this->postPage, $this->controller, ['category' => $categorySlug]);
+
             $post->categories->each(function ($category) {
                 $category->setUrl($this->categoryPage, $this->controller);
             });
@@ -130,5 +85,13 @@ class PopularPosts extends ComponentBase
         return $posts;
     }
 
-
+    /**
+     * Load popular posts
+     *
+     * @return mixed
+     */
+    protected function loadPopularPosts()
+    {
+        return Post::orderBy('ratmd_bloghub_views', 'desc')->get();
+    }
 }

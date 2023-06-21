@@ -212,16 +212,16 @@ postPage = "blog/post"
               {% for category in post.categories %}
                 <a href="{{ category.url }}" class="badge fs-sm text-nav bg-secondary text-decoration-none">{{ category.name }}</a>
                 {% endfor %}
-                <span class="fs-sm text-muted">May 19, 2021</span>
+                <span class="fs-sm text-muted">{{ post.published_at.diffForHumans() }}</span>
               </div>
               <h3 class="h5 mb-0">
-                <a href="blog-single.html">{{ post.title }}</a>
+                <a href="{{ post.url }}">{{ post.title }}</a>
               </h3>
             </div>
             <div class="card-footer py-4">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ 'assets/img/avatar/06.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Annette Black
+              <a href="{{ ('author/' ~ post.user.bloghub_slug()) | app }}" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
+                <img src="{{ post.user.avatar.getPath() }}" class="rounded-circle me-3" width="48" alt="Avatar">
+                {{ post.user.bloghub_display() }}
               </a>
             </div>
           </article>
