@@ -3,7 +3,7 @@
         'name' => 'wintercms/winter',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '414a6b8a6183db5a5dd536704e7737f2b6d465ed',
+        'reference' => '0f9de315971ddf5402d76fb46878700640e356e7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -442,6 +442,15 @@
             'reference' => 'c512ece7b1ee393eac5893f37cb2b029a5413b97',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/framework',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'laravel/scout' => array(
+            'pretty_version' => 'v9.8.1',
+            'version' => '9.8.1.0',
+            'reference' => '38595717b396ce733d432b82e3225fa4e0d6c8ef',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/scout',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1397,7 +1406,7 @@
         'winter/wn-blocks-plugin' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '9aabefaa1e3cff6b6d4323d73b1cc348edd1644e',
+            'reference' => '0c1e40c1a0df1dedb3e9d16fc446824ffd659104',
             'type' => 'winter-plugin',
             'install_path' => __DIR__ . '/../../plugins/winter/blocks',
             'aliases' => array(
@@ -1432,6 +1441,17 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'winter/wn-search-plugin' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'cba33e7b3a5526ca6876476a6169a4ebc70f56d7',
+            'type' => 'winter-plugin',
+            'install_path' => __DIR__ . '/../../plugins/winter/search',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
         'winter/wn-system-module' => array(
             'pretty_version' => 'v1.2.2',
             'version' => '1.2.2.0',
@@ -1453,7 +1473,7 @@
         'wintercms/winter' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '414a6b8a6183db5a5dd536704e7737f2b6d465ed',
+            'reference' => '0f9de315971ddf5402d76fb46878700640e356e7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

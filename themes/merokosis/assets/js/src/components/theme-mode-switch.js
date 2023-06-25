@@ -6,8 +6,8 @@
 const themeModeSwitch = (() => {
 
   let modeSwitch = document.querySelector('[data-bs-toggle="mode"]');
-  
-  if(modeSwitch === null) return;
+
+  if (modeSwitch === null) return;
 
   let checkbox = modeSwitch.querySelector('.form-check-input');
 
@@ -27,7 +27,7 @@ const themeModeSwitch = (() => {
       root.classList.remove('dark-mode');
       window.localStorage.setItem('mode', 'light');
     }
-  });
+  }, { passive: true });
 
 })();
 

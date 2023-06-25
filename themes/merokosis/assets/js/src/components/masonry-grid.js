@@ -8,11 +8,11 @@
 const masonryGrid = (() => {
 
   let grid = document.querySelectorAll('.masonry-grid'),
-  masonry;
+    masonry;
 
   if (grid === null) return;
 
-    for (let i = 0; i < grid.length; i++) {
+  for (let i = 0; i < grid.length; i++) {
     masonry = new Shuffle(grid[i], {
       itemSelector: '.masonry-grid-item',
       sizer: '.masonry-grid-item'
@@ -28,16 +28,16 @@ const masonryGrid = (() => {
     let filters = filtersWrap.querySelectorAll('.masonry-filters [data-group]');
 
     for (let n = 0; n < filters.length; n++) {
-      filters[n].addEventListener('click', function(e) {
+      filters[n].addEventListener('click', function (e) {
         let current = filtersWrap.querySelector('.masonry-filters .active'),
-            target = this.dataset.group;
-        if(current !== null) {
+          target = this.dataset.group;
+        if (current !== null) {
           current.classList.remove('active');
         }
         this.classList.add('active');
         masonry.filter(target);
         e.preventDefault();
-      });
+      }, { passive: true });
     }
   }
 

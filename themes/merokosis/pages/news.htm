@@ -2,4 +2,49 @@ title = "news"
 url = "/news"
 layout = "blog"
 is_hidden = 0
+
+[searchResults]
+resultsPerPage = 10
+showProviderBadge = 1
+noResultsMessage = "Your search returned no results."
+visitPageMessage = "Visit page"
+minQueryLength = 0
 ==
+<div class="container">
+  <div class="p-5 mt-5">
+    {% set results = searchResults.results %}
+    {% if (searchResults.query | length) < searchResults.minQueryLength %}
+      {{ 'offline.sitesearch::lang.query_too_short' | trans({ min: searchResults.minQueryLength }) }}
+    {% else %}
+      <h1>Search Results for <span class="text-warning">{{ query }}</span></h1>
+      {% for result in results %}
+        <article class="card border-0 shadow-sm overflow-hidden mb-4">
+          <div class="row g-0">
+            <div class="col-sm-4 position-relative bg-repeat-0 bg-size-cover"
+              style="background-image: url({{ result.thumb.getThumb(400, auto) }}); min-height: 15rem;">
+              <a href="{{ result.url | app }}" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+            </div>
+            <div class="col-sm-8">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  {% if searchResults.showProviderBadge %}
+                    <p class="badge fs-sm bg-pink shadow-pink text-white text-decoration-none">{{ result.provider }}</p>
+                  {% endif %}
+                  <span class="fs-sm text-muted border-start ps-3 ms-3">{{ result.published_at.diffForHumans() }}</span>
+                </div>
+                <h3 class="h4">
+                  <a href="{{ result.url | app }}">{{ result.title | raw }}</a>
+                </h3>
+                <p>{{ result.excerpt | raw }}</p>
+              </div>
+            <a href="{{ result.url | app }}" class="btn btn-sm mb-3 ms-3 shadow-primary btn-primary">
+            {{ searchResults.visitPageMessage }}
+            <i class="bx bx-right-arrow-alt ms-2 me-n1 lead"></i>
+            </a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

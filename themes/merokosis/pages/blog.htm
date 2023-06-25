@@ -27,7 +27,7 @@ onlyPromoted = 0
 amount = 10
 
 [searchInput]
-useAutoComplete = 1
+useAutoComplete = 0
 autoCompleteResultCount = 5
 showProviderBadge = 1
 searchPage = "blog/search.htm"
@@ -216,32 +216,10 @@ function onEnd(){
         </div>
         <!-- Body -->
         <div class="offcanvas-body">
-
-          <!-- Search form -->
-          {# <form action="{{ searchInput.searchPage | page }}?q={{ query | url_encode(true) }}" method="get">
-    <div class="ss-search-form">
-        <div class="ss-search-form__input">
-            <input name="q" type="text" placeholder="What are you looking for?" 
-                   value="{{ searchInput.query }}"
-                   autocomplete="off"
-                   autofocus
-                    {% if searchInput.useAutoComplete %}
-                        data-track-input
-                        data-request="{{ searchInput }}::onType"
-                        data-request-before-update="document.getElementById('autocomplete-results').classList.add('ss-search-form__results--visible')"
-                        data-request-update="'{{ searchInput }}::autocomplete': '#autocomplete-results'"
-                    {% endif %}
-            >
-            <button class="ss-search-form__submit" type="submit">Search</button>
-        </div>
-        <div class="ss-search-form__results" id="autocomplete-results"></div>
-    </div>
-</form> #}
-
+           <!-- Search form -->
           <form class="input-group mb-4" action="{{ searchInput.searchPage | page }}?q={{ query | url_encode(true) }}" method="get">
             <input name="q" type="text" placeholder="Search the blog..." class="form-control rounded pe-5" value="{{ searchInput.query }}"
                    autocomplete="off"
-                   autofocus
                     {% if searchInput.useAutoComplete %}
                         data-track-input
                         data-request="{{ searchInput }}::onType"
@@ -252,7 +230,7 @@ function onEnd(){
           </form>
           <div class="mb-4 ss-search-form__results" id="autocomplete-results">
           </div>
-
+          <!-- Search form end-->
           <div class="card card-body mb-4">
             <h3 class="h5">Categories</h3>
             {% if blogCategories.categories|length > 0 %}

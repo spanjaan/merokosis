@@ -10,8 +10,8 @@ const stickyNavbar = (() => {
   if (navbar == null) return;
 
   let navbarClass = navbar.classList,
-      navbarH = navbar.offsetHeight,
-      scrollOffset = 500;
+    navbarH = navbar.offsetHeight,
+    scrollOffset = 500;
 
   if (navbarClass.contains('position-absolute')) {
     window.addEventListener('scroll', (e) => {
@@ -20,7 +20,7 @@ const stickyNavbar = (() => {
       } else {
         navbar.classList.remove('navbar-stuck');
       }
-    });
+    }, { passive: true });
   } else {
     window.addEventListener('scroll', (e) => {
       if (e.currentTarget.pageYOffset > scrollOffset) {
@@ -30,7 +30,7 @@ const stickyNavbar = (() => {
         document.body.style.paddingTop = '';
         navbar.classList.remove('navbar-stuck');
       }
-    });
+    }, { passive: true });
   }
 
 })();

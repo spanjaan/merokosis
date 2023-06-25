@@ -17,9 +17,11 @@ const formValidation = (() => {
           e.stopPropagation();
         }
         form.classList.add('was-validated');
-      }, false);
+      }, { passive: true });
     });
-  }, false);
+  }, { passive: true });
+
 })();
 
 export default formValidation;
+

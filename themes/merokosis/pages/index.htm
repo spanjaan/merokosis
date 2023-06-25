@@ -64,7 +64,7 @@ postPage = "blog/post"
 
           <div class="border-end border-light h-100 mb-2 pe-3 me-3">
             {% for category in latestPost.categories %}
-            <span class="badge bg-faded-light fs-base">{{ category.name}}</span>
+            <span class="badge bg-success fs-base">{{ category.name}}</span>
             {% endfor %}
           </div>
 
@@ -75,11 +75,11 @@ postPage = "blog/post"
           <div class="d-flex align-items-center mb-2 text-nowrap">
             <div class="d-flex align-items-center me-3 opacity-70">
               <i class="bx bx-show fs-lg me-1"></i>
-              <span class="fs-sm">8</span>
+              <span class="fs-sm">{{ latestPost.bloghub.views }}</span>
             </div>
             <div class="d-flex align-items-center me-3 opacity-70">
               <i class="bx bx-comment fs-lg me-1"></i>
-              <span class="fs-sm">4</span>
+              <span class="fs-sm">{{ latestPost.bloghub.comments_count }}</span>
             </div>
             <div class="d-flex align-items-center opacity-70">
               <i class="bx bx-share-alt fs-lg me-1"></i>
@@ -87,7 +87,7 @@ postPage = "blog/post"
             </div>
           </div>
         </div>
-        <a href="{{ latestPost.url }}" class="btn btn-lg btn-primary">
+        <a href="{{ latestPost.url }}" class="btn btn-lg shadow-primary btn-primary">
           Read article
           <i class="bx bx-right-arrow-alt ms-2 me-n1 lead"></i>
         </a>
@@ -122,7 +122,7 @@ postPage = "blog/post"
                       <div class="d-flex align-items-center justify-content-between mb-3">
                         {% for category in post.categories %}
                         <a href="{{ category.url }}"
-                          class="badge fs-sm text-nav bg-white text-decoration-none position-relative zindex-2">{{ category.name }}</a>
+                          class="badge fs-sm text-nav bg-pink shadow-pink text-decoration-none position-relative zindex-2">{{ category.name }}</a>
                         {% endfor %}
                         <span class="text-muted">{{ post.published_at.diffForHumans() }}</span>
                       </div>
@@ -133,11 +133,11 @@ postPage = "blog/post"
                     <div class="card-footer d-flex align-items-center py-4 text-muted border-top-0">
                       <div class="d-flex align-items-center me-3">
                         <i class="bx bx-show fs-lg me-1"></i>
-                        <span class="fs-sm">8</span>
+                        <span class="fs-sm">{{ post.bloghub.views }}</span>
                       </div>
                       <div class="d-flex align-items-center me-3">
                         <i class="bx bx-comment fs-lg me-1"></i>
-                        <span class="fs-sm">4</span>
+                        <span class="fs-sm">{{ post.bloghub.comments_count }}</span>
                       </div>
                       <div class="d-flex align-items-center">
                         <i class="bx bx-share-alt fs-lg me-1"></i>
@@ -199,9 +199,9 @@ postPage = "blog/post"
             <div class="position-relative">
               <a href="{{ post.url }}" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
               <a href="{{ post.url }}"
-                class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-                <i class="bx bx-bookmark"></i>
+                class="btn btn-icon btn-light bg-pink border-pink text-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
+                data-bs-toggle="tooltip" data-bs-placement="left" title="{{ post.bloghub.views }} People read this article">
+                <i class="bx bx-show"></i>
               </a>
                 {% if post.featured_images|length %}
                   <img src="{{ post.featured_images.0.path }}" alt="Image" class="card-img-top" style="height: 230px; width:100%; object-fit: cover; object-position: center;">
@@ -220,7 +220,7 @@ postPage = "blog/post"
             </div>
             <div class="card-footer py-4">
               <a href="{{ ('author/' ~ post.user.bloghub_slug()) | app }}" class="d-flex align-items-center fw-bold text-dark text-decoration-none">
-                <img src="{{ post.user.avatar.getPath() }}" class="rounded-circle me-3" width="48" alt="Avatar">
+                <img src="{{ post.user.avatar.getPath() }}" class="rounded me-3" width="48" alt="Avatar">
                 {{ post.user.bloghub_display() }}
               </a>
             </div>
@@ -240,47 +240,19 @@ postPage = "blog/post"
 <section class="container mb-5 pt-5 pb-lg-5">
   <h2 class="h1 mb-4 pt-lg-2 pb-lg-3 py-1 text-center">Latest Posts</h2>
 
-  <!-- Category tabs -->
-  <ul class="nav nav-tabs justify-content-center mb-lg-5 mb-4 pb-lg-2">
-    <li class="nav-item">
-      <a href="#" class="nav-link active">All Topics</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Digital</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Marketing</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Success Stories</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Startups</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Events</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Technology</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Business</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Processes &amp; Tools</a>
-    </li>
-  </ul>
-
   <!-- Blog articles -->
   <div class="pb-3">
 
     <!-- Blog item -->
+    {% set latestPosts = blogPosts.posts|sort((a, b) => b.published_at.timestamp - a.published_at.timestamp)|slice(0, 6) %}
+    {% if latestPosts|length > 0 %}
+    {% for post in latestPosts %}
     <article class="card border-0 shadow-sm overflow-hidden mb-4">
       <div class="row g-0">
         <div class="col-sm-4 position-relative bg-repeat-0 bg-size-cover"
-          style="background-image: url({{ 'assets/img/blog/01.jpg' | theme }}); min-height: 15rem;">
-          <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-          <a href="#"
+          style="background-image: url({{ post.featured_images.0.path }}); min-height: 15rem;">
+          <a href="{{ post.url }}" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
+          <a href="{{ post.url }}"
             class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
             data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
             <i class="bx bx-bookmark"></i>
@@ -289,29 +261,29 @@ postPage = "blog/post"
         <div class="col-sm-8">
           <div class="card-body">
             <div class="d-flex align-items-center mb-3">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Processes &amp; Tools</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">Sep 3, 2021</span>
+            {% for category in post.categories %}
+              <a href="{{category.url}}" class="badge fs-sm bg-warning shadow-warning text-white text-decoration-none">{{category.name}}</a>
+              {% endfor %}
+              <span class="fs-sm text-muted border-start ps-3 ms-3">{{ post.published_at.diffForHumans() }}</span>
             </div>
             <h3 class="h4">
-              <a href="blog-single.html">5 Bad Landing Page Examples &amp; How We Would Fix Them</a>
+              <a href="{{post.url}}">{{post.title}}</a>
             </h3>
-            <p>Tellus sagittis dolor pellentesque vel porttitor magna aliquet arcu. Interdum risus mauris pulvinar
-              et vel. Morbi tellus, scelerisque vel metus. Scelerisque arcu egestas ac commodo, ac nibh. Pretium
-              ac elit sed nulla nec.</p>
+            <p>{{ post.summary|slice(0, 200) ~ '...' }}</p>
             <hr class="my-4">
             <div class="d-flex align-items-center justify-content-between">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none me-3">
-                <img src="{{ 'assets/img/avatar/01.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Jerome Bell
+              <a href="{{ ('author/' ~ post.user.bloghub_slug()) | app }}" class="d-flex align-items-center fw-bold text-dark text-decoration-none me-3">
+                <img src="{{ post.user.avatar.getPath() }}" class="rounded-circle me-3" width="48" alt="Avatar">
+                {{ post.user.bloghub_display() }}
               </a>
               <div class="d-flex align-items-center text-muted">
                 <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-like fs-lg me-1"></i>
-                  <span class="fs-sm">8</span>
+                  <i class="bx bx-show fs-lg me-1"></i>
+                  <span class="fs-sm">{{ post.bloghub.views }}</span>
                 </div>
                 <div class="d-flex align-items-center me-3">
                   <i class="bx bx-comment fs-lg me-1"></i>
-                  <span class="fs-sm">7</span>
+                  <span class="fs-sm">{{ post.bloghub.comments_count }}</span>
                 </div>
                 <div class="d-flex align-items-center">
                   <i class="bx bx-share-alt fs-lg me-1"></i>
@@ -323,156 +295,9 @@ postPage = "blog/post"
         </div>
       </div>
     </article>
-
-    <!-- Article -->
-    <article class="card border-0 shadow-sm overflow-hidden mb-4">
-      <div class="row g-0">
-        <div class="col-sm-4 position-relative bg-repeat-0 bg-size-cover"
-          style="background-image: url({{ 'assets/img/blog/06.jpg' | theme }}); min-height: 15rem;">
-          <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-          <a href="#"
-            class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-            data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-            <i class="bx bx-bookmark"></i>
-          </a>
-        </div>
-        <div class="col-sm-8">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Startups</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">Sep 10, 2021</span>
-            </div>
-            <h3 class="h4">
-              <a href="blog-single.html">How Agile is Your Forecasting Process?</a>
-            </h3>
-            <p>Nulla fringilla arcu justo augue fringilla in nunc volutpat sit. Dui diam, faucibus vitae ultricies
-              vitae mollis nunc elementum. Et, habitasse porta neque tempor tellus ut. Sagittis odio porttitor
-              erat viverra erat neque.</p>
-            <hr class="my-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none me-3">
-                <img src="{{ 'assets/img/avatar/05.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Albert Flores
-              </a>
-              <div class="d-flex align-items-center text-muted">
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-like fs-lg me-1"></i>
-                  <span class="fs-sm">3</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-comment fs-lg me-1"></i>
-                  <span class="fs-sm">6</span>
-                </div>
-                <div class="d-flex align-items-center">
-                  <i class="bx bx-share-alt fs-lg me-1"></i>
-                  <span class="fs-sm">0</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- Article -->
-    <article class="card border-0 shadow-sm overflow-hidden mb-4">
-      <div class="row g-0">
-        <div class="col-sm-4 position-relative bg-repeat-0 bg-size-cover"
-          style="background-image: url({{ 'assets/img/blog/05.jpg' | theme }}); min-height: 15rem;">
-          <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-          <a href="#"
-            class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-            data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-            <i class="bx bx-bookmark"></i>
-          </a>
-        </div>
-        <div class="col-sm-8">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">Oct 9, 2021</span>
-            </div>
-            <h3 class="h4">
-              <a href="blog-single.html">Inclusive Marketing: Why and How Does it Work?</a>
-            </h3>
-            <p>Nunc aliquet scelerisque pellentesque imperdiet tortor elit, dictum. Tristique odio at dignissim
-              viverra aliquet eleifend erat. Tellus, at arcu, egestas praesent. Varius aliquet pharetra adipiscing
-              tincidunt orci nec neque.</p>
-            <hr class="my-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none me-3">
-                <img src="{{ 'assets/img/avatar/04.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Jane Cooper
-              </a>
-              <div class="d-flex align-items-center text-muted">
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-like fs-lg me-1"></i>
-                  <span class="fs-sm">5</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-comment fs-lg me-1"></i>
-                  <span class="fs-sm">0</span>
-                </div>
-                <div class="d-flex align-items-center">
-                  <i class="bx bx-share-alt fs-lg me-1"></i>
-                  <span class="fs-sm">2</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- Article -->
-    <article class="card border-0 shadow-sm overflow-hidden mb-4">
-      <div class="row g-0">
-        <div class="col-sm-4 position-relative bg-repeat-0 bg-size-cover"
-          style="background-image: url({{ 'assets/img/blog/09.jpg' | theme }}); min-height: 15rem;">
-          <a href="blog-single.html" class="position-absolute top-0 start-0 w-100 h-100" aria-label="Read more"></a>
-          <a href="#"
-            class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-            data-bs-toggle="tooltip" data-bs-placement="left" title="Read later">
-            <i class="bx bx-bookmark"></i>
-          </a>
-        </div>
-        <div class="col-sm-8">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Strategy</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">Sep 3, 2021</span>
-            </div>
-            <h3 class="h4">
-              <a href="blog-single.html">This Long-Awaited Technology May Finally Change the World</a>
-            </h3>
-            <p>Sapien, nulla placerat in at. Vitae tincidunt quam ornare massa porttitor. Neque a vitae feugiat in
-              sit habitant integer. Cursus et at pulvinar sed neque vitae. Aliquam vitae hac phasellus purus
-              lectus facilisi. Vitae vel ac quam.</p>
-            <hr class="my-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <a href="#" class="d-flex align-items-center fw-bold text-dark text-decoration-none me-3">
-                <img src="{{ 'assets/img/avatar/02.jpg' | theme }}" class="rounded-circle me-3" width="48" alt="Avatar">
-                Ralph Edwards
-              </a>
-              <div class="d-flex align-items-center text-muted">
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-like fs-lg me-1"></i>
-                  <span class="fs-sm">8</span>
-                </div>
-                <div class="d-flex align-items-center me-3">
-                  <i class="bx bx-comment fs-lg me-1"></i>
-                  <span class="fs-sm">7</span>
-                </div>
-                <div class="d-flex align-items-center">
-                  <i class="bx bx-share-alt fs-lg me-1"></i>
-                  <span class="fs-sm">4</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
+    {% endfor %}
+    {% endif %}
+    <!-- Article End -->
   </div>
 
   <!-- Load more btn -->
@@ -481,222 +306,6 @@ postPage = "blog/post"
     Show more
   </a>
 </section>
-
-
-<!-- Latest podcasts -->
-<section class="container mb-5 pt-3 pb-lg-5">
-  <div class="row">
-    <div class="col-xl-3">
-      <div class="d-xl-block d-flex align-items-center justify-content-between mb-xl-0 mb-4 pb-xl-0 pb-3">
-        <h2 class="h1 mb-xl-4 mb-0 pb-xl-3">Latest Podcasts</h2>
-        <a href="#" class="btn btn-primary ms-xl-0 ms-4">All podcasts</a>
-      </div>
-    </div>
-
-    <!-- Carousel -->
-    <div class="col-xl-9">
-      <div class="swiper" data-swiper-options='{
-        "slidesPerView": 1,
-        "spaceBetween": 24,
-        "loop": true,
-        "pagination": {
-          "el": ".swiper-pagination",
-          "clickable": true
-        },
-        "breakpoints": {
-          "576": {
-            "slidesPerView": 2
-          },
-          "768": {
-            "slidesPerView": 3
-          },
-          "1000": {
-            "slidesPerView": 3
-          }
-        }
-      }'>
-        <div class="swiper-wrapper">
-
-          <!-- Item -->
-          <article class="swiper-slide h-auto pb-3">
-            <div class="d-block position-relative rounded-3 mb-3">
-              <a href="#"
-                class="btn btn-icon btn-light bg-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Listen later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/avatar/06.jpg' | theme }}"
-                class="position-absolute top-0 start-0 rounded-circle zindex-2 mt-3 ms-3" width="48" alt="Avatar">
-              <span class="badge bg-dark position-absolute bottom-0 end-0 zindex-2 mb-3 me-3">0:25:43</span>
-              <a href="blog-podcast.html"
-                class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-35 rounded-3"
-                aria-label="Listen podcast"></a>
-              <img src="{{ 'assets/img/blog/podcasts/04.jpg' | theme }}" class="rounded-3" alt="Image">
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">2 hours ago</span>
-            </div>
-            <h3 class="h5">
-              <a href="blog-podcast.html">IOS and the Changing landscape of Data Privacy</a>
-            </h3>
-            <div class="d-flex align-items-center text-muted">
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-like fs-lg me-1"></i>
-                <span class="fs-sm">4</span>
-              </div>
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-comment fs-lg me-1"></i>
-                <span class="fs-sm">2</span>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bx bx-share-alt fs-lg me-1"></i>
-                <span class="fs-sm">0</span>
-              </div>
-            </div>
-            <a href="blog-podcast.html" class="btn btn-link px-0 mt-3">
-              <i class="bx bx-play-circle fs-lg me-2"></i>
-              Listen now
-            </a>
-          </article>
-
-          <!-- Item -->
-          <article class="swiper-slide h-auto pb-3">
-            <div class="d-block position-relative rounded-3 mb-3">
-              <a href="#"
-                class="btn btn-icon btn-light bg-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Listen later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/avatar/05.jpg' | theme }}"
-                class="position-absolute top-0 start-0 rounded-circle zindex-2 mt-3 ms-3" width="48" alt="Avatar">
-              <span class="badge bg-dark position-absolute bottom-0 end-0 zindex-2 mb-3 me-3">1:12:05</span>
-              <a href="blog-podcast.html"
-                class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-35 rounded-3"
-                aria-label="Listen podcast"></a>
-              <img src="{{ 'assets/img/blog/podcasts/05.jpg' | theme }}" class="rounded-3" alt="Image">
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Processes &amp; Tools</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">10 hours ago</span>
-            </div>
-            <h3 class="h5">
-              <a href="blog-podcast.html">Behavioral Science and Digital Marketing</a>
-            </h3>
-            <div class="d-flex align-items-center text-muted">
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-like fs-lg me-1"></i>
-                <span class="fs-sm">9</span>
-              </div>
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-comment fs-lg me-1"></i>
-                <span class="fs-sm">5</span>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bx bx-share-alt fs-lg me-1"></i>
-                <span class="fs-sm">6</span>
-              </div>
-            </div>
-            <a href="blog-podcast.html" class="btn btn-link px-0 mt-3">
-              <i class="bx bx-play-circle fs-lg me-2"></i>
-              Listen now
-            </a>
-          </article>
-
-          <!-- Item -->
-          <article class="swiper-slide h-auto pb-3">
-            <div class="d-block position-relative rounded-3 mb-3">
-              <a href="#"
-                class="btn btn-icon btn-light bg-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Listen later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/avatar/01.jpg' | theme }}"
-                class="position-absolute top-0 start-0 rounded-circle zindex-2 mt-3 ms-3" width="48" alt="Avatar">
-              <span class="badge bg-dark position-absolute bottom-0 end-0 zindex-2 mb-3 me-3">0:32:15</span>
-              <a href="blog-podcast.html"
-                class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-35 rounded-3"
-                aria-label="Listen podcast"></a>
-              <img src="{{ 'assets/img/blog/podcasts/02.jpg' | theme }}" class="rounded-3" alt="Image">
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Technology</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">10 hours ago</span>
-            </div>
-            <h3 class="h5">
-              <a href="blog-podcast.html">Why You Should Care About Your Competitors</a>
-            </h3>
-            <div class="d-flex align-items-center text-muted">
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-like fs-lg me-1"></i>
-                <span class="fs-sm">45</span>
-              </div>
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-comment fs-lg me-1"></i>
-                <span class="fs-sm">12</span>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bx bx-share-alt fs-lg me-1"></i>
-                <span class="fs-sm">6</span>
-              </div>
-            </div>
-            <a href="blog-podcast.html" class="btn btn-link px-0 mt-3">
-              <i class="bx bx-play-circle fs-lg me-2"></i>
-              Listen now
-            </a>
-          </article>
-
-          <!-- Item -->
-          <article class="swiper-slide h-auto pb-3">
-            <div class="d-block position-relative rounded-3 mb-3">
-              <a href="#"
-                class="btn btn-icon btn-light bg-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-5 me-3 mt-3"
-                data-bs-toggle="tooltip" data-bs-placement="left" title="Listen later">
-                <i class="bx bx-bookmark"></i>
-              </a>
-              <img src="{{ 'assets/img/avatar/04.jpg' | theme }}"
-                class="position-absolute top-0 start-0 rounded-circle zindex-2 mt-3 ms-3" width="48" alt="Avatar">
-              <span class="badge bg-dark position-absolute bottom-0 end-0 zindex-2 mb-3 me-3">0:48:02</span>
-              <a href="blog-podcast.html"
-                class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-35 rounded-3"
-                aria-label="Listen podcast"></a>
-              <img src="{{ 'assets/img/blog/podcasts/03.jpg' | theme }}" class="rounded-3" alt="Image">
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Marketing</a>
-              <span class="fs-sm text-muted border-start ps-3 ms-3">1 day ago</span>
-            </div>
-            <h3 class="h5">
-              <a href="blog-podcast.html">Tips for Marketing Managers: How to Maximise Leads</a>
-            </h3>
-            <div class="d-flex align-items-center text-muted">
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-like fs-lg me-1"></i>
-                <span class="fs-sm">10</span>
-              </div>
-              <div class="d-flex align-items-center me-3">
-                <i class="bx bx-comment fs-lg me-1"></i>
-                <span class="fs-sm">4</span>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bx bx-share-alt fs-lg me-1"></i>
-                <span class="fs-sm">6</span>
-              </div>
-            </div>
-            <a href="blog-podcast.html" class="btn btn-link px-0 mt-3">
-              <i class="bx bx-play-circle fs-lg me-2"></i>
-              Listen now
-            </a>
-          </article>
-        </div>
-
-        <!-- Pagination (bullets) -->
-        <div class="swiper-pagination position-relative pt-2 pt-sm-3 mt-4"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- Subscription CTA -->
 <section class="py-5 bg-secondary">

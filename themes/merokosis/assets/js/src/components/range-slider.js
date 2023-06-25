@@ -10,8 +10,8 @@ const rangeSlider = (() => {
   for (let i = 0; i < rangeSliderWidget.length; i++) {
 
     let rangeSlider = rangeSliderWidget[i].querySelector('.range-slider-ui'),
-        valueMinInput = rangeSliderWidget[i].querySelector('.range-slider-value-min'),
-        valueMaxInput = rangeSliderWidget[i].querySelector('.range-slider-value-max');
+      valueMinInput = rangeSliderWidget[i].querySelector('.range-slider-value-min'),
+      valueMaxInput = rangeSliderWidget[i].querySelector('.range-slider-value-max');
 
     let options = {
       dataStartMin: parseInt(rangeSliderWidget[i].dataset.startMin, 10),
@@ -23,13 +23,13 @@ const rangeSlider = (() => {
     }
 
     let start = (options.dataStartMax) ? [options.dataStartMin, options.dataStartMax] : [options.dataStartMin],
-        connect = (options.dataStartMax) ? true : 'lower';
+      connect = (options.dataStartMax) ? true : 'lower';
 
     noUiSlider.create(rangeSlider, {
       start: start,
       connect: connect,
       step: options.dataStep,
-      pips: options.dataPips ? {mode: 'count', values: 5} : false,
+      pips: options.dataPips ? { mode: 'count', values: 5 } : false,
       tooltips: true,
       range: {
         'min': options.dataMin,
@@ -47,7 +47,7 @@ const rangeSlider = (() => {
 
     rangeSlider.noUiSlider.on('update', (values, handle) => {
       let value = values[handle];
-      value = value.replace(/\D/g,'');
+      value = value.replace(/\D/g, '');
       if (handle) {
         if (valueMaxInput) {
           valueMaxInput.value = Math.round(value);
@@ -58,17 +58,17 @@ const rangeSlider = (() => {
         }
       }
     });
-    
+
     if (valueMinInput) {
-      valueMinInput.addEventListener('change', function() {
+      valueMinInput.addEventListener('change', function () {
         rangeSlider.noUiSlider.set([this.value, null]);
-      });
+      }, { passive: true });
     }
 
     if (valueMaxInput) {
-      valueMaxInput.addEventListener('change', function() {
+      valueMaxInput.addEventListener('change', function () {
         rangeSlider.noUiSlider.set([null, this.value]);
-      });
+      }, { passive: true });
     }
   }
 

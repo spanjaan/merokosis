@@ -11,19 +11,19 @@ const audioPlayer = (() => {
 
   for (let i = 0; i < player.length; i++) {
     const playerContainer = player[i],
-          audio = playerContainer.querySelector('audio'),
-          playButton = playerContainer.querySelector('.ap-play-button'),
-          seekSlider = playerContainer.querySelector('.ap-seek-slider'),
-          volumeSlider = playerContainer.querySelector('.ap-volume-slider'),
-          durationTimeLabel = playerContainer.querySelector('.ap-duration'),
-          currentTimeLabel = playerContainer.querySelector('.ap-current-time');
+      audio = playerContainer.querySelector('audio'),
+      playButton = playerContainer.querySelector('.ap-play-button'),
+      seekSlider = playerContainer.querySelector('.ap-seek-slider'),
+      volumeSlider = playerContainer.querySelector('.ap-volume-slider'),
+      durationTimeLabel = playerContainer.querySelector('.ap-duration'),
+      currentTimeLabel = playerContainer.querySelector('.ap-current-time');
 
     let playState = 'play',
-        raf = null;
+      raf = null;
 
     // Start / stop audio
     playButton.addEventListener('click', (e) => {
-      if(playState === 'play') {
+      if (playState === 'play') {
         e.currentTarget.classList.add('ap-pause');
         audio.play();
         requestAnimationFrame(whilePlaying);
@@ -34,20 +34,20 @@ const audioPlayer = (() => {
         cancelAnimationFrame(raf);
         playState = 'play';
       }
-    });
+    }, { passive: true });
 
     // Instantiate sliders: Seek slider + Volume slider
     const showRangeProgress = (rangeInput) => {
-      if(rangeInput === seekSlider) playerContainer.style.setProperty('--seek-before-width', rangeInput.value / rangeInput.max * 100 + '%');
+      if (rangeInput === seekSlider) playerContainer.style.setProperty('--seek-before-width', rangeInput.value / rangeInput.max * 100 + '%');
       else playerContainer.style.setProperty('--volume-before-width', rangeInput.value / rangeInput.max * 100 + '%');
     }
 
     seekSlider.addEventListener('input', (e) => {
       showRangeProgress(e.target);
-    });
+    }, { passive: true });
     volumeSlider.addEventListener('input', (e) => {
       showRangeProgress(e.target);
-    });
+    }, { passive: true });
 
     const calculateTime = (secs) => {
       const minutes = Math.floor(secs / 60);
@@ -85,29 +85,29 @@ const audioPlayer = (() => {
         displayDuration();
         setSliderMax();
         displayBufferedAmount();
-      });
+      }, { passive: true });
     }
 
     audio.addEventListener('progress', displayBufferedAmount);
 
     seekSlider.addEventListener('input', () => {
       currentTimeLabel.textContent = calculateTime(seekSlider.value);
-      if(!audio.paused) {
-          cancelAnimationFrame(raf);
+      if (!audio.paused) {
+        cancelAnimationFrame(raf);
       }
-    });
+    }, { passive: true });
 
     seekSlider.addEventListener('change', () => {
       audio.currentTime = seekSlider.value;
-      if(!audio.paused) {
-          requestAnimationFrame(whilePlaying);
+      if (!audio.paused) {
+        requestAnimationFrame(whilePlaying);
       }
-    });
+    }, { passive: true });
 
     volumeSlider.addEventListener('input', (e) => {
       const value = e.target.value;
       audio.volume = value / 100;
-    });
+    }, { passive: true });
   }
 
 })();

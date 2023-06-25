@@ -5,16 +5,16 @@
 const priceSwitch = (() => {
 
   let switcherWrapper = document.querySelectorAll('.price-switch-wrapper');
-  
+
   if (switcherWrapper.length <= 0) return;
-  
+
   for (let i = 0; i < switcherWrapper.length; i++) {
     let switcher = switcherWrapper[i].querySelector('[data-bs-toggle="price"]');
 
     switcher.addEventListener('change', (e) => {
       let checkbox = e.currentTarget.querySelector('input[type="checkbox"]'),
-          monthlyPrice = e.currentTarget.closest('.price-switch-wrapper').querySelectorAll('[data-monthly-price]'),
-          annualPrice = e.currentTarget.closest('.price-switch-wrapper').querySelectorAll('[data-annual-price]');
+        monthlyPrice = e.currentTarget.closest('.price-switch-wrapper').querySelectorAll('[data-monthly-price]'),
+        annualPrice = e.currentTarget.closest('.price-switch-wrapper').querySelectorAll('[data-annual-price]');
 
       for (let n = 0; n < monthlyPrice.length; n++) {
         if (checkbox.checked == true) {
@@ -31,9 +31,9 @@ const priceSwitch = (() => {
           annualPrice[m].classList.add('d-none');
         }
       }
-    });
+    }, { passive: true });
   }
-  
+
 })();
 
 export default priceSwitch;

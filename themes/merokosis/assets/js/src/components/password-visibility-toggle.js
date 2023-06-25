@@ -8,10 +8,10 @@ const passwordVisibilityToggle = (() => {
 
   for (let i = 0; i < elements.length; i++) {
     let passInput = elements[i].querySelector('.form-control'),
-    passToggle = elements[i].querySelector('.password-toggle-btn');
+      passToggle = elements[i].querySelector('.password-toggle-btn');
 
     passToggle.addEventListener('click', (e) => {
-      
+
       if (e.target.type !== 'checkbox') return;
       if (e.target.checked) {
         passInput.type = 'text';
@@ -19,7 +19,7 @@ const passwordVisibilityToggle = (() => {
         passInput.type = 'password';
       }
 
-    }, false);
+    }, { passive: true });
   }
 })();
 

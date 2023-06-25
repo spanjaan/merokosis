@@ -11,16 +11,16 @@ const subscriptionForm = (() => {
   for (let i = 0; i < form.length; i++) {
 
     let button = form[i].querySelector('button[type="submit"]'),
-        buttonText = button.innerHTML,
-        input = form[i].querySelector('.form-control'),
-        antispam = form[i].querySelector('.subscription-form-antispam'),
-        status = form[i].querySelector('.subscription-status');
-    
-    form[i].addEventListener('submit', function(e) {
+      buttonText = button.innerHTML,
+      input = form[i].querySelector('.form-control'),
+      antispam = form[i].querySelector('.subscription-form-antispam'),
+      status = form[i].querySelector('.subscription-status');
+
+    form[i].addEventListener('submit', function (e) {
       if (e) e.preventDefault();
       if (antispam.value !== '') return;
       register(this, button, input, buttonText, status);
-    });
+    }, { passive: true });
   }
 
   let register = (form, button, input, buttonText, status) => {
@@ -36,7 +36,7 @@ const subscriptionForm = (() => {
     let script = document.createElement('script');
     script.src = url + '&c=callback' + data
     document.body.appendChild(script);
-    
+
     // Callback function
     let callback = 'callback';
     window[callback] = (response) => {
@@ -49,7 +49,7 @@ const subscriptionForm = (() => {
       button.innerHTML = buttonText;
 
       // Display content and apply styling to response message conditionally
-      if(response.result == 'success') {
+      if (response.result == 'success') {
         input.classList.remove('is-invalid');
         input.classList.add('is-valid');
         status.classList.remove('status-error');

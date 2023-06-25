@@ -127,6 +127,7 @@ class ComposerStaticInitb58f9e5de7853a9de2b022d647fd4238
             'League\\CommonMark\\' => 18,
             'Laravel\\Tinker\\' => 15,
             'Laravel\\SerializableClosure\\' => 28,
+            'Laravel\\Scout\\' => 14,
         ),
         'I' => 
         array (
@@ -412,6 +413,10 @@ class ComposerStaticInitb58f9e5de7853a9de2b022d647fd4238
         'Laravel\\SerializableClosure\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
+        ),
+        'Laravel\\Scout\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/scout/src',
         ),
         'Illuminate\\Support\\' => 
         array (
